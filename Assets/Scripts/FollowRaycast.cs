@@ -7,11 +7,10 @@ using System;
 [RequireComponent(typeof(Transform))]
 public class FollowRaycast : MonoBehaviour
 {
-    [SerializeField]
     Camera viewCamera;
 
     [SerializeField]
-    float minSpeed = 0.1f, maxSpeed = 0.5f, accelerationFactor = 1.0f, decelerateFactor = 2.0f;
+    float minSpeed = 0.1f, maxSpeed = 0.1f, accelerationFactor = 1.0f, decelerateFactor = 2.0f;
 
     public LineSegment testLine;
 
@@ -19,16 +18,12 @@ public class FollowRaycast : MonoBehaviour
     private float currentAcceleration;
     private bool isAtMaxSpeed;
 
-    CollisionData currentCollision;
-
     private void Start()
     {
-        currentCollision = new CollisionData();
         //application settings, putting these here for now
         Application.targetFrameRate = Screen.currentResolution.refreshRate;
         Screen.orientation = ScreenOrientation.AutoRotation;
-
-        currentVelocity = new Vector3(0.01f, 0, 0.1f);
+        viewCamera = Camera.main;
     }
 
     void OnEnable()
@@ -118,28 +113,6 @@ public class FollowRaycast : MonoBehaviour
             currentVelocity = Vector3.zero;
         }
     }
-    private void Update()
-    {
-        if (LeanTouch.Fingers.Count == 0)
-        {
-            //haltMovement();
-        }
-
-        Vector2 posToVec2 = new Vector2(transform.position.x, transform.position.z);
-        Vector2 velToVec2 = new Vector2(currentVelocity.x, currentVelocity.z) * Time.deltaTime * 100.0f;
-        float radius = 5.0f;
-
-        CollisionData collision = new CollisionData();
-        collision = checkLineSegmentCollisions(posToVec2, radius, velToVec2, testLine);
-        if (collision.hasCollided)
-        {
-            ColPosReset(collision);
-        }
-
-        transform.position += currentVelocity * Time.deltaTime * 100.0f;
-        currentVelocity = new Vector3(0.01f, 0, 0.1f);
-
-    }
 
     CollisionData checkLineSegmentCollisions(Vector2 point, float radius, Vector2 velocity, LineSegment line)
     {
@@ -170,7 +143,7 @@ public class FollowRaycast : MonoBehaviour
 
             if (ToI <= 1)
             {
-                Vector2 PoI = point + ToI * velocity;
+                Vector2 PoI = point + ToI * velocity + velocity.normalized;
 
                 float d = Vector2.Dot((PoI - line.start), lineVec.normalized);
 
@@ -189,20 +162,12 @@ public class FollowRaycast : MonoBehaviour
 
     void ColPosReset(CollisionData cd) 
     {
-
+        Vector2 lineNormal = Normal(cd.directionNormal);
+        Vector3 v3LineNormal = new Vector3(lineNormal.x, 0, lineNormal.y);
         Vector3 vec3PoI = new Vector3(cd.PoI.x, 0, cd.PoI.y);
-        transform.position = vec3PoI;
 
-        Vector2 velNormalized = new Vector2(currentVelocity.x, currentVelocity.z);
-        Vector2 lineVecNormalized = (testLine.end - testLine.start);
-        lineVecNormalized.Normalize();
-        Vector2 newVelocity = lineVecNormalized - velNormalized;
-        currentVelocity = new Vector3(newVelocity.x, 0, newVelocity.y);
-        if (currentVelocity.magnitude > maxSpeed)
-        {
-            currentVelocity.Normalize();
-            currentVelocity *= maxSpeed * Time.deltaTime;
-        }
+        transform.position = vec3PoI + v3LineNormal;
+        currentVelocity = v3LineNormal;
     }
 
     public struct CollisionData
@@ -219,5 +184,32 @@ public class FollowRaycast : MonoBehaviour
         result.Normalize();
 
         return result;
+    }
+
+    private void Update()
+    {
+        if (LeanTouch.Fingers.Count == 0)
+        {
+            haltMovement();
+        }
+
+        Vector2 posToVec2 = new Vector2(transform.position.x, transform.position.z);
+        Vector2 velToVec2 = new Vector2(currentVelocity.x, currentVelocity.z) * Time.deltaTime * 100.0f;
+        float radius = 5.5f;
+
+        CollisionData collision;
+        collision = checkLineSegmentCollisions(posToVec2, radius, velToVec2, testLine);
+        if (collision.hasCollided)
+        {
+            ColPosReset(collision);
+        }
+
+        if (currentVelocity.magnitude > maxSpeed)
+        {
+            currentVelocity.Normalize();
+            currentVelocity *= maxSpeed * Time.deltaTime;
+        }
+
+        transform.position += currentVelocity * Time.deltaTime * 100.0f;
     }
 }
