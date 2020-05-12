@@ -18,8 +18,6 @@ public class LinearMeshAlongSpline : MonoBehaviour
     private Vector3 rotation = new Vector3(0, 0, 0);
     [SerializeField]
     private Vector3 scale = new Vector3(0, 0, 0);
-    [SerializeField]
-    private float tongeSpeed = 1f;
 
     void Start()
     {
@@ -64,5 +62,20 @@ public class LinearMeshAlongSpline : MonoBehaviour
             meshBender.SetInterval(spline, spline.Length * rate);
             meshBender.ComputeIfNeeded();
         }
+    }
+
+    public Vector3 GetIntervalPosition(float pInterval)
+    {
+        float rate = 0;
+        if (pInterval < 0)
+            rate = 0;
+        else if (pInterval >= 1)
+            rate = 0.99f;
+        else
+            rate = pInterval;
+
+        CurveSample sample = spline.GetSample(rate);
+
+        return sample.location;
     }
 }

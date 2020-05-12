@@ -18,7 +18,15 @@ public class TongueController : MonoBehaviour
     [SerializeField]
     private int StartCollectingStrenght = 1;
     private int currentCollectStrenght;
-    private bool Collecting = false;
+    public int CurrectCollectStrenght
+    {
+        get => currentCollectStrenght;
+    }
+    private bool collecting = false;
+    public bool Collecting
+    {
+        get => collecting;
+    }
 
     private CollectableByTongue currenctCollect = null;
     private float eatProgress = 0;
@@ -33,36 +41,19 @@ public class TongueController : MonoBehaviour
 
     void Update()
     {
-        if (Collecting)
+        if (collecting)
             EatLoop();
     }
 
-    void OnTriggerEnter(Collider collider)
-    {
-        // We only care about TongueCollectables for now
-        if (collider.tag != "TongueCollectable")
-            return;
-
-        CollectableByTongue collectable = collider.GetComponent<CollectableByTongue>();
-
-        if (collectable == null)
-            return;
-
-        if (collectable.CollectingWeight > currentCollectStrenght)
-            FailCollect(collectable);
-        else
-            Collect(collectable);
-    }
-
-    private void Collect(CollectableByTongue collectable)
+    public void Collect(CollectableByTongue collectable)
     {
         Debug.Log("item detected");
         SetSplineToTarget(collectable.transform);
-        Collecting = true;
+        collecting = true;
         currenctCollect = collectable;
     }
 
-    private void FailCollect(CollectableByTongue collectable)
+    public void FailCollect(CollectableByTongue collectable)
     {
         Debug.Log("item to big to be eaten");
     }
@@ -71,7 +62,7 @@ public class TongueController : MonoBehaviour
     {
         Destroy(currenctCollect.gameObject);
         currenctCollect = null;
-        Collecting = false;
+        collecting = false;
     }
 
     private void SetSplineToTarget(Transform pTarget)
@@ -87,28 +78,38 @@ public class TongueController : MonoBehaviour
 
     private void EatLoop()
     {
-        SetSplineToTarget(currenctCollect.transform);
-
         // Eat loop while the tongue hasn't reached yet
         if (!collectableAttached)
         {
             eatProgress += Time.smoothDeltaTime * tongueSpeed;
+            SetSplineToTarget(currenctCollect.transform);
 
             if (eatProgress >= 1)
+            {
                 collectableAttached = true;
+                currenctCollect.transform.SetParent(this.transform);
+            }
         } 
         // Eat loop with the target attaced to the tongue
         else if (collectableAttached)
         {
-            eatProgress -= Time.smoothDeltaTime * tongueSpeed;
+            eatProgress -= (Time.smoothDeltaTime * tongueSpeed);
 
             if (eatProgress <= 0)
+            {
                 EatCollectable(currenctCollect);
+                eatProgress = 0;
+                collectableAttached = false;
+                return;
+            }
         }
 
         // Because spline mesh is weird. we have to 0 means full progress and 0.99f means no progress. so we reverse eating progress
         float correctProgress = 0.99f - eatProgress;
 
         linearMesh.UpdateMeshInterval(correctProgress);
+
+        if (collectableAttached)
+            currenctCollect.transform.localPosition = linearMesh.GetIntervalPosition(correctProgress-0.1f);
     }
 }
