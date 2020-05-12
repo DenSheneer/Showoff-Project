@@ -14,5 +14,7 @@ public class CollectableByTongue : MonoBehaviour
     void Start()
     {
         this.tag = "TongueCollectable";
+
+        transform.localScale *= collectingWeight;
     }
 }

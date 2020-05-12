@@ -32,6 +32,9 @@ public class TongueController : MonoBehaviour
     private float eatProgress = 0;
     private bool collectableAttached = false;
 
+    [SerializeField]
+    private Transform topParent = null;
+
     void Start()
     {
         spline = GetComponent<Spline>();
@@ -47,7 +50,6 @@ public class TongueController : MonoBehaviour
 
     public void Collect(CollectableByTongue collectable)
     {
-        Debug.Log("item detected");
         SetSplineToTarget(collectable.transform);
         collecting = true;
         currenctCollect = collectable;
@@ -55,11 +57,13 @@ public class TongueController : MonoBehaviour
 
     public void FailCollect(CollectableByTongue collectable)
     {
-        Debug.Log("item to big to be eaten");
+        //Debug.Log("item to big to be eaten");
     }
 
     private void EatCollectable(CollectableByTongue collectable)
     {
+        topParent.localScale *= 1.1f;
+        currentCollectStrenght += collectable.CollectingWeight;
         Destroy(currenctCollect.gameObject);
         currenctCollect = null;
         collecting = false;

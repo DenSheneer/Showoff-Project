@@ -6,11 +6,11 @@ using UnityEngine;
 public class TongueCollider : MonoBehaviour
 {
     [SerializeField]
-    private TongueController controller;
+    private TongueController controller = null;
 
     void Start()
     {
-        controller.GetComponent<TongueController>();
+
     }
 
     void OnTriggerStay(Collider collider)
