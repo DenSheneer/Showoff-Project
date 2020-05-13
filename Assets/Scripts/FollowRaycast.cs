@@ -10,9 +10,12 @@ public class FollowRaycast : MonoBehaviour
     Camera viewCamera;
 
     [SerializeField]
-    float minSpeed = 0.1f, maxSpeed = 0.1f, accelerationFactor = 1.0f, decelerateFactor = 2.0f;
+    float minSpeed = 0.1f, maxSpeed = 0.1f, accelerationFactor = 1.0f, decelerateFactor = 2.0f, rotationSpeed = 10.0f;
 
-    public LineSegment testLine;
+    [SerializeField]
+    float radius = 5.0f;    //is assuming the object has a spherical collider with size (x10, y10, z10).
+    [SerializeField]
+    LineSegment testLine;    //collision checking with one line, just for testing.
 
     public Vector3 currentVelocity;
     private float currentAcceleration;
@@ -20,24 +23,26 @@ public class FollowRaycast : MonoBehaviour
 
     private void Start()
     {
-        //application settings, putting these here for now
+        viewCamera = Camera.main;
+
+        //application settings, putting these here for now.
         Application.targetFrameRate = Screen.currentResolution.refreshRate;
         Screen.orientation = ScreenOrientation.AutoRotation;
-        viewCamera = Camera.main;
     }
 
-    void OnEnable()
+    void OnEnable() { LeanTouch.OnGesture += handleFingerGesture; }
+    void OnDisable() { LeanTouch.OnGesture -= handleFingerGesture; }
+
+    private void FixedUpdate()
     {
-        LeanTouch.OnGesture += HandleFingerGesture;
-        haltMovement();
+        if (LeanTouch.Fingers.Count == 0)
+            normalStop();
+
+        checkforCollisions();
+        updatePosition();
     }
 
-    void OnDisable()
-    {
-        LeanTouch.OnGesture -= HandleFingerGesture;
-    }
-
-    void HandleFingerGesture(List<LeanFinger> fingers)
+    void handleFingerGesture(List<LeanFinger> fingers)
     {
         LeanFinger finger = fingers[0];
         if (finger != null)
@@ -47,16 +52,18 @@ public class FollowRaycast : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit))
             {
-                Vector3 delta = hit.point - transform.position;
-                if (delta.magnitude > 5.0f)
+                if (hit.collider != null)
                 {
-                    moveInDirection(delta);
-                }
-                else
-                {
-                    haltMovement();
+                    Vector3 delta = hit.point - transform.position;
+                    if (delta.magnitude > 5.0f)
+                    {
+                        rotateInDirection(delta, rotationSpeed);
+                        moveInDirection(delta);
+                        return;
+                    }
                 }
             }
+            normalStop();
         }
     }
 
@@ -78,30 +85,25 @@ public class FollowRaycast : MonoBehaviour
             currentVelocity = uDirection;
         }
 
-        RotateInDirection(uDirection);
-
         if (currentVelocity.magnitude > maxSpeed)
         {
             currentVelocity.Normalize();
             currentVelocity *= maxSpeed;
         }
     }
-    void RotateInDirection(Vector3 uDirection, float rotationSpeed = 10)
+    void rotateInDirection(Vector3 direction, float rotationSpeed)
     {
+        direction.Normalize();
         float singleStep = rotationSpeed * Time.deltaTime;
-        Vector3 newDirection = Vector3.RotateTowards(transform.forward, uDirection, singleStep, 0.0f);
+        Vector3 newDirection = Vector3.RotateTowards(transform.forward, direction, singleStep, 0.0f);
         transform.rotation = Quaternion.LookRotation(newDirection);
     }
 
-    private void haltMovement()
+    private void normalStop()
     {
         isAtMaxSpeed = false;
         currentAcceleration = 0;
-        slowStop();
-    }
 
-    void slowStop()
-    {
         if (currentVelocity.magnitude > minSpeed)
         {
             float oldLength = currentVelocity.magnitude;
@@ -114,6 +116,19 @@ public class FollowRaycast : MonoBehaviour
         }
     }
 
+    void checkforCollisions()
+    {
+        Vector2 posToVec2 = VectorConverter.V3ToV2(transform.position);
+        Vector2 velToVec2 = VectorConverter.V3ToV2(currentVelocity) * Time.deltaTime * 100.0f;
+
+        CollisionData collision;
+        collision = checkLineSegmentCollisions(posToVec2, radius, velToVec2, testLine);
+        if (collision.hasCollided)
+        {
+            colPosReset(collision);
+        }
+    }
+
     CollisionData checkLineSegmentCollisions(Vector2 point, float radius, Vector2 velocity, LineSegment line)
     {
         CollisionData result = new CollisionData();
@@ -122,8 +137,8 @@ public class FollowRaycast : MonoBehaviour
         Vector2 oldDifferenceVec = point - line.start;
 
 
-        float a = Vector2.Dot(Normal(lineVec), oldDifferenceVec) - radius;
-        float b = -1 * Vector2.Dot(Normal(lineVec), velocity);
+        float a = Vector2.Dot(Vector2.Perpendicular(lineVec).normalized, oldDifferenceVec) - radius;
+        float b = -1 * Vector2.Dot(Vector2.Perpendicular(lineVec).normalized, velocity);
 
         if (a > 0 && b > 0)
         {
@@ -150,8 +165,8 @@ public class FollowRaycast : MonoBehaviour
                 if (d >= 0 && d <= lineVec.magnitude)
                 {
                     result.hasCollided = true;
+                    result.hitSurface = lineVec;
                     result.ToI = ToI;
-                    result.directionNormal = lineVec;
                     result.PoI = PoI;
                     return result;
                 }
@@ -160,50 +175,18 @@ public class FollowRaycast : MonoBehaviour
         return result;
     }
 
-    void ColPosReset(CollisionData cd) 
+    void colPosReset(CollisionData cd)
     {
-        Vector2 lineNormal = Normal(cd.directionNormal);
-        Vector3 v3LineNormal = new Vector3(lineNormal.x, 0, lineNormal.y);
-        Vector3 vec3PoI = new Vector3(cd.PoI.x, 0, cd.PoI.y);
+        Vector2 v2LineNormal = Vector2.Perpendicular(cd.hitSurface).normalized;
+        Vector3 v3LineNormal = VectorConverter.V2ToV3(v2LineNormal);
+        Vector3 vec3PoI = VectorConverter.V2ToV3(cd.PoI);
 
         transform.position = vec3PoI + v3LineNormal;
         currentVelocity = v3LineNormal;
     }
 
-    public struct CollisionData
+    void updatePosition()
     {
-        public bool hasCollided;
-        public float ToI;
-        public Vector2 PoI;
-        public Vector2 directionNormal;
-    }
-
-    public Vector2 Normal(Vector2 vector)
-    {
-        Vector2 result = new Vector2(-vector.y, vector.x);
-        result.Normalize();
-
-        return result;
-    }
-
-    private void Update()
-    {
-        if (LeanTouch.Fingers.Count == 0)
-        {
-            haltMovement();
-        }
-
-        Vector2 posToVec2 = new Vector2(transform.position.x, transform.position.z);
-        Vector2 velToVec2 = new Vector2(currentVelocity.x, currentVelocity.z) * Time.deltaTime * 100.0f;
-        float radius = 5.5f;
-
-        CollisionData collision;
-        collision = checkLineSegmentCollisions(posToVec2, radius, velToVec2, testLine);
-        if (collision.hasCollided)
-        {
-            ColPosReset(collision);
-        }
-
         if (currentVelocity.magnitude > maxSpeed)
         {
             currentVelocity.Normalize();
