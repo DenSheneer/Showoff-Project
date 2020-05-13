@@ -4,36 +4,70 @@ using UnityEngine;
 
 public class TempCharController : MonoBehaviour
 {
-    private float speed = 2f;
+    CharacterController characterController;
+
+    public float speed = 6.0f;
+    public float jumpSpeed = 8.0f;
+    public float gravity = 20.0f;
+
+    private Vector3 moveDirection = Vector3.zero;
+
+    void Start()
+    {
+        characterController = GetComponent<CharacterController>();
+    }
 
     void Update()
     {
-        if (Input.GetKey(KeyCode.W))
+        if (characterController.isGrounded)
         {
-            transform.position += transform.right * Time.smoothDeltaTime * speed;
-        }
-        if (Input.GetKey(KeyCode.A))
-        {
-            transform.position += transform.forward * Time.smoothDeltaTime * speed;
+            // We are grounded, so recalculate
+            // move direction directly from axes
 
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            transform.position += -transform.right * Time.smoothDeltaTime * speed;
+            moveDirection = Vector3.zero;
 
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            transform.position += -transform.forward * Time.smoothDeltaTime * speed;
+            //moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0.0f, Input.GetAxis("Vertical"));
 
+            if (Input.GetKey(KeyCode.W))
+            {
+                moveDirection += transform.forward;
+            }
+            if (Input.GetKey(KeyCode.S))
+            {
+                moveDirection += -transform.forward;
+            }
+            if (Input.GetKey(KeyCode.A))
+            {
+                moveDirection += -transform.right;
+            }
+            if (Input.GetKey(KeyCode.D))
+            {
+                moveDirection += transform.right;
+            }
+            if (Input.GetKey(KeyCode.Q))
+            {
+                transform.Rotate(new Vector3(0, 1, 0));
+            }
+            if (Input.GetKey(KeyCode.E))
+            {
+                transform.Rotate(new Vector3(0, -1, 0));
+            }
+
+
+            moveDirection *= speed;
+
+            if (Input.GetButton("Jump"))
+            {
+                moveDirection.y = jumpSpeed;
+            }
         }
-        if (Input.GetKey(KeyCode.Q))
-        {
-            transform.Rotate(new Vector3(0,-100*Time.smoothDeltaTime * speed, 0));
-        }
-        if (Input.GetKey(KeyCode.E))
-        {
-            transform.Rotate(new Vector3(0,100*Time.smoothDeltaTime * speed, 0));
-        }
+
+        // Apply gravity. Gravity is multiplied by deltaTime twice (once here, and once below
+        // when the moveDirection is multiplied by deltaTime). This is because gravity should be applied
+        // as an acceleration (ms^-2)
+        moveDirection.y -= gravity * Time.deltaTime;
+
+        // Move the controller
+        characterController.Move(moveDirection * Time.deltaTime);
     }
 }

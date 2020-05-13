@@ -32,9 +32,6 @@ public class TongueController : MonoBehaviour
     private float eatProgress = 0;
     private bool collectableAttached = false;
 
-    [SerializeField]
-    private Transform topParent = null;
-
     void Start()
     {
         spline = GetComponent<Spline>();
@@ -62,7 +59,6 @@ public class TongueController : MonoBehaviour
 
     private void EatCollectable(CollectableByTongue collectable)
     {
-        topParent.localScale *= 1.1f;
         currentCollectStrenght += collectable.CollectingWeight;
         Destroy(currenctCollect.gameObject);
         currenctCollect = null;
@@ -108,12 +104,12 @@ public class TongueController : MonoBehaviour
             }
         }
 
-        // Because spline mesh is weird. we have to 0 means full progress and 0.99f means no progress. so we reverse eating progress
+        // Because spline mesh is weird. 0 means full progress and 0.99f means no progress. so we reverse eating progress
         float correctProgress = 0.99f - eatProgress;
 
         linearMesh.UpdateMeshInterval(correctProgress);
 
         if (collectableAttached)
-            currenctCollect.transform.localPosition = linearMesh.GetIntervalPosition(correctProgress-0.1f);
+            currenctCollect.transform.localPosition = linearMesh.GetIntervalPosition(correctProgress+0.05f);
     }
 }
