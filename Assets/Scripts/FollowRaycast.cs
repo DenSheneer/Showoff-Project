@@ -21,6 +21,8 @@ public class FollowRaycast : MonoBehaviour
     private float currentAcceleration;
     private bool isAtMaxSpeed;
 
+    private int groundLayerMask;
+
     private void Start()
     {
         viewCamera = Camera.main;
@@ -28,6 +30,7 @@ public class FollowRaycast : MonoBehaviour
         //application settings, putting these here for now.
         Application.targetFrameRate = Screen.currentResolution.refreshRate;
         Screen.orientation = ScreenOrientation.AutoRotation;
+        groundLayerMask = LayerMask.GetMask("Default");
     }
 
     void OnEnable() { LeanTouch.OnGesture += handleFingerGesture; }
@@ -50,7 +53,7 @@ public class FollowRaycast : MonoBehaviour
             RaycastHit hit;
             Ray ray = viewCamera.ScreenPointToRay(finger.ScreenPosition);
 
-            if (Physics.Raycast(ray, out hit))
+            if (Physics.Raycast(ray, out hit,Mathf.Infinity, groundLayerMask))
             {
                 if (hit.collider != null)
                 {
