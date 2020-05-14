@@ -25,16 +25,14 @@ public class TempFollowRaycast : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out hit, Mathf.Infinity))
             {
-                RaycastHit obstacleHit;
 
-                if (Physics.Linecast(transform.position, hit.point,out obstacleHit, layerMask))
+                Vector3 delta = hit.point - transform.position;
+                if (delta.magnitude > 0.5f)
                 {
-                    agent.SetDestination(obstacleHit.point);
+                    delta.Normalize();
+                    agent.SetDestination(transform.position + delta);
                 }
-                else
-                {
-                    agent.SetDestination(hit.point);
-                }
+
             }
         } 
         else if (Input.GetMouseButtonUp(0))
@@ -44,8 +42,11 @@ public class TempFollowRaycast : MonoBehaviour
         
     }
 
-    private void DrawRaycastToTarget(Vector3 target)
+    void rotateInDirection(Vector3 direction, float rotationSpeed = 10.0f)
     {
-
+        direction.Normalize();
+        float singleStep = rotationSpeed * Time.deltaTime;
+        Vector3 newDirection = Vector3.RotateTowards(transform.forward, direction, singleStep, 0.0f);
+        transform.rotation = Quaternion.LookRotation(newDirection);
     }
 }
