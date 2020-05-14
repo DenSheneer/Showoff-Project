@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent (typeof(Transform))]
+[RequireComponent(typeof(Transform))]
 public class LineSegment : MonoBehaviour
 {
 
@@ -11,21 +11,27 @@ public class LineSegment : MonoBehaviour
 
     public uint lineWidth = 1;
 
-    //stay in this object's coordinate space or interpret vectors as screen coordinates?
-    public bool useGlobalCoords = false;
-
     public LineSegment(float pStartX, float pStartY, float pEndX, float pEndY, uint pLineWidth = 1, bool pGlobalCoords = false)
         : this(new Vector2(pStartX, pStartY), new Vector2(pEndX, pEndY), pLineWidth)
     {
     }
 
-    public LineSegment(Vector2 pStart, Vector2 pEnd, uint pLineWidth = 1, bool pGlobalCoords = false)
+    public LineSegment(Vector2 pStart, Vector2 pEnd, uint pLineWidth = 1)
     {
-        start = pStart;
-        end = pEnd;
-
         lineWidth = pLineWidth;
-        useGlobalCoords = pGlobalCoords;
+    }
+
+    private void Start()
+    {
+        
+        Linecap[] caps = GetComponentsInChildren<Linecap>();
+        foreach (Linecap cap in caps)
+        {
+            if (cap.startEndCap == "start")
+                start = VectorConverter.V3ToV2(cap.WorldPosition);
+            if (cap.startEndCap == "end")
+                end = VectorConverter.V3ToV2(cap.WorldPosition);
+        }
     }
 
     //public Linecap startCap()

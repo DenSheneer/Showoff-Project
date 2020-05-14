@@ -14,16 +14,24 @@ public class FollowRaycast : MonoBehaviour
 
     [SerializeField]
     float radius = 5.0f;    //is assuming the object has a spherical collider with size (x10, y10, z10).
-    [SerializeField]
-    LineSegment testLine;    //collision checking with one line, just for testing.
 
-    public Vector3 currentVelocity;
-    private float currentAcceleration;
     private bool isAtMaxSpeed;
+    private float currentAcceleration;
+    private Vector3 currentVelocity;
+
+    List<LineSegment> lines = new List<LineSegment>();
 
     private void Start()
     {
         viewCamera = Camera.main;
+
+        GameObject[] gos = GameObject.FindGameObjectsWithTag("CollisionLine");
+        foreach (GameObject go in gos)
+        {
+            LineSegment line = go.GetComponent<LineSegment>();
+            if (line != null)
+                lines.Add(line);
+        }
 
         //application settings, putting these here for now.
         Application.targetFrameRate = Screen.currentResolution.refreshRate;
@@ -121,12 +129,17 @@ public class FollowRaycast : MonoBehaviour
         Vector2 posToVec2 = VectorConverter.V3ToV2(transform.position);
         Vector2 velToVec2 = VectorConverter.V3ToV2(currentVelocity) * Time.deltaTime * 100.0f;
 
-        CollisionData collision;
-        collision = checkLineSegmentCollisions(posToVec2, radius, velToVec2, testLine);
-        if (collision.hasCollided)
+        CollisionData collision = new CollisionData();
+        collision.ToI = Mathf.Infinity;
+
+        foreach (LineSegment line in lines)
         {
-            colPosReset(collision);
+            CollisionData newCollision = checkLineSegmentCollisions(posToVec2, radius, velToVec2, line);
+            if (newCollision.hasCollided && newCollision.ToI < collision.ToI)
+                collision = newCollision;
         }
+        if (collision.hasCollided)
+            colPosReset(collision);
     }
 
     CollisionData checkLineSegmentCollisions(Vector2 point, float radius, Vector2 velocity, LineSegment line)
@@ -183,6 +196,7 @@ public class FollowRaycast : MonoBehaviour
 
         transform.position = vec3PoI + v3LineNormal;
         currentVelocity = v3LineNormal;
+
     }
 
     void updatePosition()
