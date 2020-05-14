@@ -11,6 +11,7 @@ public class FollowRaycastNavMesh : MonoBehaviour
     private float startSpeed;
 
     private int layerMask;
+    private int groundMask;
 
     void OnEnable() { LeanTouch.OnGesture += handleFingerGesture; }
     void OnDisable() { LeanTouch.OnGesture -= handleFingerGesture; }
@@ -19,12 +20,16 @@ public class FollowRaycastNavMesh : MonoBehaviour
         mainCamera = Camera.main;
         agent = GetComponent<NavMeshAgent>();
         layerMask = LayerMask.GetMask("Obstacles");
+        groundMask = LayerMask.GetMask("RaycastGround");
         startSpeed = agent.speed;
     }
 
     void Update()
     {
-        agent.speed = startSpeed;
+        if ((LeanTouch.Fingers.Count == 0))
+        {
+            agent.speed = 0;
+        }
     }
 
     void handleFingerGesture(List<LeanFinger> fingers)
@@ -35,16 +40,33 @@ public class FollowRaycastNavMesh : MonoBehaviour
             RaycastHit hit;
             Ray ray = mainCamera.ScreenPointToRay(finger.ScreenPosition);
 
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, groundMask))
             {
                 if (hit.collider != null)
                 {
-                    Vector3 delta = hit.point - transform.position;
-                    if (delta.magnitude > 0.5f)
+                    RaycastHit obstacleHit;
+                    agent.speed = startSpeed;
+
+                    if (Physics.Linecast(transform.position, hit.point, out obstacleHit, layerMask))
                     {
-                        delta.Normalize();
-                        agent.SetDestination(transform.position + delta);
+                        agent.SetDestination(obstacleHit.point);
+
+                        Debug.DrawLine(transform.position, obstacleHit.point, Color.red, 5f);
                     }
+                    else
+                    {
+                        agent.SetDestination(hit.point);
+                    }
+
+                    //Vector3 delta = hit.point - transform.position;
+                    //if (delta.magnitude > 0.5f)
+                    //{
+                    //    agent.speed = startSpeed;
+                    //    delta.Normalize();
+                    //    agent.SetDestination(transform.position + delta);
+
+                    //    Debug.DrawLine(transform.position, transform.position + delta, Color.red, 5f);
+                    //}
                 }
             }
         }

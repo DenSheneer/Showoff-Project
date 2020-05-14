@@ -99,6 +99,9 @@ public class TongueController : MonoBehaviour
             {
                 EatCollectable(currenctCollect);
                 eatProgress = 0;
+
+                float _correctProgress = 0.99f - eatProgress;
+                linearMesh.UpdateMeshInterval(_correctProgress);
                 collectableAttached = false;
                 return;
             }
