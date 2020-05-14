@@ -18,6 +18,7 @@ public class FollowRaycast : MonoBehaviour
     private bool isAtMaxSpeed;
     private float currentAcceleration;
     private Vector3 currentVelocity;
+    bool allowMovement = true;
 
     List<LineSegment> lines = new List<LineSegment>();
 
@@ -45,8 +46,10 @@ public class FollowRaycast : MonoBehaviour
     {
         if (LeanTouch.Fingers.Count == 0)
             normalStop();
-
-        checkforCollisions();
+        if (allowMovement)
+        {
+            checkforCollisions();
+        }
         updatePosition();
     }
 
@@ -109,19 +112,31 @@ public class FollowRaycast : MonoBehaviour
 
     private void normalStop()
     {
+        if (allowMovement)
+        {
+            isAtMaxSpeed = false;
+            currentAcceleration = 0;
+
+            if (currentVelocity.magnitude > minSpeed)
+            {
+                float oldLength = currentVelocity.magnitude;
+                currentVelocity.Normalize();
+                currentVelocity *= oldLength - decelerateFactor * Time.deltaTime;
+            }
+            else
+            {
+                currentVelocity = Vector3.zero;
+            }
+        }
+        allowMovement = true;
+
+    }
+    private void forceStop()
+    {
         isAtMaxSpeed = false;
         currentAcceleration = 0;
-
-        if (currentVelocity.magnitude > minSpeed)
-        {
-            float oldLength = currentVelocity.magnitude;
-            currentVelocity.Normalize();
-            currentVelocity *= oldLength - decelerateFactor * Time.deltaTime;
-        }
-        else
-        {
-            currentVelocity = Vector3.zero;
-        }
+        currentVelocity = Vector3.zero;
+        allowMovement = false;
     }
 
     void checkforCollisions()
@@ -195,7 +210,7 @@ public class FollowRaycast : MonoBehaviour
         Vector3 vec3PoI = VectorConverter.V2ToV3(cd.PoI);
 
         transform.position = vec3PoI + v3LineNormal;
-        currentVelocity = v3LineNormal;
+        forceStop();
 
     }
 
@@ -207,6 +222,7 @@ public class FollowRaycast : MonoBehaviour
             currentVelocity *= maxSpeed * Time.deltaTime;
         }
 
+        if (allowMovement)
         transform.position += currentVelocity * Time.deltaTime * 100.0f;
     }
 }
