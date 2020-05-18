@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Lean.Touch;
 
 public class PickupManager : MonoBehaviour
 {
@@ -10,11 +11,22 @@ public class PickupManager : MonoBehaviour
     List<CollectableByTongue> collectables, collected;
 
     [SerializeField]
-    TongueController player;
+    TongueController playerTongue;
 
+    [SerializeField]
+    PlayerManager playerManager;
+
+    int tapMask;
+
+
+    void OnEnable()
+    {
+        tapMask = LayerMask.GetMask("TapLayer");
+        LeanTouch.OnFingerTap += HandleFingerTap;
+    }
     private void Start()
     {
-        player.eatEvent += itemCollected;
+        playerTongue.eatEvent += itemCollected;
     }
 
     void itemCollected(CollectableByTongue collectable)
@@ -23,6 +35,24 @@ public class PickupManager : MonoBehaviour
         {
             collectables.Remove(collectable);
             collected.Add(collectable);
+        }
+    }
+
+    void HandleFingerTap(LeanFinger finger)
+    {
+        RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(finger.ScreenPosition);
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, tapMask))
+        {
+            if (hit.collider != null)
+            {
+                TapAble tapAble = hit.collider.gameObject.GetComponent<TapAble>();
+                if (tapAble != null)
+                {
+                    tapAble.Tab();
+                }
+                    
+            }
         }
     }
 }
