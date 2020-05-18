@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using SplineMesh;
+using System;
 
 [RequireComponent(typeof(Spline),typeof(LinearMeshAlongSpline))]
 public class TongueController : MonoBehaviour
@@ -22,22 +23,25 @@ public class TongueController : MonoBehaviour
     {
         get => currentCollectStrenght;
     }
-    private bool collecting = false;
+    public bool HasEaten
+    {
+        get => hasEaten;
+        set => hasEaten = value;
+    }
+    public CollectableByTongue CurrentCollect
+    {
+        get => currenctCollect;
+    }
+
     public bool Collecting
     {
         get => collecting;
     }
-
-    private bool movingObj = false;
-    public bool MovingObj
-    {
-        get => movingObj;
-    }
-
-    private CollectableByTongue currenctCollect = null;
+    CollectableByTongue currenctCollect = null;
     private float eatProgress = 0;
     private bool collectableAttached = false;
-
+    private bool collecting = false;
+    private bool hasEaten = false;
 
     void Start()
     {
@@ -52,8 +56,6 @@ public class TongueController : MonoBehaviour
             EatLoop();
     }
 
-    //###################################       EATING STUFF ####################################
-
     public void Collect(CollectableByTongue collectable)
     {
         SetSplineToTarget(collectable.transform);
@@ -66,12 +68,14 @@ public class TongueController : MonoBehaviour
         //Debug.Log("item to big to be eaten");
     }
 
-    private void EatCollectable(CollectableByTongue collectable)
+    public void EatCollectable(Action action)
     {
-        currentCollectStrenght += collectable.CollectingWeight;
-        Destroy(currenctCollect.gameObject);
+        action();
+        currenctCollect.gameObject.SetActive(false);
+        currentCollectStrenght += currenctCollect.CollectingWeight; // currentCollectStrength is 'progress'. Not renaming for merging purposes
         currenctCollect = null;
         collecting = false;
+        hasEaten = false;
     }
 
     private void SetSplineToTarget(Transform pTarget)
@@ -106,11 +110,8 @@ public class TongueController : MonoBehaviour
 
             if (eatProgress <= 0)
             {
-                EatCollectable(currenctCollect);
+                hasEaten = true;
                 eatProgress = 0;
-
-                float _correctProgress = 0.99f - eatProgress;
-                linearMesh.UpdateMeshInterval(_correctProgress);
                 collectableAttached = false;
                 return;
             }
@@ -124,7 +125,4 @@ public class TongueController : MonoBehaviour
         if (collectableAttached)
             currenctCollect.transform.localPosition = linearMesh.GetIntervalPosition(correctProgress+0.05f);
     }
-
-    //################################### END EATING STUFF ####################################
-
 }
