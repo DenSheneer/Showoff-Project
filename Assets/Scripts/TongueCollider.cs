@@ -13,20 +13,32 @@ public class TongueCollider : MonoBehaviour
 
     }
 
+    void OnTriggerEnter(Collider collider)
+    {
+        if (collider.tag == "Moveable" || controller.Collecting != true)
+        {
+            TempMoveble tempMoveble = collider.GetComponent<TempMoveble>();
+
+            if (tempMoveble != null)
+            {
+                controller.AttacheMovable(tempMoveble);
+            }
+        }
+    }
+
     void OnTriggerStay(Collider collider)
     {
         // We only care about TongueCollectables for now
-        if (collider.tag != "TongueCollectable" || controller.Collecting == true)
-            return;
+        if (collider.tag == "TongueCollectable" || controller.Collecting != true)
+        {
+            CollectableByTongue collectable = collider.GetComponent<CollectableByTongue>();
 
-        CollectableByTongue collectable = collider.GetComponent<CollectableByTongue>();
-
-        if (collectable == null)
-            return;
-
-        if (collectable.CollectingWeight > controller.CurrectCollectStrenght)
-            controller.FailCollect(collectable);
-        else
-            controller.Collect(collectable);
+            if (collectable != null) {
+                if (collectable.CollectingWeight > controller.CurrectCollectStrenght)
+                    controller.FailCollect(collectable);
+                else
+                    controller.Collect(collectable);
+            }
+        } 
     }
 }

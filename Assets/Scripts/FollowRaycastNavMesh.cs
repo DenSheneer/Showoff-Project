@@ -44,29 +44,16 @@ public class FollowRaycastNavMesh : MonoBehaviour
             {
                 if (hit.collider != null)
                 {
-                    RaycastHit obstacleHit;
-                    agent.speed = startSpeed;
+                    Vector3 delta = hit.point - transform.position;
 
-                    if (Physics.Linecast(transform.position, hit.point, out obstacleHit, layerMask))
+                    transform.LookAt(hit.point);
+                    transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
+                    if (delta.magnitude > 0.5f)
                     {
-                        agent.SetDestination(obstacleHit.point);
-
-                        Debug.DrawLine(transform.position, obstacleHit.point, Color.red, 5f);
+                        agent.speed = startSpeed;
+                        delta.Normalize();
+                        agent.Move(transform.forward * Time.deltaTime * 3.0f);
                     }
-                    else
-                    {
-                        agent.SetDestination(hit.point);
-                    }
-
-                    //Vector3 delta = hit.point - transform.position;
-                    //if (delta.magnitude > 0.5f)
-                    //{
-                    //    agent.speed = startSpeed;
-                    //    delta.Normalize();
-                    //    agent.SetDestination(transform.position + delta);
-
-                    //    Debug.DrawLine(transform.position, transform.position + delta, Color.red, 5f);
-                    //}
                 }
             }
         }
