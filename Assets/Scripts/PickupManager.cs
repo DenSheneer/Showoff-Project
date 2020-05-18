@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class PickupManager : MonoBehaviour
 {
-    public Action action;
 
     [SerializeField]
     List<CollectableByTongue> collectables, collected;
@@ -15,25 +14,15 @@ public class PickupManager : MonoBehaviour
 
     private void Start()
     {
-        action = updateItemState;
+        player.eatEvent += itemCollected;
     }
 
-    private void Update()
+    void itemCollected(CollectableByTongue collectable)
     {
-        if (player.HasEaten)
-            player.EatCollectable(action);
-    }
-    void updateItemState()
-    {
-        if (player.CurrentCollect != null)
+        if (collectables.Contains(collectable))
         {
-            if (collectables.Contains(player.CurrentCollect))
-                collectables.Remove(player.CurrentCollect);
-
-            if (!collected.Contains(player.CurrentCollect))
-                collected.Add(player.CurrentCollect);
+            collectables.Remove(collectable);
+            collected.Add(collectable);
         }
-        Debug.Log("eat");
     }
-
 }

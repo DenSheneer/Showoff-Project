@@ -4,6 +4,7 @@ using Lean.Touch;
 using UnityEngine;
 using UnityEngine.AI;
 
+[RequireComponent(typeof(NavMeshAgent))]
 public class FollowRaycastNavMesh : MonoBehaviour
 {
     private Camera mainCamera;
@@ -44,18 +45,29 @@ public class FollowRaycastNavMesh : MonoBehaviour
             {
                 if (hit.collider != null)
                 {
-                    Vector3 delta = hit.point - transform.position;
-
-                    transform.LookAt(hit.point);
-                    transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
-                    if (delta.magnitude > 0.5f)
-                    {
-                        agent.speed = startSpeed;
-                        delta.Normalize();
-                        agent.Move(transform.forward * Time.deltaTime * 3.0f);
-                    }
+                    MoveTowardsTarget(hit.point);
                 }
             }
         }
     }
+
+
+    private void MoveTowardsTarget(Vector3 target)
+    {
+        Vector3 delta = target - transform.position;
+
+        //transform.LookAt(target);
+        //transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
+        Quaternion rotation = Quaternion.LookRotation(delta);
+        transform.rotation = Quaternion.Lerp(transform.rotation, rotation, 2 * Time.deltaTime);
+        
+        if (delta.magnitude > 0.5f)
+        {
+            agent.speed = startSpeed;
+            delta.Normalize();
+            agent.Move(transform.forward * Time.deltaTime * 3.0f);
+        }
+
+    }
+
 }

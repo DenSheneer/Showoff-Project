@@ -7,6 +7,9 @@ using System;
 [RequireComponent(typeof(Spline),typeof(LinearMeshAlongSpline))]
 public class TongueController : MonoBehaviour
 {
+    public delegate void EatEvent(CollectableByTongue tongue);
+    public EatEvent eatEvent;
+
     [SerializeField]
     private Transform tongueStart = null;
 
@@ -23,11 +26,7 @@ public class TongueController : MonoBehaviour
     {
         get => currentCollectStrenght;
     }
-    public bool HasEaten
-    {
-        get => hasEaten;
-        set => hasEaten = value;
-    }
+
     public CollectableByTongue CurrentCollect
     {
         get => currenctCollect;
@@ -41,7 +40,6 @@ public class TongueController : MonoBehaviour
     private float eatProgress = 0;
     private bool collectableAttached = false;
     private bool collecting = false;
-    private bool hasEaten = false;
 
     void Start()
     {
@@ -68,14 +66,15 @@ public class TongueController : MonoBehaviour
         //Debug.Log("item to big to be eaten");
     }
 
-    public void EatCollectable(Action action)
+    public void EatCollectable(CollectableByTongue collectable)
     {
-        action();
+        // call eat events
+        eatEvent(collectable);
+
         currenctCollect.gameObject.SetActive(false);
         currentCollectStrenght += currenctCollect.CollectingWeight; // currentCollectStrength is 'progress'. Not renaming for merging purposes
         currenctCollect = null;
         collecting = false;
-        hasEaten = false;
     }
 
     private void SetSplineToTarget(Transform pTarget)
@@ -110,9 +109,9 @@ public class TongueController : MonoBehaviour
 
             if (eatProgress <= 0)
             {
-                hasEaten = true;
                 eatProgress = 0;
                 collectableAttached = false;
+                EatCollectable(currenctCollect);
                 return;
             }
         }

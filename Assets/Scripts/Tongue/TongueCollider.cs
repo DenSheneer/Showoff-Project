@@ -8,20 +8,10 @@ public class TongueCollider : MonoBehaviour
     [SerializeField]
     private TongueController controller = null;
 
-    void Start()
-    {
-
-    }
-
-    void OnTriggerEnter(Collider collider)
-    {
-
-    }
-
     void OnTriggerStay(Collider collider)
     {
         // We only care about TongueCollectables for now
-        if (collider.tag == "TongueCollectable" || controller.Collecting != true)
+        if (collider.tag == "TongueCollectable" && controller.Collecting != true)
         {
             CollectableByTongue collectable = collider.GetComponent<CollectableByTongue>();
 
