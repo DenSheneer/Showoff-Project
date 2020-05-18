@@ -15,15 +15,7 @@ public class TongueCollider : MonoBehaviour
 
     void OnTriggerEnter(Collider collider)
     {
-        if (collider.tag == "Moveable" || controller.Collecting != true)
-        {
-            TempMoveble tempMoveble = collider.GetComponent<TempMoveble>();
 
-            if (tempMoveble != null)
-            {
-                controller.AttacheMovable(tempMoveble);
-            }
-        }
     }
 
     void OnTriggerStay(Collider collider)

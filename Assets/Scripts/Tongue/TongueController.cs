@@ -38,7 +38,6 @@ public class TongueController : MonoBehaviour
     private float eatProgress = 0;
     private bool collectableAttached = false;
 
-    private TempMoveble currentMover = null;
 
     void Start()
     {
@@ -51,9 +50,6 @@ public class TongueController : MonoBehaviour
     {
         if (collecting)
             EatLoop();
-
-        if (movingObj)
-            MoveObjLoop();
     }
 
     //###################################       EATING STUFF ####################################
@@ -130,28 +126,5 @@ public class TongueController : MonoBehaviour
     }
 
     //################################### END EATING STUFF ####################################
-
-
-    public void AttacheMovable(TempMoveble pMoveble)
-    {
-        currentMover = pMoveble;
-        movingObj = true;
-        linearMesh.UpdateMeshInterval(0.0f);
-    }
-
-    private void MoveObjLoop()
-    {
-        SetSplineToTarget(currentMover.transform);
-
-
-        float dist = Vector3.Distance(currentMover.transform.position, transform.position);
-        Vector3 toPlayer = (transform.position - currentMover.transform.position).normalized;
-        if (dist > 2.5f)
-        {
-            currentMover.rb.AddForce(toPlayer, ForceMode.VelocityChange);
-            Debug.Log("add force");
-        }
-        
-    }
 
 }

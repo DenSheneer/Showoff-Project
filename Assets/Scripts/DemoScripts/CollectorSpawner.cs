@@ -4,10 +4,7 @@ using UnityEngine;
 public class CollectorSpawner : MonoBehaviour
 {
     [SerializeField]
-    private CollectableByTongue collectablePrefab;
-
-    [SerializeField]
-    private int maxObjects = 10;
+    private CollectableByTongue collectablePrefab = null;
     
     [SerializeField]
     private int spawnTimer = 4;

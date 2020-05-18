@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -585,7 +585,6 @@ MonoBehaviour:
   start: {x: 50, y: -25}
   end: {x: -50, y: -25}
   lineWidth: 1
-  useGlobalCoords: 0
 --- !u!65 &77765218
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -816,14 +815,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a74e6469916b20742b0de9b885b76fa9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  viewCamera: {fileID: 0}
   minSpeed: 0.1
   maxSpeed: 0.5
   accelerationFactor: 1
   decelerateFactor: 2
   rotationSpeed: 10
   radius: 5
-  testLine: {fileID: 77765217}
+  isAtMaxSpeed: 0
+  currentAcceleration: 0
   currentVelocity: {x: 0, y: 0, z: 0}
+  allowMovement: 1
+  lines: []
+  groundLayerMask: 0
 --- !u!135 &182245162
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -2465,14 +2469,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a74e6469916b20742b0de9b885b76fa9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  viewCamera: {fileID: 0}
   minSpeed: 0.05
   maxSpeed: 0.3
   accelerationFactor: 1
   decelerateFactor: 2
   rotationSpeed: 8
   radius: 0.09
-  testLine: {fileID: 77765217}
+  isAtMaxSpeed: 0
+  currentAcceleration: 0
   currentVelocity: {x: 0, y: 0, z: 0}
+  allowMovement: 1
+  lines: []
+  groundLayerMask: 0
 --- !u!1 &1023296803
 GameObject:
   m_ObjectHideFlags: 0
