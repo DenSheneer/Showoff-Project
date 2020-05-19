@@ -16,10 +16,10 @@ public class TongueCollider : MonoBehaviour
             CollectableByTongue collectable = collider.GetComponent<CollectableByTongue>();
 
             if (collectable != null) {
-                if (collectable.CollectingWeight > controller.CurrectCollectStrenght)
-                    controller.FailCollect(collectable);
-                else
-                    controller.Collect(collectable);
+                //if (collectable.CollectingWeight > controller.CurrectCollectStrenght)
+                //    controller.FailCollect(collectable);
+                //else
+                //    controller.Collect(collectable);
             }
         } 
     }

@@ -2,6 +2,9 @@
 
 public class HealItem : DragAble
 {
+    int healAmount = 1;
+
+    public int HealAmount { get => healAmount; }
     public override void InRange()
     {
         throw new System.NotImplementedException();

@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class Fly : TapAble
 {
+    int value = 1;
+    public int Value { get => value; }
+
     public override void InRange()
     {
         throw new System.NotImplementedException();
@@ -17,7 +20,7 @@ public class Fly : TapAble
 
     public override void Tab()
     {
-        gameObject.SetActive(false);
+        //gameObject.SetActive(false);
         Debug.Log("tapped a fly");
     }
 }

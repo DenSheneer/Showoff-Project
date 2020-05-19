@@ -466,6 +466,7 @@ GameObject:
   - component: {fileID: 147898909}
   - component: {fileID: 147898908}
   - component: {fileID: 147898907}
+  - component: {fileID: 147898912}
   m_Layer: 13
   m_Name: firefly
   m_TagString: Untagged
@@ -572,6 +573,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 147898905}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &147898912
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 147898905}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18f4008ffc948714aa42288b69c11d48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collectingWeight: 1
 --- !u!1 &241637034
 GameObject:
   m_ObjectHideFlags: 0
@@ -1608,6 +1622,7 @@ GameObject:
   - component: {fileID: 963995626}
   - component: {fileID: 963995625}
   - component: {fileID: 963995624}
+  - component: {fileID: 963995629}
   m_Layer: 13
   m_Name: heal
   m_TagString: Untagged
@@ -1714,6 +1729,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963995622}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &963995629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963995622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18f4008ffc948714aa42288b69c11d48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collectingWeight: 1
 --- !u!1 &978621673
 GameObject:
   m_ObjectHideFlags: 0

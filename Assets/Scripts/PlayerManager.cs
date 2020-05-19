@@ -24,10 +24,10 @@ public class PlayerManager : MonoBehaviour
     public void useTapAble(TapAble tapAble)
     {
         if (tapAble is Fly)
-            takeFly(1);
+            eatFly(tapAble as Fly);
 
         else if (tapAble is HealItem)
-            heal(1);
+            eatHealItem(tapAble as HealItem);
 
         else if (tapAble is DragAble)
             enableDragMode();
@@ -37,12 +37,24 @@ public class PlayerManager : MonoBehaviour
     {
         tongueController.eatEvent += eatEvent;
     }
-
-    void takeFly(int flies)
+    public void UnsubscribeFromEatEvent(EatEvent eatEvent)
     {
-        Debug.Log("flies +" + flies);
-        nrOfFlies += flies;
+        tongueController.eatEvent -= eatEvent;
     }
+
+    void eatFly(Fly fly)
+    {
+        CollectableByTongue collectable = fly.GetComponent<CollectableByTongue>();
+        SubscribeToEatEvent(eatFlyEvent);
+        tongueController.Collect(collectable);
+    }
+    void eatHealItem(HealItem healItem)
+    {
+        CollectableByTongue collectable = healItem.GetComponent<CollectableByTongue>();
+        SubscribeToEatEvent(eatHealItemEvent);
+        tongueController.Collect(collectable);
+    }
+
     void useFly(int flies)
     {
         nrOfFlies -= flies;
@@ -51,13 +63,21 @@ public class PlayerManager : MonoBehaviour
     {
         health -= damage;
     }
-    void heal(int healPoints)
-    {
-        Debug.Log("healing +" + healPoints);
-        health += healPoints;
-    }
     void enableDragMode()
     {
         Debug.Log("drag mode is now on");
+    }
+
+    void eatFlyEvent (CollectableByTongue collectable)
+    {
+        Fly fly = collectable.GetComponent<Fly>();
+        nrOfFlies += fly.Value;
+        UnsubscribeFromEatEvent(eatFlyEvent);
+    }
+    void eatHealItemEvent(CollectableByTongue collectable)
+    {
+        HealItem healItem = collectable.GetComponent<HealItem>();
+        health += healItem.HealAmount;
+        UnsubscribeFromEatEvent(eatHealItemEvent);
     }
 }
