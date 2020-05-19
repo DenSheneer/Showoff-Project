@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class Fly : TapAble
+public class HealItem : DragAble
 {
     public override void InRange()
     {
@@ -18,6 +15,6 @@ public class Fly : TapAble
     public override void Tab()
     {
         gameObject.SetActive(false);
-        Debug.Log("tapped a fly");
+        Debug.Log("tapped a healItem");
     }
 }

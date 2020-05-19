@@ -8,34 +8,18 @@ public class PickupManager : MonoBehaviour
 {
 
     [SerializeField]
-    List<CollectableByTongue> collectables, collected;
+    List<CollectableByTongue> collectables = null, collected = null;
 
     [SerializeField]
-    TongueController playerTongue;
-
-    [SerializeField]
-    PlayerManager playerManager;
+    PlayerManager playerManager = null;
 
     int tapMask;
-
 
     void OnEnable()
     {
         tapMask = LayerMask.GetMask("TapLayer");
+        playerManager.SubscribeToEatEvent(updateLevelItems);
         LeanTouch.OnFingerTap += HandleFingerTap;
-    }
-    private void Start()
-    {
-        playerTongue.eatEvent += itemCollected;
-    }
-
-    void itemCollected(CollectableByTongue collectable)
-    {
-        if (collectables.Contains(collectable))
-        {
-            collectables.Remove(collectable);
-            collected.Add(collectable);
-        }
     }
 
     void HandleFingerTap(LeanFinger finger)
@@ -50,9 +34,19 @@ public class PickupManager : MonoBehaviour
                 if (tapAble != null)
                 {
                     tapAble.Tab();
+                    playerManager.useTapAble(tapAble);
                 }
-                    
+
             }
         }
+    }
+
+    void updateLevelItems(CollectableByTongue collectable)
+    {
+        if (collectables.Contains(collectable))
+            collectables.Remove(collectable);
+
+        if (!collected.Contains(collectable))
+            collected.Add(collectable);
     }
 }

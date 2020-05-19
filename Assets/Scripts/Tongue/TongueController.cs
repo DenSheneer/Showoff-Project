@@ -69,7 +69,7 @@ public class TongueController : MonoBehaviour
     public void EatCollectable(CollectableByTongue collectable)
     {
         // call eat events
-        eatEvent(collectable);
+        eatEvent?.Invoke(collectable);
 
         currenctCollect.gameObject.SetActive(false);
         currentCollectStrenght += currenctCollect.CollectingWeight; // currentCollectStrength is 'progress'. Not renaming for merging purposes
