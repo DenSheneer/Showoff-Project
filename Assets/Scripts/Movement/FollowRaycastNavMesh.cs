@@ -7,6 +7,11 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class FollowRaycastNavMesh : MonoBehaviour
 {
+    [SerializeField]
+    private float minRotateSpeed = 5;
+    [SerializeField]
+    private float maxRotateSpeed = 50;
+
     private Camera mainCamera;
     private NavMeshAgent agent;
     private float startSpeed;
@@ -51,16 +56,20 @@ public class FollowRaycastNavMesh : MonoBehaviour
         }
     }
 
+    private void RotateTowardsTarget(Vector3 delta)
+    {
+        Quaternion rotation = Quaternion.LookRotation(delta);
+        float rotateSpeed = maxRotateSpeed - delta.magnitude;
+        rotateSpeed = Mathf.Clamp(rotateSpeed, minRotateSpeed, maxRotateSpeed);
+
+        transform.rotation = Quaternion.Lerp(transform.rotation, rotation, rotateSpeed * Time.deltaTime);
+    }
 
     private void MoveTowardsTarget(Vector3 target)
     {
         Vector3 delta = target - transform.position;
+        RotateTowardsTarget(delta);
 
-        //transform.LookAt(target);
-        //transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
-        Quaternion rotation = Quaternion.LookRotation(delta);
-        transform.rotation = Quaternion.Lerp(transform.rotation, rotation, 2 * Time.deltaTime);
-        
         if (delta.magnitude > 0.5f)
         {
             agent.speed = startSpeed;
