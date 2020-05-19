@@ -40,6 +40,7 @@ public class FollowRaycastNavMesh : MonoBehaviour
 
     void handleFingerGesture(List<LeanFinger> fingers)
     {
+
         LeanFinger finger = fingers[0];
         if (finger != null)
         {
@@ -48,6 +49,7 @@ public class FollowRaycastNavMesh : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, groundMask))
             {
+
                 if (hit.collider != null)
                 {
                     MoveTowardsTarget(hit.point);
