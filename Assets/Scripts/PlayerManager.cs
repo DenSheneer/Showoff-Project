@@ -21,17 +21,20 @@ public class PlayerManager : MonoBehaviour
         movementComponent = GetComponent<FollowRaycastNavMesh>();
     }
 
-    public void useTapAble(TapAble tapAble)
+    public void UseTapAble(TapAble tapAble)
     {
-        if (tapAble is Fly)
-            eatFly(tapAble as Fly);
 
-        else if (tapAble is HealItem)
-            eatHealItem(tapAble as HealItem);
+        if (tongueController.CheckReach(tapAble.gameObject))
+        {
+            if (tapAble is Fly)
+                eatFly(tapAble as Fly);
 
-        else if (tapAble is DragAble)
-            enableDragMode();
+            else if (tapAble is HealItem)
+                eatHealItem(tapAble as HealItem);
 
+            else if (tapAble is DragAble)
+                enableDragMode();
+        }
     }
     public void SubscribeToEatEvent(EatEvent eatEvent)
     {
@@ -68,7 +71,7 @@ public class PlayerManager : MonoBehaviour
         Debug.Log("drag mode is now on");
     }
 
-    void eatFlyEvent (CollectableByTongue collectable)
+    void eatFlyEvent(CollectableByTongue collectable)
     {
         Fly fly = collectable.GetComponent<Fly>();
         nrOfFlies += fly.Value;

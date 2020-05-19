@@ -17,7 +17,6 @@ public class HealItem : DragAble
 
     public override void Tab()
     {
-        gameObject.SetActive(false);
         Debug.Log("tapped a healItem");
     }
 }

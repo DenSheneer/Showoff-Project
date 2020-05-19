@@ -4,7 +4,7 @@ using UnityEngine;
 using SplineMesh;
 using System;
 
-[RequireComponent(typeof(Spline),typeof(LinearMeshAlongSpline))]
+[RequireComponent(typeof(Spline), typeof(LinearMeshAlongSpline))]
 public class TongueController : MonoBehaviour
 {
     public delegate void EatEvent(CollectableByTongue tongue);
@@ -17,7 +17,7 @@ public class TongueController : MonoBehaviour
     private LinearMeshAlongSpline linearMesh;
 
     [SerializeField]
-    private float tongueSpeed = 1.0f;
+    private float tongueSpeed = 1.0f, reachDistance = 3.0f;
 
     [SerializeField]
     private int StartCollectingStrenght = 1;
@@ -25,11 +25,6 @@ public class TongueController : MonoBehaviour
     public int CurrectCollectStrenght
     {
         get => currentCollectStrenght;
-    }
-
-    public CollectableByTongue CurrentCollect
-    {
-        get => currenctCollect;
     }
 
     public bool Collecting
@@ -101,7 +96,7 @@ public class TongueController : MonoBehaviour
                 collectableAttached = true;
                 currenctCollect.transform.SetParent(this.transform);
             }
-        } 
+        }
         // Eat loop with the target attaced to the tongue
         else if (collectableAttached)
         {
@@ -122,6 +117,19 @@ public class TongueController : MonoBehaviour
         linearMesh.UpdateMeshInterval(correctProgress);
 
         if (collectableAttached)
-            currenctCollect.transform.localPosition = linearMesh.GetIntervalPosition(correctProgress+0.05f);
+            currenctCollect.transform.localPosition = linearMesh.GetIntervalPosition(correctProgress + 0.05f);
+    }
+
+    public bool CheckReach(GameObject target)
+    {
+        RaycastHit hitRay;
+        int obstacleLayer = LayerMask.GetMask("Obstacles");
+        Physics.Linecast(tongueStart.position, target.transform.position, out hitRay, obstacleLayer);
+        float distance = Vector3.Distance(tongueStart.position, target.transform.position);
+
+        if (hitRay.collider == null && distance < reachDistance)
+            return true;
+        else
+            return false;
     }
 }

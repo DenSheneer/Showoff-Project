@@ -20,7 +20,6 @@ public class Fly : TapAble
 
     public override void Tab()
     {
-        //gameObject.SetActive(false);
         Debug.Log("tapped a fly");
     }
 }

@@ -34,7 +34,7 @@ public class PickupManager : MonoBehaviour
                 if (tapAble != null)
                 {
                     tapAble.Tab();
-                    playerManager.useTapAble(tapAble);
+                    playerManager.UseTapAble(tapAble);
                 }
 
             }
