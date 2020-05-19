@@ -34,8 +34,6 @@ public class CollectorSpawner : MonoBehaviour
 
     private void SpawnCollectable()
     {
-        Debug.Log("try spawn collectable");
-
         if (collectablePrefab == null)
             return;
 
