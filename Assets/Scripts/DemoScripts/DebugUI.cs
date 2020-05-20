@@ -6,10 +6,10 @@ using UnityEngine;
 public class DebugUI : MonoBehaviour
 {
     [SerializeField]
-    TextMeshProUGUI tmp;
+    TextMeshProUGUI tmp = null;
 
     [SerializeField]
-    PlayerManager playerInfo;
+    PlayerManager playerInfo = null;
 
     string uiText = "Health: ";
 

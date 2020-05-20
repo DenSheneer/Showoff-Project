@@ -31,12 +31,14 @@ public class PickupManager : MonoBehaviour
             if (hit.collider != null)
             {
                 TapAble tapAble = hit.collider.gameObject.GetComponent<TapAble>();
-                if (tapAble != null && !playerManager.IsBusy)
+                if (tapAble != null)
                 {
-                    tapAble.Tab();
-                    playerManager.HandleTapAble(tapAble);
+                    if (!playerManager.IsBusy)
+                    {
+                        tapAble.Tab();
+                        playerManager.HandleTapAble(tapAble);
+                    }
                 }
-
             }
         }
     }

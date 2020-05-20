@@ -12,7 +12,8 @@ public abstract class CollectableByTongue : TapAble
     FloatingBehaviour floating;
     void Start()
     {
-        floating = new FloatingBehaviour(0.2f, 0.3f, 0.15f);
+        //todo: use world scale
+        floating = new FloatingBehaviour(transform.localScale.x, transform.localScale.x * 1.5f, 0.15f);
         this.tag = "TongueCollectable";
     }
     public override void InRange()
