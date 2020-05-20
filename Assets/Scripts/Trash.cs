@@ -2,32 +2,36 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Collider),typeof(Rigidbody))]
+[RequireComponent(typeof(Collider), typeof(Rigidbody))]
 public class Trash : MonoBehaviour
 {
     [SerializeField]
-    private float lifeSpan = 2f;
+    private float despawnTime = 2f;
 
+    int damage = 1;
 
     void Update()
     {
-        lifeSpan -= Time.deltaTime;
-
-        if (lifeSpan <= 0)
-            Destroy(this.gameObject);
+        despawnTime -= Time.deltaTime;
+        if (despawnTime < 0)
+            Despawn();
     }
 
     void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.tag == "Player")
         {
-            TempPlayerManager player = collision.collider.GetComponent<TempPlayerManager>();
+            PlayerManager player = collision.collider.GetComponent<PlayerManager>();
 
             if (player != null)
             {
-                player.playerHit();
-                Destroy(this.gameObject);
+                player.takeDamage(damage);
+                Despawn();
             }
         }
+    }
+    void Despawn()
+    {
+        Destroy(gameObject);
     }
 }

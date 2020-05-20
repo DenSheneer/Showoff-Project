@@ -22,7 +22,7 @@ public class TrashSpawner : MonoBehaviour
 
         if (timer <= 0)
         {
-            timer = 0.8f;
+            timer = 2.0f;
             SpawnTrash();
         }
     }

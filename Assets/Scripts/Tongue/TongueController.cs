@@ -22,19 +22,15 @@ public class TongueController : MonoBehaviour
     [SerializeField]
     private int StartCollectingStrenght = 1;
     private int currentCollectStrenght;
-    public int CurrectCollectStrenght
-    {
-        get => currentCollectStrenght;
-    }
 
-    public bool Collecting
-    {
-        get => collecting;
-    }
     CollectableByTongue currenctCollect = null;
     private float eatProgress = 0;
     private bool collectableAttached = false;
     private bool collecting = false;
+
+    public int CurrectCollectStrenght { get => currentCollectStrenght; }
+    public bool Collecting { get => collecting; }
+    public float Reach { get => reachDistance; }
 
     void Start()
     {
@@ -67,7 +63,7 @@ public class TongueController : MonoBehaviour
         eatEvent?.Invoke(collectable);
 
         currenctCollect.gameObject.SetActive(false);
-        currentCollectStrenght += currenctCollect.CollectingWeight; // currentCollectStrength is 'progress'. Not renaming for merging purposes
+        currentCollectStrenght += currenctCollect.CollectingWeight; // currentCollectStrength is 'progress' gained from the collectable
         currenctCollect = null;
         collecting = false;
     }

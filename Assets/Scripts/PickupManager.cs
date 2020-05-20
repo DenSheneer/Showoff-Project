@@ -8,7 +8,7 @@ public class PickupManager : MonoBehaviour
 {
 
     [SerializeField]
-    List<CollectableByTongue> collectables = null, collected = null;
+    List<TapAble> collectables = null, collected = null;
 
     [SerializeField]
     PlayerManager playerManager = null;
@@ -34,7 +34,7 @@ public class PickupManager : MonoBehaviour
                 if (tapAble != null)
                 {
                     tapAble.Tab();
-                    playerManager.UseTapAble(tapAble);
+                    playerManager.HandleTapAble(tapAble);
                 }
 
             }
@@ -48,5 +48,18 @@ public class PickupManager : MonoBehaviour
 
         if (!collected.Contains(collectable))
             collected.Add(collectable);
+    }
+
+    private void Update()
+    {
+        foreach (CollectableByTongue collectable in collectables)
+        {
+
+            if (playerManager.CheckInReach(collectable.gameObject))
+                collectable.InRange();
+
+            else
+                collectable.OutOfRange();
+        }
     }
 }
