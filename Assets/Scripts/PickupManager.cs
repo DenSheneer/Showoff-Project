@@ -31,7 +31,7 @@ public class PickupManager : MonoBehaviour
             if (hit.collider != null)
             {
                 TapAble tapAble = hit.collider.gameObject.GetComponent<TapAble>();
-                if (tapAble != null)
+                if (tapAble != null && !playerManager.IsBusy)
                 {
                     tapAble.Tab();
                     playerManager.HandleTapAble(tapAble);
@@ -54,7 +54,6 @@ public class PickupManager : MonoBehaviour
     {
         foreach (CollectableByTongue collectable in collectables)
         {
-
             if (playerManager.CheckInReach(collectable.gameObject))
                 collectable.InRange();
 

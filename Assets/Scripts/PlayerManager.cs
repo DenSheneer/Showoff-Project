@@ -18,6 +18,7 @@ public class PlayerManager : MonoBehaviour
 
     public int Health { get => health; }
     public Vector3 Position { get => transform.position; }
+    public bool IsBusy { get => tongueController.Collecting; }
 
     private void Start()
     {
