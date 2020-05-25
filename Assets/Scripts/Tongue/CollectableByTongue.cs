@@ -13,17 +13,28 @@ public abstract class CollectableByTongue : TapAble
     void Start()
     {
         //todo: use world scale
+
         floating = new FloatingBehaviour(transform.localScale.x, transform.localScale.x * 1.5f, 0.15f);
         this.tag = "TongueCollectable";
     }
     public override void InRange()
     {
         floating.Update();
-        gameObject.transform.localScale = new Vector3(floating.result, floating.result, floating.result);
+        //gameObject.transform.localScale = new Vector3(floating.result, floating.result, floating.result);
     }
     public override void OutOfRange()
     {
-        gameObject.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+        //gameObject.transform.localScale = transform.
         return;
+    }
+
+    private void Update()
+    {
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Debug.Log(name + ": " + transform.lossyScale);
+        }
+
     }
 }
