@@ -90,7 +90,7 @@ public class TongueController : MonoBehaviour
             if (eatProgress >= 1)
             {
                 collectableAttached = true;
-                currenctCollect.transform.SetParent(this.transform);
+                currenctCollect.Collect(this);
             }
         }
         // Eat loop with the target attaced to the tongue

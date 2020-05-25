@@ -4,29 +4,40 @@ using UnityEngine;
 public class FloatingBehaviour
 {
     private float min, max, speed;
-    public float result;
+    public float scaleFactor;
 
-    public FloatingBehaviour(float pMin = -1, float pMax = 1, float pSpeed = 1)
+    public FloatingBehaviour(float pSpeed = 1, float pMin = 1, float pMax = 2)
     {
         min = pMin;
         max = pMax;
         speed = pSpeed;
-        result = (min + max) * 0.5f;
+        scaleFactor = min;
     }
 
-    public void Update()
+    public float GetScaleFactor()
+    {
+        updateResult();
+        return scaleFactor;
+    }
+
+    public void Restart()
+    {
+        scaleFactor = min;
+    }
+
+    private void updateResult()
     {
 
-        result += speed * Time.deltaTime;
+        scaleFactor += speed * Time.deltaTime;
 
-        if (result <= min)
+        if (scaleFactor <= min)
         {
-            result = min;
+            scaleFactor = min;
             speed *= -1;
         }
-        if (result >= max)
+        if (scaleFactor >= max)
         {
-            result = max;
+            scaleFactor = max;
             speed *= -1;
         }
     }

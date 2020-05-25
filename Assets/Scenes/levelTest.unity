@@ -815,7 +815,6 @@ GameObject:
   - component: {fileID: 317046813}
   - component: {fileID: 317046810}
   - component: {fileID: 317046809}
-  - component: {fileID: 317046814}
   m_Layer: 5
   m_Name: DebugUI
   m_TagString: Untagged
@@ -917,20 +916,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tmp: {fileID: 1642129349}
   playerInfo: {fileID: 1753411667}
---- !u!114 &317046814
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 317046808}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e2d28137ec35b9419cf9e36b31a0367, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  button1: {fileID: 0}
-  button2: {fileID: 0}
 --- !u!1 &366646638
 GameObject:
   m_ObjectHideFlags: 0
@@ -3750,7 +3735,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1837912375
 Transform:
   m_ObjectHideFlags: 0

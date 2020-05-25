@@ -6,35 +6,56 @@ public abstract class CollectableByTongue : TapAble
 {
     [SerializeField]
     private int collectingWeight = 1;
+
+    // InRange shrink-expand variables:
+    float minScaleFactor = 1.0f, maxScaleFactor = 1.25f, scaleSpeed = 0.30f;
+    Vector3 originalScale;
+    FloatingBehaviour fbh;
+
+    FirstFrameType firstFrameType = FirstFrameType.ENTERED;
+
+
     public int CollectingWeight { get => collectingWeight; }
     public Vector3 Position { get => transform.position; }
 
-    FloatingBehaviour floating;
     void Start()
     {
-        //todo: use world scale
-
-        floating = new FloatingBehaviour(transform.localScale.x, transform.localScale.x * 1.5f, 0.15f);
+        originalScale = transform.localScale;
         this.tag = "TongueCollectable";
     }
+
+    public void Collect(TongueController collector)
+    {
+        transform.localScale = originalScale;
+        transform.parent = collector.transform;
+        originalScale = transform.localScale;
+    }
+
     public override void InRange()
     {
-        floating.Update();
-        //gameObject.transform.localScale = new Vector3(floating.result, floating.result, floating.result);
+        if (firstFrameType == FirstFrameType.ENTERED)   // When in range, do something once
+        {
+            firstFrameType = FirstFrameType.EXITED;
+
+            //  Your code here
+            fbh = new FloatingBehaviour(scaleSpeed, minScaleFactor, maxScaleFactor);
+        }
+
+        transform.localScale = originalScale * fbh.GetScaleFactor();
+        return;
     }
     public override void OutOfRange()
     {
-        //gameObject.transform.localScale = transform.
-        return;
-    }
-
-    private void Update()
-    {
-
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (firstFrameType == FirstFrameType.EXITED)  // When out of range, do something once
         {
-            Debug.Log(name + ": " + transform.lossyScale);
+            firstFrameType = FirstFrameType.ENTERED;
+
+            //  Your code here
+            gameObject.transform.localScale = originalScale;
         }
 
+        return;
     }
 }
+
+public enum FirstFrameType { ENTERED, EXITED }
