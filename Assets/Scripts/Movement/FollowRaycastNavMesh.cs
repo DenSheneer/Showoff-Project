@@ -19,7 +19,13 @@ public class FollowRaycastNavMesh : MonoBehaviour
     private int layerMask;
     private int groundMask;
 
-    void OnEnable() { LeanTouch.OnGesture += handleFingerGesture; }
+    float timer = 0;
+    float tapDelay = 1.00f;     // Default delay for registering a tap as a gesture is 1/10 of a second .
+
+    void OnEnable()
+    {
+        LeanTouch.OnGesture += handleFingerGesture;
+    }
     void OnDisable() { LeanTouch.OnGesture -= handleFingerGesture; }
     void Start()
     {
@@ -33,30 +39,31 @@ public class FollowRaycastNavMesh : MonoBehaviour
     void Update()
     {
         if ((LeanTouch.Fingers.Count == 0))
-        {
-            agent.speed = 0;
-        }
+            stop();
     }
 
-    void handleFingerGesture(List<LeanFinger> fingers)
+    public void handleFingerGesture(List<LeanFinger> fingers)
     {
-        LeanFinger finger = fingers[0];
-        if (finger != null)
+        if (timer < tapDelay)
+            timer += Time.deltaTime * 10.0f;
+        else
         {
-            RaycastHit hit;
-            Ray ray = mainCamera.ScreenPointToRay(finger.ScreenPosition);
-
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, groundMask))
+            LeanFinger finger = fingers[0];
+            if (finger != null)
             {
-                if (hit.collider != null)
+                RaycastHit hit;
+                Ray ray = mainCamera.ScreenPointToRay(finger.ScreenPosition);
+
+                if (Physics.Raycast(ray, out hit, Mathf.Infinity, groundMask))
                 {
-                    MoveTowardsTarget(hit.point);
+                    if (hit.collider != null)
+                        MoveTowardsTarget(hit.point);
                 }
             }
         }
     }
 
-    private void RotateTowardsTarget(Vector3 delta)
+    private void LerpRotateTowardsTarget(Vector3 delta)
     {
         Quaternion rotation = Quaternion.LookRotation(delta);
         float rotateSpeed = maxRotateSpeed - delta.magnitude;
@@ -65,10 +72,16 @@ public class FollowRaycastNavMesh : MonoBehaviour
         transform.rotation = Quaternion.Lerp(transform.rotation, rotation, rotateSpeed * Time.deltaTime);
     }
 
+    public void RotateTowardsTarget(Vector3 delta)
+    {
+        Quaternion rotation = Quaternion.LookRotation(delta);
+        transform.rotation = rotation;
+    }
+
     private void MoveTowardsTarget(Vector3 target)
     {
         Vector3 delta = target - transform.position;
-        RotateTowardsTarget(delta);
+        LerpRotateTowardsTarget(delta);
 
         if (delta.magnitude > 0.5f)
         {
@@ -76,7 +89,11 @@ public class FollowRaycastNavMesh : MonoBehaviour
             delta.Normalize();
             agent.Move(transform.forward * Time.deltaTime * 3.0f);
         }
-
+    }
+    private void stop()
+    {
+        timer = 0;
+        agent.speed = 0;
     }
 
 }

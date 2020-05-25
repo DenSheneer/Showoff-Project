@@ -37,10 +37,11 @@ public abstract class CollectableByTongue : TapAble
         {
             firstFrameType = FirstFrameType.EXITED;
 
-            //  Your code here
+            //  In range single exec code here:
             fbh = new FloatingBehaviour(scaleSpeed, minScaleFactor, maxScaleFactor);
         }
 
+        //  In range loop here:
         transform.localScale = originalScale * fbh.GetScaleFactor();
         return;
     }
@@ -50,11 +51,12 @@ public abstract class CollectableByTongue : TapAble
         {
             firstFrameType = FirstFrameType.ENTERED;
 
-            //  Your code here
+            //  Out of range single exec code here:
             gameObject.transform.localScale = originalScale;
+            fbh = null;
         }
+        //  Out of range loop here:
 
-        return;
     }
 }
 

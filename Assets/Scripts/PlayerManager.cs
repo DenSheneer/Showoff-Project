@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Lean.Touch;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +13,8 @@ public class PlayerManager : MonoBehaviour
 
     [SerializeField]
     TongueController tongueController = null;
+
+    float maxAngle = 85.0f;
 
     [SerializeField]
     int nrOfFlies = 0, health = 3;
@@ -34,6 +37,14 @@ public class PlayerManager : MonoBehaviour
     {
         if (CheckInReach(tapAble.gameObject))
         {
+            Vector3 delta = tapAble.transform.position - transform.position;
+            Vector3 forward = transform.forward;
+
+            float currentAngle = Vector3.Angle(forward, delta);
+
+            if (currentAngle > maxAngle)
+                movementComponent.RotateTowardsTarget(delta);
+
             if (tapAble is CollectableByTongue)
                 handleCollectable(tapAble as CollectableByTongue);
 

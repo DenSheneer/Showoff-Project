@@ -1387,37 +1387,37 @@ PrefabInstance:
     - target: {fileID: 7326662565721081028, guid: fc0fa290f51e1db45afc9e63c3ff7d71,
         type: 3}
       propertyPath: nodes.Array.data[1].direction.x
-      value: -0.0060477974
+      value: -0.0077675357
       objectReference: {fileID: 0}
     - target: {fileID: 7326662565721081028, guid: fc0fa290f51e1db45afc9e63c3ff7d71,
         type: 3}
       propertyPath: nodes.Array.data[1].direction.y
-      value: -0.004164879
+      value: -0.014673606
       objectReference: {fileID: 0}
     - target: {fileID: 7326662565721081028, guid: fc0fa290f51e1db45afc9e63c3ff7d71,
         type: 3}
       propertyPath: nodes.Array.data[1].direction.z
-      value: 0.0642838
+      value: 0.48824692
       objectReference: {fileID: 0}
     - target: {fileID: 7326662565721081028, guid: fc0fa290f51e1db45afc9e63c3ff7d71,
         type: 3}
       propertyPath: curves.Array.data[0].n2.direction.x
-      value: -0.0060477974
+      value: -0.0077675357
       objectReference: {fileID: 0}
     - target: {fileID: 7326662565721081028, guid: fc0fa290f51e1db45afc9e63c3ff7d71,
         type: 3}
       propertyPath: curves.Array.data[0].n2.direction.y
-      value: -0.004164879
+      value: -0.014673606
       objectReference: {fileID: 0}
     - target: {fileID: 7326662565721081028, guid: fc0fa290f51e1db45afc9e63c3ff7d71,
         type: 3}
       propertyPath: curves.Array.data[0].n2.direction.z
-      value: 0.0642838
+      value: 0.48824692
       objectReference: {fileID: 0}
     - target: {fileID: 7326662565721081028, guid: fc0fa290f51e1db45afc9e63c3ff7d71,
         type: 3}
       propertyPath: Length
-      value: 0.62040293
+      value: 0.68657094
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6456025877808895794, guid: fc0fa290f51e1db45afc9e63c3ff7d71, type: 3}
@@ -3735,7 +3735,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1837912375
 Transform:
   m_ObjectHideFlags: 0
