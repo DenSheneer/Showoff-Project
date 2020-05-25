@@ -14,4 +14,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: d1c3109bdb54ad54c8a2b2838528e640
+  - enabled: 1
+    path: Assets/Scenes/UIFeedback.unity
+    guid: dd385b1f866c6c141857325e970df328
+  - enabled: 1
+    path: Assets/Scenes/UILeaderboard.unity
+    guid: 77f6df5731f589744b5b69780f3eda54
   m_configObjects: {}
