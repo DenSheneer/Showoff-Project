@@ -16,13 +16,13 @@ public class QuestionMenu : MonoBehaviour
     }
     void Start()
     {
-        btn = gameObject.GetComponent<Button>();
-        btn.onClick.AddListener(TaskOnClick);
+        //btn = gameObject.GetComponent<Button>();
+        //btn.onClick.AddListener(TaskOnClick);
     }
 
     void TaskOnClick()
     {
-        btn.interactable = false;
+        //btn.interactable = false;
     }
     // but you can only tap once and you to enable the button interaction when coming back to this page 
 }
