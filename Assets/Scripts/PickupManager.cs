@@ -33,17 +33,14 @@ public class PickupManager : MonoBehaviour
                 TapAble tapAble = hit.collider.gameObject.GetComponent<TapAble>();
                 if (tapAble != null)
                 {
-                    if (!playerManager.IsBusy)
-                    {
-                        tapAble.Tab();
-                        playerManager.HandleTapAble(tapAble);
-                    }
+                    tapAble.Tab();
+                    playerManager.HandleTapAble(tapAble);   
                 }
             }
         }
     }
 
-    void updateLevelItems(CollectableByTongue collectable)
+    void updateLevelItems(TapAble collectable)
     {
         if (collectables.Contains(collectable))
             collectables.Remove(collectable);

@@ -11,7 +11,7 @@ public class TongueCollider : MonoBehaviour
     void OnTriggerStay(Collider collider)
     {
         // We only care about TongueCollectables for now
-        if (collider.tag == "TongueCollectable" && controller.Collecting != true)
+        if (collider.tag == "TongueCollectable" && controller.InProgress != true)
         {
             CollectableByTongue collectable = collider.GetComponent<CollectableByTongue>();
 
