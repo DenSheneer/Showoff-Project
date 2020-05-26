@@ -696,7 +696,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cd053f4bc628d54eb7bc6471dc09000, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collectables: []
+  collectables:
+  - {fileID: 1005032427}
+  - {fileID: 70535448}
+  - {fileID: 785032859}
+  - {fileID: 723864181}
+  - {fileID: 1737842931}
+  - {fileID: 737283447}
+  - {fileID: 118238156}
   collected: []
   playerManager: {fileID: 511795243}
 --- !u!4 &601325210

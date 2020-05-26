@@ -8,7 +8,7 @@ public class PickupManager : MonoBehaviour
 {
 
     [SerializeField]
-    List<TapAble> collectables = null, collected = null;
+    List<CollectableByTongue> collectables = null, collected = null;
 
     [SerializeField]
     PlayerManager playerManager = null;
@@ -40,7 +40,7 @@ public class PickupManager : MonoBehaviour
         }
     }
 
-    void updateLevelItems(TapAble collectable)
+    void updateLevelItems(CollectableByTongue collectable)
     {
         if (collectables.Contains(collectable))
             collectables.Remove(collectable);

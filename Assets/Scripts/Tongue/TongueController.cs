@@ -16,7 +16,7 @@ public class TongueController : MonoBehaviour
 
     private TongueEventType tongueEventType;
 
-    public delegate void TongueEvent(TapAble tongue);
+    public delegate void TongueEvent(CollectableByTongue tongue);
     // Event that is called when the tongue reached its target
     public TongueEvent tongueReachedTarget;
     // Event that is called when the tongue has eaten its target
@@ -131,7 +131,7 @@ public class TongueController : MonoBehaviour
             if (tongueProgress >= 1)
             {
                 targetReached = true;
-                tongueReachedTarget?.Invoke(tongueTarget);
+                tongueReachedTarget?.Invoke(tongueTarget as CollectableByTongue);
             }
 
         }
