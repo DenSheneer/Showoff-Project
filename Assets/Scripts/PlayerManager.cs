@@ -93,7 +93,8 @@ public class PlayerManager : MonoBehaviour
     {
         if (collectable is CollectableByTongue)
         {
-            collectable.transform.SetParent(tongueController.transform);
+            //collectable.transform.SetParent(tongueController.transform);
+            (collectable as CollectableByTongue).Collect(tongueController);
         }
         if (collectable is DragAble)
         {

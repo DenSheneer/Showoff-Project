@@ -144,7 +144,7 @@ public class TongueController : MonoBehaviour
             {
                 (tongueTarget as DragAble).rb.AddForce(dir * 2, ForceMode.VelocityChange);
             }
-            SetSplineToTarget(tongueTarget.transform);
+            //SetSplineToTarget(tongueTarget.transform);
 
         }
         else if (tongueEventType == TongueEventType.COLLECTING)
