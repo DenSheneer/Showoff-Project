@@ -9,6 +9,7 @@ public class GameController : MonoBehaviour
 
     public Text scoreCounterText;
     public Text timeRemainingText;
+    public InputField playerName;
 
 
     int totalScore = 0;
@@ -38,6 +39,12 @@ public class GameController : MonoBehaviour
     void EndGame()
     {
         gameInPlay = false;
+        
+    }
+
+    public void InitialsEntered ()
+    {
+        GetComponent<Leaderboard>().CheckForHighScore(totalScore, playerName.text);
     }
     // Update is called once per frame
     void Update()
