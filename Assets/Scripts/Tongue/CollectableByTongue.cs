@@ -14,7 +14,8 @@ public abstract class CollectableByTongue : TapAble
 
     FirstFrameType firstFrameType = FirstFrameType.ENTERED;
 
-
+    protected bool isInRange = false;
+    public bool IsInRange { get => isInRange; }
     public int CollectingWeight { get => collectingWeight; }
     public Vector3 Position { get => transform.position; }
 
@@ -33,12 +34,13 @@ public abstract class CollectableByTongue : TapAble
 
     public override void InRange()
     {
-        if (firstFrameType == FirstFrameType.ENTERED)   // When in range, do something once
+        if (firstFrameType == FirstFrameType.ENTERED)
         {
             firstFrameType = FirstFrameType.EXITED;
 
             //  In range single exec code here:
             fbh = new FloatingBehaviour(scaleSpeed, minScaleFactor, maxScaleFactor);
+            isInRange = true;
         }
 
         //  In range loop here:
@@ -47,16 +49,23 @@ public abstract class CollectableByTongue : TapAble
     }
     public override void OutOfRange()
     {
-        if (firstFrameType == FirstFrameType.EXITED)  // When out of range, do something once
+        if (firstFrameType == FirstFrameType.EXITED)
         {
             firstFrameType = FirstFrameType.ENTERED;
 
             //  Out of range single exec code here:
             gameObject.transform.localScale = originalScale;
             fbh = null;
+            isInRange = false;
         }
         //  Out of range loop here:
 
+    }
+
+    public static void Disable(CollectableByTongue collectable)
+    {
+        collectable.OutOfRange();
+        collectable.gameObject.SetActive(false);
     }
 }
 

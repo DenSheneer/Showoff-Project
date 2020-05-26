@@ -19,6 +19,7 @@ public class TongueController : MonoBehaviour
     public delegate void TongueEvent(CollectableByTongue tongue);
     // Event that is called when the tongue reached its target
     public TongueEvent tongueReachedTarget;
+
     // Event that is called when the tongue has eaten its target
     public TongueEvent targetEaten;
 
@@ -57,7 +58,7 @@ public class TongueController : MonoBehaviour
     {
         if (inProgress)
         {
-            Debug.Log("Tongue was bussy doing something else ");
+            Debug.Log("Tongue was busy doing something else ");
 
             return false;
         }
