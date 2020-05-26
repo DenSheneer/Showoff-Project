@@ -29,17 +29,17 @@ public class TongueController : MonoBehaviour
     private LinearMeshAlongSpline linearMesh = null;
 
     [SerializeField]
-    private float tongueSpeed = 1.0f, reachDistance = 3.0f;
+    private float tongueSpeed = 1.0f, reachDistance = 9.0f, maxAngle = 85.0f;
 
     public float Reach { get => reachDistance; }
 
     private TapAble tongueTarget = null;
 
     private bool inProgress = false;
-    public bool InProgress { get => inProgress;}
+    public bool InProgress { get => inProgress; }
 
     private float tongueProgress = 0;
-    private bool targetReached = false; 
+    private bool targetReached = false;
 
     void Start()
     {
@@ -73,7 +73,7 @@ public class TongueController : MonoBehaviour
     {
         if (inProgress)
         {
-            Debug.Log("Tongue was bussy doing something else ");
+            Debug.Log("Tongue was busy doing something else ");
 
             return false;
         }
@@ -137,7 +137,7 @@ public class TongueController : MonoBehaviour
         }
         else if (tongueEventType == TongueEventType.DRAGGING)
         {
-            float dist = Vector3.Distance(this.transform.position,tongueTarget.transform.position);
+            float dist = Vector3.Distance(this.transform.position, tongueTarget.transform.position);
             Vector3 dir = this.transform.position - tongueTarget.transform.position;
             dir.Normalize();
             if (dist > 3)
@@ -173,11 +173,22 @@ public class TongueController : MonoBehaviour
         RaycastHit hitRay;
         int obstacleLayer = LayerMask.GetMask("Obstacles");
         Physics.Linecast(tongueStart.position, target.transform.position, out hitRay, obstacleLayer);
-        float distance = Vector3.Distance(tongueStart.position, target.transform.position);
 
-        if (hitRay.collider == null && distance < reachDistance)
-            return true;
-        else
-            return false;
+        if (hitRay.collider == null)
+        {
+            Vector3 delta = tongueStart.position - target.transform.position;
+            float distance = Vector3.SqrMagnitude(delta);
+
+            if (distance < reachDistance)
+            {
+                float angle = Vector3.Angle(transform.forward, delta);
+
+                if (angle <= maxAngle)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
