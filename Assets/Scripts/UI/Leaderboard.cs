@@ -8,7 +8,7 @@ public class Leaderboard : MonoBehaviour
 {
     public Text[] highScores;
     int[] highScoreValues;
-    string[] highScoreNames;
+    public string[] highScoreNames;
 
     void Start()
     {   // store highscores into an array
@@ -29,10 +29,20 @@ public class Leaderboard : MonoBehaviour
             PlayerPrefs.SetInt("highScoreValues" + x, highScoreValues [x]); // reverse above, set the playerprefs to the values of the scores.
             PlayerPrefs.SetString("highScoreNames" + x, highScoreNames [x]);
         }
+       // PlayerPrefs.DeleteAll
+        
     }
 
-    public void CheckForHighScore(int _value, string _userName)
+    public bool CheckForHighScore(int _value, string _userName)
     {
+        foreach (string name in highScoreNames)
+        {
+            if (_userName == name)
+            {
+                return false;
+                
+            }
+        }
         for (int x = 0; x < highScores.Length; x++) // is our value bigger than the one that is already in the array
         {
             if (_value > highScoreValues [x])
@@ -47,13 +57,34 @@ public class Leaderboard : MonoBehaviour
                 highScoreNames[x] = _userName;
                 DrawScores();
                 SaveScores();
+                return true;
+
+            }
+        }
+        return true;
+    }
+  /* public void CheckForName(int _value, string _userName)
+    {
+        for (int x = 0; x < highScores.Length; x++) // is our value bigger than the one that is already in the array
+        {
+            if (_value > highScoreValues[x])
+            {   //stick the new value in there and move the rest downwards,
+
+                for (int y = highScores.Length - 1; y > x; y--)
+                {
+                    highScoreValues[y] = highScoreValues[y - 1];
+                    highScoreNames[y] = highScoreNames[y - 1];
+                }
+                highScoreValues[x] = _value;
+                highScoreNames[x] = _userName;
+                DrawScores();
+                SaveScores();
                 break;
             }
         }
-    }
-        
-        
-    void DrawScores()
+    }*/
+
+    public void DrawScores()
     {
         for (int x = 0; x < highScores.Length; x++)
         {
