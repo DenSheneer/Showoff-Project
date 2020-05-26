@@ -3,69 +3,111 @@ using System.Collections.Generic;
 using UnityEngine;
 using SplineMesh;
 using System;
+using UnityEditor.VersionControl;
 
 [RequireComponent(typeof(Spline), typeof(LinearMeshAlongSpline))]
 public class TongueController : MonoBehaviour
 {
-    public delegate void EatEvent(CollectableByTongue tongue);
-    public EatEvent eatEvent;
+    private enum TongueEventType
+    {
+        COLLECTING,
+        DRAGGING
+    }
+
+    private TongueEventType tongueEventType;
+
+    public delegate void TongueEvent(TapAble tongue);
+    // Event that is called when the tongue reached its target
+    public TongueEvent tongueReachedTarget;
+    // Event that is called when the tongue has eaten its target
+    public TongueEvent targetEaten;
 
     [SerializeField]
     private Transform tongueStart = null;
 
-    private Spline spline;
-    private LinearMeshAlongSpline linearMesh;
+    private Spline spline = null;
+    private LinearMeshAlongSpline linearMesh = null;
 
     [SerializeField]
     private float tongueSpeed = 1.0f, reachDistance = 3.0f;
 
-    [SerializeField]
-    private int StartCollectingStrenght = 1;
-    private int currentCollectStrenght;
-
-    CollectableByTongue currenctCollect = null;
-    private float eatProgress = 0;
-    private bool collectableAttached = false;
-    private bool collecting = false;
-
-    public int CurrectCollectStrenght { get => currentCollectStrenght; }
-    public bool Collecting { get => collecting; }
     public float Reach { get => reachDistance; }
+
+    private TapAble tongueTarget = null;
+
+    private bool inProgress = false;
+    public bool InProgress { get => inProgress;}
+
+    private float tongueProgress = 0;
+    private bool targetReached = false; 
 
     void Start()
     {
         spline = GetComponent<Spline>();
         linearMesh = GetComponent<LinearMeshAlongSpline>();
-        currentCollectStrenght = StartCollectingStrenght;
     }
 
     void Update()
     {
-        if (collecting)
-            EatLoop();
+        if (InProgress)
+            tongueLoop();
     }
 
-    public void Collect(CollectableByTongue collectable)
+    public bool SetCollectTarget(CollectableByTongue collectable)
     {
-        SetSplineToTarget(collectable.transform);
-        collecting = true;
-        currenctCollect = collectable;
+        if (inProgress)
+        {
+            Debug.Log("Tongue was bussy doing something else ");
+
+            return false;
+        }
+        inProgress = true;
+        tongueTarget = collectable;
+        tongueEventType = TongueEventType.COLLECTING;
+
+
+        return true;
     }
 
-    public void FailCollect(CollectableByTongue collectable)
+    public bool SetDragTarget(DragAble dragAble)
     {
-        //Debug.Log("item to big to be eaten");
+        if (inProgress)
+        {
+            Debug.Log("Tongue was bussy doing something else ");
+
+            return false;
+        }
+        inProgress = true;
+        tongueTarget = dragAble;
+        tongueEventType = TongueEventType.DRAGGING;
+
+        // TO-DO: We prop want to make the tongue go slowly back but for now we don't
+        tongueProgress = 0;
+
+        float correctProgress = 0.99f - tongueProgress;
+        linearMesh.UpdateMeshInterval(correctProgress);
+
+        return true;
     }
 
-    public void EatCollectable(CollectableByTongue collectable)
+    public void DetacheDragAble(DragAble dragAble)
     {
-        // call eat events
-        eatEvent?.Invoke(collectable);
+        // Can't detache if we have nothing to detache
+        if (!inProgress || tongueEventType == TongueEventType.COLLECTING)
+            return;
 
-        currenctCollect.gameObject.SetActive(false);
-        currentCollectStrenght += currenctCollect.CollectingWeight; // currentCollectStrength is 'progress' gained from the collectable
-        currenctCollect = null;
-        collecting = false;
+        if (tongueTarget == dragAble)
+        {
+            tongueTarget = null;
+            inProgress = false;
+
+            // TO-DO: We prop want to make the tongue go slowly back but for now we don't
+            tongueProgress = 0;
+            targetReached = false;
+
+            float correctProgress = 0.99f - tongueProgress;
+            linearMesh.UpdateMeshInterval(correctProgress);
+        }
     }
 
     private void SetSplineToTarget(Transform pTarget)
@@ -79,41 +121,51 @@ public class TongueController : MonoBehaviour
         spline.nodes[0].Position = newSplinePos;
     }
 
-    private void EatLoop()
+    private void tongueLoop()
     {
-        // Eat loop while the tongue hasn't reached yet
-        if (!collectableAttached)
+        if (!targetReached)
         {
-            eatProgress += Time.smoothDeltaTime * tongueSpeed;
-            SetSplineToTarget(currenctCollect.transform);
+            tongueProgress += Time.smoothDeltaTime * tongueSpeed;
+            SetSplineToTarget(tongueTarget.transform);
 
-            if (eatProgress >= 1)
+            if (tongueProgress >= 1)
             {
-                collectableAttached = true;
-                currenctCollect.Collect(this);
+                targetReached = true;
+                tongueReachedTarget?.Invoke(tongueTarget);
             }
-        }
-        // Eat loop with the target attaced to the tongue
-        else if (collectableAttached)
-        {
-            eatProgress -= (Time.smoothDeltaTime * tongueSpeed);
 
-            if (eatProgress <= 0)
+        }
+        else if (tongueEventType == TongueEventType.DRAGGING)
+        {
+            float dist = Vector3.Distance(this.transform.position,tongueTarget.transform.position);
+            Vector3 dir = this.transform.position - tongueTarget.transform.position;
+            dir.Normalize();
+            if (dist > 3)
             {
-                eatProgress = 0;
-                collectableAttached = false;
-                EatCollectable(currenctCollect);
+                (tongueTarget as DragAble).rb.AddForce(dir * 2, ForceMode.VelocityChange);
+            }
+            SetSplineToTarget(tongueTarget.transform);
+
+        }
+        else if (tongueEventType == TongueEventType.COLLECTING)
+        {
+            tongueProgress -= Time.smoothDeltaTime * tongueSpeed;
+
+            if (tongueProgress <= 0)
+            {
+                targetReached = false;
+                targetEaten?.Invoke(tongueTarget as CollectableByTongue);
+                inProgress = false;
+
                 return;
             }
         }
 
-        // Because spline mesh is weird. 0 means full progress and 0.99f means no progress. so we reverse eating progress
-        float correctProgress = 0.99f - eatProgress;
-
+        float correctProgress = 0.99f - tongueProgress;
         linearMesh.UpdateMeshInterval(correctProgress);
 
-        if (collectableAttached)
-            currenctCollect.transform.localPosition = linearMesh.GetIntervalPosition(correctProgress + 0.05f);
+        if (targetReached && tongueEventType == TongueEventType.COLLECTING)
+            tongueTarget.transform.localPosition = linearMesh.GetIntervalPosition(correctProgress + 0.05f);
     }
 
     public bool CheckReach(GameObject target)

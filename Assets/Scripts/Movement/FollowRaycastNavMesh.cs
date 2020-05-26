@@ -19,13 +19,13 @@ public class FollowRaycastNavMesh : MonoBehaviour
     private int layerMask;
     private int groundMask;
 
+
     float timer = 0;
     float tapDelay = 1.00f;     // Default delay for registering a tap as a gesture is 1/10 of a second .
 
-    void OnEnable()
-    {
-        LeanTouch.OnGesture += handleFingerGesture;
-    }
+    public bool reverseDirection = false;
+
+    void OnEnable() { LeanTouch.OnGesture += handleFingerGesture; }
     void OnDisable() { LeanTouch.OnGesture -= handleFingerGesture; }
     void Start()
     {
@@ -66,9 +66,16 @@ public class FollowRaycastNavMesh : MonoBehaviour
     private void LerpRotateTowardsTarget(Vector3 delta)
     {
         Quaternion rotation = Quaternion.LookRotation(delta);
+
+        if (reverseDirection)
+        {
+            Vector3 rot = rotation.eulerAngles;
+            rot = new Vector3(rot.x, rot.y + 180, rot.z);
+            rotation = Quaternion.Euler(rot);
+        }
+
         float rotateSpeed = maxRotateSpeed - delta.magnitude;
         rotateSpeed = Mathf.Clamp(rotateSpeed, minRotateSpeed, maxRotateSpeed);
-
         transform.rotation = Quaternion.Lerp(transform.rotation, rotation, rotateSpeed * Time.deltaTime);
     }
 
@@ -87,7 +94,14 @@ public class FollowRaycastNavMesh : MonoBehaviour
         {
             agent.speed = startSpeed;
             delta.Normalize();
-            agent.Move(transform.forward * Time.deltaTime * 3.0f);
+
+            //agent.Move(transform.forward * Time.deltaTime * 3.0f);
+
+            if (reverseDirection)
+                agent.Move(-transform.forward * Time.deltaTime * 3.0f);
+            else if (!reverseDirection)
+                agent.Move(transform.forward * Time.deltaTime * 3.0f);
+        
         }
     }
     private void stop()

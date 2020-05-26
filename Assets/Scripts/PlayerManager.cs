@@ -21,11 +21,13 @@ public class PlayerManager : MonoBehaviour
 
     public int Health { get => health; }
     public Vector3 Position { get => transform.position; }
-    public bool IsBusy { get => tongueController.Collecting; }
+    public bool IsBusy { get => tongueController.InProgress; }
 
     private void Start()
     {
         movementComponent = GetComponent<FollowRaycastNavMesh>();
+        tongueController.tongueReachedTarget += HandleTargetReached;
+        tongueController.targetEaten += HandleTargetEaten;
     }
 
     public bool CheckInReach(GameObject gameObject)
@@ -49,61 +51,62 @@ public class PlayerManager : MonoBehaviour
                 handleCollectable(tapAble as CollectableByTongue);
 
             else if (tapAble is DragAble)
-                enableDragMode();
+            {
+                if (tongueController.InProgress)
+                {
+                    tongueController.DetacheDragAble(tapAble as DragAble);
+                    movementComponent.reverseDirection = false;
+                }
+                else if (!tongueController.InProgress)
+                {
+                    tongueController.SetDragTarget(tapAble as DragAble);
+                    movementComponent.reverseDirection = true;
+                }
+            }
         }
     }
     void handleCollectable(CollectableByTongue collectable)
     {
-        if (collectable is Fly)
-            eatFly(collectable as Fly);
-
-        else if (collectable is HealItem)
-            eatHealItem(collectable as HealItem);
+        tongueController.SetCollectTarget(collectable);
     }
 
-    void eatFly(Fly fly)
-    {
-        SubscribeToEatEvent(eatFlyEvent);
-        tongueController.Collect(fly);
-    }
-    void eatHealItem(HealItem healItem)
-    {
-        SubscribeToEatEvent(eatHealItemEvent);
-        tongueController.Collect(healItem);
-    }
-
-    void useFly(int flies)
-    {
-        nrOfFlies -= flies;
-    }
     public void takeDamage(int damage)
     {
         health -= damage;
     }
-    void enableDragMode()
+
+    private void HandleTargetEaten(TapAble collectable)
     {
-        Debug.Log("drag mode is now on");
+        // Do stuff when the fly is eaten
+        if (collectable is Fly)
+        {
+            nrOfFlies += (collectable as Fly).Value;
+        }
+        // Do stuff when the heal item is eaten
+        if (collectable is HealItem)
+        {
+            health += (collectable as HealItem).HealAmount;
+        }
     }
 
-    void eatFlyEvent(CollectableByTongue collectable)
+    private void HandleTargetReached(TapAble collectable)
     {
-        Fly fly = collectable as Fly;
-        nrOfFlies += fly.Value;
-        UnsubscribeFromEatEvent(eatFlyEvent);
-    }
-    void eatHealItemEvent(CollectableByTongue collectable)
-    {
-        HealItem healItem = collectable as HealItem;
-        health += healItem.HealAmount;
-        UnsubscribeFromEatEvent(eatHealItemEvent);
+        if (collectable is CollectableByTongue)
+        {
+            collectable.transform.SetParent(tongueController.transform);
+        }
+        if (collectable is DragAble)
+        {
+
+        }
     }
 
-    public void SubscribeToEatEvent(EatEvent eatEvent)
+    public void SubscribeToEatEvent(TongueEvent eatEvent)
     {
-        tongueController.eatEvent += eatEvent;
+        tongueController.targetEaten += eatEvent;
     }
-    public void UnsubscribeFromEatEvent(EatEvent eatEvent)
+    public void UnsubscribeFromEatEvent(TongueEvent eatEvent)
     {
-        tongueController.eatEvent -= eatEvent;
+        tongueController.targetEaten -= eatEvent;
     }
 }
