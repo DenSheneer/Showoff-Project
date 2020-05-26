@@ -108,6 +108,7 @@ public class TongueController : MonoBehaviour
             float correctProgress = 0.99f - tongueProgress;
             linearMesh.UpdateMeshInterval(correctProgress);
         }
+        
     }
 
     private void SetSplineToTarget(Transform pTarget)
