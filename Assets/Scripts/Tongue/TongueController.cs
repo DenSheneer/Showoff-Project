@@ -131,12 +131,14 @@ public class TongueController : MonoBehaviour
 
     private void dragLoop()
     {
-        float dist = Vector3.Distance(this.transform.position, tongueTarget.transform.position);
+        float dist = Vector3.SqrMagnitude(this.transform.position - tongueTarget.transform.position);
         Vector3 dir = this.transform.position - tongueTarget.transform.position;
         dir.Normalize();
-        if (dist > 3)
+        dir *= 0.01f;
+        if (dist > 4)
         {
-            (tongueTarget as DragAble).rb.AddForce(dir * 2, ForceMode.VelocityChange);
+            //(tongueTarget as DragAble).rb.AddForce(dir * 2, ForceMode.VelocityChange);
+            (tongueTarget as DragAble).nma.Move(dir);
         }
         SetSplineToTarget(tongueTarget.transform);
     }

@@ -98,16 +98,15 @@ public class FollowRaycastNavMesh : MonoBehaviour
             //agent.Move(transform.forward * Time.deltaTime * 3.0f);
 
             if (reverseDirection)
-                agent.Move(-transform.forward * Time.deltaTime * 3.0f);
+                agent.Move(-transform.forward * Time.deltaTime * agent.speed);
             else if (!reverseDirection)
-                agent.Move(transform.forward * Time.deltaTime * 3.0f);
+                agent.Move(transform.forward * Time.deltaTime * agent.speed);
         
         }
     }
     private void stop()
     {
         timer = 0;
-        agent.speed = 0;
     }
 
 }

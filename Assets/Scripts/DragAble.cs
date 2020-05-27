@@ -1,15 +1,16 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.AI;
 
-[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(NavMeshAgent))]
 public class DragAble : TapAble
 {
     [NonSerialized]
-    public Rigidbody rb;
+    public NavMeshAgent nma;
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        nma = GetComponent<NavMeshAgent>();
     }
 
     public override void InRange()
