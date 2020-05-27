@@ -8,18 +8,19 @@ using TMPro;
 
 public class KeyboardScript : MonoBehaviour
 {
-    public TMP_InputField TextField;
+    public TextMeshProUGUI TargetTextField; 
+
     public GameObject EngLayoutSml, EngLayoutBig, SymbLayout;
 
     public void alphabetFunction(string alphabet)
     {
-        TextField.text=TextField.text + alphabet;
+        TargetTextField.text=TargetTextField.text + alphabet;
     }
 
     public void BackSpace()
     {
 
-        if(TextField.text.Length>0) TextField.text= TextField.text.Remove(TextField.text.Length-1);
+        if(TargetTextField.text.Length>0) TargetTextField.text= TargetTextField.text.Remove(TargetTextField.text.Length-1);
 
     }
 
