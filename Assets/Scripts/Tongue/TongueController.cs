@@ -39,7 +39,10 @@ public class TongueController : MonoBehaviour
     public bool InProgress { get => inProgress;}
 
     private float tongueProgress = 0;
-    private bool targetReached = false; 
+    private bool targetReached = false;
+
+    [SerializeField]
+    private float invokeTime = 0.01f;
 
     void Start()
     {
@@ -64,6 +67,7 @@ public class TongueController : MonoBehaviour
         inProgress = true;
         tongueTarget = collectable;
         tongueEventType = TongueEventType.COLLECTING;
+        linearMesh.UpdateMeshFillingMode(MeshBender.FillingMode.Repeat);
 
 
         return true;
@@ -85,6 +89,7 @@ public class TongueController : MonoBehaviour
         tongueProgress = 0;
 
         float correctProgress = 0.99f - tongueProgress;
+        linearMesh.UpdateMeshFillingMode(MeshBender.FillingMode.StretchToInterval);
         linearMesh.UpdateMeshInterval(correctProgress);
 
         return true;
@@ -108,6 +113,8 @@ public class TongueController : MonoBehaviour
             float correctProgress = 0.99f - tongueProgress;
             linearMesh.UpdateMeshInterval(correctProgress);
         }
+        if (IsInvoking("dragLoop"))
+            CancelInvoke("dragLoop");
     }
 
     private void SetSplineToTarget(Transform pTarget)
@@ -120,6 +127,20 @@ public class TongueController : MonoBehaviour
 
         spline.nodes[0].Position = newSplinePos;
     }
+
+
+    private void dragLoop()
+    {
+        float dist = Vector3.Distance(this.transform.position, tongueTarget.transform.position);
+        Vector3 dir = this.transform.position - tongueTarget.transform.position;
+        dir.Normalize();
+        if (dist > 3)
+        {
+            (tongueTarget as DragAble).rb.AddForce(dir * 2, ForceMode.VelocityChange);
+        }
+        SetSplineToTarget(tongueTarget.transform);
+    }
+
 
     private void tongueLoop()
     {
@@ -137,15 +158,8 @@ public class TongueController : MonoBehaviour
         }
         else if (tongueEventType == TongueEventType.DRAGGING)
         {
-            float dist = Vector3.Distance(this.transform.position,tongueTarget.transform.position);
-            Vector3 dir = this.transform.position - tongueTarget.transform.position;
-            dir.Normalize();
-            if (dist > 3)
-            {
-                (tongueTarget as DragAble).rb.AddForce(dir * 2, ForceMode.VelocityChange);
-            }
-            //SetSplineToTarget(tongueTarget.transform);
-
+            if (!IsInvoking("dragLoop"))
+                Invoke("dragLoop", invokeTime);
         }
         else if (tongueEventType == TongueEventType.COLLECTING)
         {

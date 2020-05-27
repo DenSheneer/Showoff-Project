@@ -47,6 +47,12 @@ public class LinearMeshAlongSpline : MonoBehaviour
         }
     }
     
+
+    public void UpdateMeshFillingMode(MeshBender.FillingMode fillingMode)
+    {
+        meshBender.Mode = fillingMode;
+    }
+
     public void UpdateMeshInterval(float pInterval)
     {
         float rate = 0;
