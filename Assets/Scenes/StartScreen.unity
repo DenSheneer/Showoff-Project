@@ -646,7 +646,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &548127625
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1347,10 +1347,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5889030e3d69ce4438cb46ebd48e1512, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  button: {fileID: 1341312369}
+  nameTextField: {fileID: 1341312369}
   BigEnterButton: {fileID: 2452114810295279749}
   SmallEnterButton: {fileID: 2452114810051978325}
-  PlayGameButton: {fileID: 548127626}
+  StartGameButton: {fileID: 548127626}
   osk: {fileID: 2452114811956354104}
 --- !u!114 &1026119373
 MonoBehaviour:

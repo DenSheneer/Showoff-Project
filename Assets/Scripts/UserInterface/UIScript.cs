@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 public class UIScript : MonoBehaviour
 {
     [SerializeField]
-    Button button, BigEnterButton, SmallEnterButton, PlayGameButton;
+    Button nameTextField, BigEnterButton, SmallEnterButton, StartGameButton;
 
     Vector3 originalButtonPosition;
 
@@ -17,40 +17,46 @@ public class UIScript : MonoBehaviour
 
     private void Start()
     {
-        button.onClick.AddListener(DisplayKeyboard);
+        StartGameButton.gameObject.SetActive(false);
+        osk.gameObject.SetActive(false);
+
+        nameTextField.onClick.AddListener(DisplayKeyboard);
         BigEnterButton.onClick.AddListener(TextEntered);
         SmallEnterButton.onClick.AddListener(TextEntered);
-        PlayGameButton.onClick.AddListener(StartGame);
+        StartGameButton.onClick.AddListener(StartGame);
     }
 
     void DisplayKeyboard()
     {
-        TextMeshProUGUI tmp = button.GetComponentInChildren<TextMeshProUGUI>();
+        TextMeshProUGUI tmp = nameTextField.GetComponentInChildren<TextMeshProUGUI>();
         if (tmp != null)
         {
-            button.onClick.RemoveAllListeners();
-
-            if (tmp.text == "Enter your name...")
+            if (tmp.text == "Enter your name...")                                   // Clear the sample text.
                 tmp.text = "";
 
-            originalButtonPosition = button.transform.localPosition;
 
-            osk.gameObject.SetActive(true);
-            osk.TargetTextField = tmp;
+            osk.gameObject.SetActive(true);                                         // Enable the on-screen keyboard.
+            osk.TargetTextField = tmp;                                              // Set the target textfield to the name textfield.
 
-            button.transform.SetParent(osk.transform);
-            button.transform.SetAsLastSibling();
-            button.transform.localPosition += new Vector3(0, 300.0f, 0);
+
+            originalButtonPosition = nameTextField.transform.localPosition;         // Save the original position of the name textfield before repositioning it.
+            nameTextField.transform.SetParent(osk.transform);                       // Reposition the name textfield to the top of the on-screen keyboard.
+            nameTextField.transform.SetAsLastSibling();
+            nameTextField.transform.localPosition += new Vector3(0, 300.0f, 0);     
+            nameTextField.interactable = false;
         }
     }
     void TextEntered()
     {
         if (checkNameValidity(osk.TargetTextField.text))
         {
-            osk.gameObject.SetActive(false);
-            button.transform.SetParent(osk.transform.parent);
-            button.transform.localPosition = originalButtonPosition;
-            button.onClick.AddListener(DisplayKeyboard);
+            StartGameButton.gameObject.SetActive(true);                             // Enable the Play Game button.
+            nameTextField.interactable = true;                                      // Make the text field interactable again.
+            osk.gameObject.SetActive(false);                                        // Disable the on-Screen keyboard.
+
+            nameTextField.transform.SetParent(osk.transform.parent);                // Reposition the name textfield to it's original position.
+            nameTextField.transform.localPosition = originalButtonPosition;
+            nameTextField.transform.SetAsLastSibling();
         }
     }
 
