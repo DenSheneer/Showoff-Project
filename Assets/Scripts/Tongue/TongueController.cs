@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using SplineMesh;
 using System;
-using UnityEditor.VersionControl;
 
 [RequireComponent(typeof(Spline), typeof(LinearMeshAlongSpline))]
 public class TongueController : MonoBehaviour
