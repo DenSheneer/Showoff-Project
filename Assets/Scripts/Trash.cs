@@ -7,6 +7,7 @@ public class Trash : MonoBehaviour
 {
     [SerializeField]
     private float despawnTime = 2f;
+    public float speed;
 
     int damage = 1;
 
@@ -27,7 +28,8 @@ public class Trash : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rb.AddForce(0.5f * -Physics.gravity);
+
+        rb.AddForce(Physics.gravity * 0.25f);
     }
 
     void OnCollisionEnter(Collision collision)

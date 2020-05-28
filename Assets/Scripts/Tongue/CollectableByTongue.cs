@@ -8,7 +8,7 @@ public abstract class CollectableByTongue : TapAble
     private int collectingWeight = 1;
 
     // InRange shrink-expand variables:
-    float minScaleFactor = 1.0f, maxScaleFactor = 1.25f, scaleSpeed = 0.30f;
+    float minScaleFactor = 1.0f, maxScaleFactor = 2.0f, scaleSpeed = 1.00f;
     Vector3 originalScale;
     FloatingBehaviour fbh;
 
