@@ -16077,9 +16077,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b588419570d9394a94ff4cef1addb7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TextField: {fileID: 0}
-  RusLayoutSml: {fileID: 2452114810106249890}
-  RusLayoutBig: {fileID: 2452114811385179773}
+  TargetTextField: {fileID: 0}
   EngLayoutSml: {fileID: 2452114811708632261}
   EngLayoutBig: {fileID: 2452114810701978350}
   SymbLayout: {fileID: 2452114810006785953}
@@ -17531,7 +17529,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2452114811385179772
 RectTransform:
   m_ObjectHideFlags: 0
