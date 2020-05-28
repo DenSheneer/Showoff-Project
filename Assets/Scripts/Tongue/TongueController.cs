@@ -183,17 +183,24 @@ public class TongueController : MonoBehaviour
         int obstacleLayer = LayerMask.GetMask("Obstacles");
         Physics.Linecast(tongueStart.position, target.transform.position, out hitRay, obstacleLayer);
 
+
         if (hitRay.collider == null)
         {
+
             Vector3 delta = tongueStart.position - target.transform.position;
             float distance = Vector3.SqrMagnitude(delta);
 
+            //Debug.Log(distance);
+            //Debug.Log(reachDistance);
+
             if (distance < reachDistance)
             {
-                float angle = Vector3.Angle(transform.forward, delta);
 
-                if (angle <= maxAngle)
+                float angle = Vector3.Angle(tongueStart.transform.forward, delta);
+
+                if (angle >= maxAngle)
                 {
+
                     return true;
                 }
             }

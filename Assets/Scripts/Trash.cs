@@ -10,11 +10,24 @@ public class Trash : MonoBehaviour
 
     int damage = 1;
 
+    private Rigidbody rb = null;
+
+    private void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+    }
+
     void Update()
     {
         despawnTime -= Time.deltaTime;
         if (despawnTime < 0)
             Despawn();
+
+    }
+
+    private void FixedUpdate()
+    {
+        rb.AddForce(0.5f * -Physics.gravity);
     }
 
     void OnCollisionEnter(Collision collision)

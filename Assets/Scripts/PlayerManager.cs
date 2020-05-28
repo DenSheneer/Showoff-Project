@@ -35,6 +35,7 @@ public class PlayerManager : MonoBehaviour
 
     public void HandleTapAble(TapAble tapAble)
     {
+
         if (tapAble is CollectableByTongue)
         {
             if ((tapAble as CollectableByTongue).IsInRange)
@@ -42,8 +43,11 @@ public class PlayerManager : MonoBehaviour
         }
         else if (tapAble is DragAble)
         {
+
             if (tongueController.CheckReach(tapAble.gameObject))
             {
+                Debug.Log("drag");
+
                 if (tongueController.InProgress)
                 {
                     tongueController.DetacheDragAble(tapAble as DragAble);

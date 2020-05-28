@@ -33,6 +33,7 @@ public class PickupManager : MonoBehaviour
                 TapAble tapAble = hit.collider.gameObject.GetComponent<TapAble>();
                 if (tapAble != null)
                 {
+                    Debug.Log("test");
                     tapAble.Tab();
                     playerManager.HandleTapAble(tapAble);   
                 }
