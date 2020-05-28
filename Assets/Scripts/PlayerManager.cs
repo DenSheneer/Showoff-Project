@@ -25,8 +25,6 @@ public class PlayerManager : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log(PlayerInfo.PlayerName);
-
         movementComponent = GetComponent<FollowRaycastNavMesh>();
         tongueController.tongueReachedTarget += HandleTargetReached;
         tongueController.targetEaten += HandleTargetEaten;
