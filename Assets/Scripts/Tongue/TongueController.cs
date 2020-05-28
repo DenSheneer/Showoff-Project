@@ -29,7 +29,7 @@ public class TongueController : MonoBehaviour
     private LinearMeshAlongSpline linearMesh = null;
 
     [SerializeField]
-    private float tongueSpeed = 1.0f, reachDistance = 3.0f;
+    private float tongueSpeed = 1.0f, reachDistance = 3.0f,tongueDragLength = 2;
 
     public float Reach { get => reachDistance; }
 
@@ -131,13 +131,7 @@ public class TongueController : MonoBehaviour
 
     private void dragLoop()
     {
-        float dist = Vector3.Distance(this.transform.position, tongueTarget.transform.position);
-        Vector3 dir = this.transform.position - tongueTarget.transform.position;
-        dir.Normalize();
-        if (dist > 3)
-        {
-            (tongueTarget as DragAble).rb.AddForce(dir * 2, ForceMode.VelocityChange);
-        }
+        (tongueTarget as DragAble).MoveTo(this.transform.position, tongueDragLength);
         SetSplineToTarget(tongueTarget.transform);
     }
 
