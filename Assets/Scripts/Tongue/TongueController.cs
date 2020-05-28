@@ -19,6 +19,7 @@ public class TongueController : MonoBehaviour
     public delegate void TongueEvent(CollectableByTongue tongue);
     // Event that is called when the tongue reached its target
     public TongueEvent tongueReachedTarget;
+
     // Event that is called when the tongue has eaten its target
     public TongueEvent targetEaten;
 
@@ -29,14 +30,14 @@ public class TongueController : MonoBehaviour
     private LinearMeshAlongSpline linearMesh = null;
 
     [SerializeField]
-    private float tongueSpeed = 1.0f, reachDistance = 3.0f,tongueDragLength = 2;
+    private float tongueSpeed = 1.0f, reachDistance = 9.0f, maxAngle = 85.0f,tongueDragLength = 2;
 
     public float Reach { get => reachDistance; }
 
     private TapAble tongueTarget = null;
 
     private bool inProgress = false;
-    public bool InProgress { get => inProgress;}
+    public bool InProgress { get => inProgress; }
 
     private float tongueProgress = 0;
     private bool targetReached = false;
@@ -60,7 +61,7 @@ public class TongueController : MonoBehaviour
     {
         if (inProgress)
         {
-            Debug.Log("Tongue was bussy doing something else ");
+            Debug.Log("Tongue was busy doing something else ");
 
             return false;
         }
@@ -77,7 +78,7 @@ public class TongueController : MonoBehaviour
     {
         if (inProgress)
         {
-            Debug.Log("Tongue was bussy doing something else ");
+            Debug.Log("Tongue was busy doing something else ");
 
             return false;
         }
@@ -181,11 +182,22 @@ public class TongueController : MonoBehaviour
         RaycastHit hitRay;
         int obstacleLayer = LayerMask.GetMask("Obstacles");
         Physics.Linecast(tongueStart.position, target.transform.position, out hitRay, obstacleLayer);
-        float distance = Vector3.Distance(tongueStart.position, target.transform.position);
 
-        if (hitRay.collider == null && distance < reachDistance)
-            return true;
-        else
-            return false;
+        if (hitRay.collider == null)
+        {
+            Vector3 delta = tongueStart.position - target.transform.position;
+            float distance = Vector3.SqrMagnitude(delta);
+
+            if (distance < reachDistance)
+            {
+                float angle = Vector3.Angle(transform.forward, delta);
+
+                if (angle <= maxAngle)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

@@ -8,16 +8,20 @@ public class DebugUI : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI tmp = null;
 
-    [SerializeField]
-    PlayerManager playerInfo = null;
+    float deltaTime = 0.0f;
 
-    string uiText = "Health: ";
-
-    private void Update()
+    private void Start()
     {
-        if (playerInfo.Health > 0)
-            tmp.text = uiText + playerInfo.Health;
-        else
-            tmp.text = "game over!";
+        tmp.color = new Color(0, 1, 0);
+    }
+
+    private void Update()   // Author: Aras Pranckevicius (NeARAZ) 
+    {
+        deltaTime += (Time.unscaledDeltaTime - deltaTime) * 0.1f;
+        float msec = deltaTime * 1000.0f;
+        float fps = 1.0f / deltaTime;
+        string text = string.Format("{0:0.0} ms ({1:0.} fps)", msec, fps);
+
+        tmp.text = text;
     }
 }

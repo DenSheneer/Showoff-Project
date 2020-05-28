@@ -14,8 +14,6 @@ public class PlayerManager : MonoBehaviour
     [SerializeField]
     TongueController tongueController = null;
 
-    float maxAngle = 85.0f;
-
     [SerializeField]
     int nrOfFlies = 0, health = 3;
 
@@ -37,20 +35,14 @@ public class PlayerManager : MonoBehaviour
 
     public void HandleTapAble(TapAble tapAble)
     {
-        if (CheckInReach(tapAble.gameObject))
+        if (tapAble is CollectableByTongue)
         {
-            Vector3 delta = tapAble.transform.position - transform.position;
-            Vector3 forward = transform.forward;
-
-            float currentAngle = Vector3.Angle(forward, delta);
-
-            if (currentAngle > maxAngle)
-                movementComponent.RotateTowardsTarget(delta);
-
-            if (tapAble is CollectableByTongue)
+            if ((tapAble as CollectableByTongue).IsInRange)
                 handleCollectable(tapAble as CollectableByTongue);
-
-            else if (tapAble is DragAble)
+        }
+        else if (tapAble is DragAble)
+        {
+            if (tongueController.CheckReach(tapAble.gameObject))
             {
                 if (tongueController.InProgress)
                 {
@@ -68,6 +60,7 @@ public class PlayerManager : MonoBehaviour
     void handleCollectable(CollectableByTongue collectable)
     {
         tongueController.SetCollectTarget(collectable);
+        SubscribeToEatEvent(CollectableByTongue.Disable);
     }
 
     public void takeDamage(int damage)
@@ -93,7 +86,6 @@ public class PlayerManager : MonoBehaviour
     {
         if (collectable is CollectableByTongue)
         {
-            //collectable.transform.SetParent(tongueController.transform);
             (collectable as CollectableByTongue).Collect(tongueController);
         }
         if (collectable is DragAble)
