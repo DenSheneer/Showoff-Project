@@ -189,9 +189,6 @@ public class TongueController : MonoBehaviour
             Vector3 delta = tongueStart.position - target.transform.position;
             float distance = Vector3.SqrMagnitude(delta);
 
-            //Debug.Log(distance);
-            //Debug.Log(reachDistance);
-
             if (distance < reachDistance)
             {
 
@@ -199,7 +196,6 @@ public class TongueController : MonoBehaviour
 
                 if (angle >= maxAngle)
                 {
-
                     return true;
                 }
             }

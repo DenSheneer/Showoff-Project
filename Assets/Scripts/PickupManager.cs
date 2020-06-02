@@ -13,6 +13,9 @@ public class PickupManager : MonoBehaviour
     [SerializeField]
     PlayerManager playerManager = null;
 
+    [SerializeField]
+    GameObject beetlePrefab;
+
     int tapMask;
 
     void OnEnable()
@@ -50,15 +53,28 @@ public class PickupManager : MonoBehaviour
             collected.Add(collectable);
     }
 
+    void SpawnBugs()
+    {
+        GameObject beetle = Instantiate(beetlePrefab);
+        Beetle beetleComponent = beetle.GetComponent<Beetle>();
+        beetleComponent.SpawnAtTarget(playerManager.transform, 0.0f, 5.0f);
+
+        playerManager.NrOfFlies--;
+    }
+
     private void Update()
     {
         foreach (CollectableByTongue collectable in collectables)
         {
             if (playerManager.CheckInReach(collectable.gameObject))
                 collectable.InRange();
-
             else
                 collectable.OutOfRange();
         }
+        if (playerManager.NrOfFlies > 0)
+        {
+            SpawnBugs();
+        }
+
     }
 }

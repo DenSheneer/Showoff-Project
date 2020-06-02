@@ -15,11 +15,12 @@ public class PlayerManager : MonoBehaviour
     TongueController tongueController = null;
 
     [SerializeField]
-    int nrOfFlies = 0, health = 3;
+    int nrOfFlies = 1, health = 3;
 
     public int Health { get => health; }
     public Vector3 Position { get => transform.position; }
     public bool IsBusy { get => tongueController.InProgress; }
+    public int NrOfFlies { get => nrOfFlies; set => nrOfFlies = value; }
 
     private void Start()
     {
