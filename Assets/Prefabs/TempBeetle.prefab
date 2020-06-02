@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1987375888999840097}
   - component: {fileID: 1987375888999840099}
   - component: {fileID: 1987375888999840098}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: tex_FireFlyWingsSheet_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -115,9 +115,10 @@ GameObject:
   - component: {fileID: 8109198206392206443}
   - component: {fileID: 4539797569585674023}
   - component: {fileID: 2740944923314528717}
-  m_Layer: 0
+  - component: {fileID: 1965879248316228918}
+  m_Layer: 13
   m_Name: TempBeetle
-  m_TagString: Untagged
+  m_TagString: TongueCollectable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -129,8 +130,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7545076119677710519}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.79780036, y: 0.023531135, z: -1.2922444}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_Children:
   - {fileID: 1987375888999840097}
@@ -144,7 +145,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7545076119677710519}
-  m_Mesh: {fileID: 1819518368011434926, guid: 6f1b66a60ce7d1b4f94c9750c4d99270, type: 3}
+  m_Mesh: {fileID: -2274577220307542621, guid: 5ad788b24c67fc24baa5711425eb4b60, type: 3}
 --- !u!23 &8109198206392206443
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -210,3 +211,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collectingWeight: 1
+--- !u!195 &1965879248316228918
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7545076119677710519}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.094648235
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 0.056820907
+  m_BaseOffset: 0.028410453
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4

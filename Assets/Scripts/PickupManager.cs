@@ -36,7 +36,6 @@ public class PickupManager : MonoBehaviour
                 TapAble tapAble = hit.collider.gameObject.GetComponent<TapAble>();
                 if (tapAble != null)
                 {
-                    Debug.Log("test");
                     tapAble.Tab();
                     playerManager.HandleTapAble(tapAble);   
                 }
@@ -58,6 +57,7 @@ public class PickupManager : MonoBehaviour
         GameObject beetle = Instantiate(beetlePrefab);
         Beetle beetleComponent = beetle.GetComponent<Beetle>();
         beetleComponent.SpawnAtTarget(playerManager.transform, 0.0f, 5.0f);
+        collectables.Add(beetleComponent as CollectableByTongue);
 
         playerManager.NrOfFlies--;
     }

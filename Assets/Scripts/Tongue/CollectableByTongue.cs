@@ -19,6 +19,11 @@ public abstract class CollectableByTongue : TapAble
     public int CollectingWeight { get => collectingWeight; }
     public Vector3 Position { get => transform.position; }
 
+    public void Destroy()
+    {
+        Destroy(this);
+    }
+
     void Start()
     {
         originalScale = transform.localScale;
