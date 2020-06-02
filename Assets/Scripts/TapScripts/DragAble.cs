@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -10,8 +11,11 @@ public class DragAble : TapAble
     private void Start()
     {
         navAgent = GetComponent<NavMeshAgent>();
-    }
 
+        Highscore.LoadHighscores();
+        Highscore.NewScore("wessel",69,"2020-06-02");
+        Highscore.SaveHighscores();
+    }
 
     public void MoveTo(Vector3 pTarget,float dragLenght = 2)
     {
@@ -26,7 +30,6 @@ public class DragAble : TapAble
         }
 
     }
-
 
     public override void InRange()
     {
