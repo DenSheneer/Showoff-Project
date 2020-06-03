@@ -8,8 +8,6 @@ public class Fly : CollectableByTongue
     int value = 1;
     public int Value { get => value; }
 
-    public override void InRange() { base.InRange(); }
-    public override void OutOfRange() { base.OutOfRange(); }
 
     public override void Tab()
     {

@@ -24,22 +24,30 @@ public class DragAble : TapAble
             dir *= sqrDist;
             navAgent.Move(dir);
         }
-
-    }
-
-
-    public override void InRange()
-    {
-
-    }
-
-    public override void OutOfRange()
-    {
-
     }
 
     public override void Tab()
     {
+        return;
+    }
 
+    protected override void OnInRangeEnter()
+    {
+        return;
+    }
+
+    protected override void OnInRangeStay()
+    {
+        return;
+    }
+
+    protected override void OnExitRange()
+    {
+        return;
+    }
+
+    protected override void OnOutOfRangeStay()
+    {
+        return;
     }
 }

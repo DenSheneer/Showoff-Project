@@ -10,12 +10,8 @@ public abstract class CollectableByTongue : TapAble
     // InRange shrink-expand variables:
     protected float minScaleFactor = 1.0f, maxScaleFactor = 2.0f, scaleSpeed = 1.00f;
     Vector3 originalScale;
-    FloatingBehaviour fbh;
+    FloatingBehaviour floatingBehaviour;
 
-    FirstFrameType firstFrameType = FirstFrameType.ENTERED;
-
-    protected bool isInRange = false;
-    public bool IsInRange { get => isInRange; }
     public int CollectingWeight { get => collectingWeight; }
     public Vector3 Position { get => transform.position; }
 
@@ -32,34 +28,23 @@ public abstract class CollectableByTongue : TapAble
         originalScale = transform.localScale;
     }
 
-    public override void InRange()
+    protected override void OnInRangeEnter()
     {
-        if (firstFrameType == FirstFrameType.ENTERED)
-        {
-            firstFrameType = FirstFrameType.EXITED;
-
-            //  In range single exec code here:
-            fbh = new FloatingBehaviour(scaleSpeed, minScaleFactor, maxScaleFactor);
-            isInRange = true;
-        }
-
-        //  In range loop here:
-        transform.localScale = originalScale * fbh.GetScaleFactor();
+        floatingBehaviour = new FloatingBehaviour(scaleSpeed, minScaleFactor, maxScaleFactor);
+    }
+    protected override void OnInRangeStay()
+    {
+        transform.localScale = originalScale * floatingBehaviour.GetScaleFactor();
         return;
     }
-    public override void OutOfRange()
+    protected override void OnExitRange()
     {
-        if (firstFrameType == FirstFrameType.EXITED)
-        {
-            firstFrameType = FirstFrameType.ENTERED;
-
-            //  Out of range single exec code here:
-            gameObject.transform.localScale = originalScale;
-            fbh = null;
-            isInRange = false;
-        }
-        //  Out of range loop here:
-
+        gameObject.transform.localScale = originalScale;
+        floatingBehaviour = null;
+    }
+    protected override void OnOutOfRangeStay()
+    {
+        return;
     }
 
     public static void Disable(CollectableByTongue collectable)
@@ -68,5 +53,3 @@ public abstract class CollectableByTongue : TapAble
         collectable.gameObject.SetActive(false);
     }
 }
-
-public enum FirstFrameType { ENTERED, EXITED }

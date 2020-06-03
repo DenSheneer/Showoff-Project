@@ -15,7 +15,7 @@ public class PlayerManager : MonoBehaviour
     TongueController tongueController = null;
 
     [SerializeField]
-    int nrOfFlies = 1, health = 3;
+    int nrOfFlies = 10, health = 3;
 
     public int Health { get => health; }
     public Vector3 Position { get => transform.position; }
@@ -36,28 +36,33 @@ public class PlayerManager : MonoBehaviour
 
     public void HandleTapAble(TapAble tapAble)
     {
-
-        if (tapAble is CollectableByTongue)
+        if (tapAble.IsInReach)
         {
-            if ((tapAble as CollectableByTongue).IsInRange)
-                handleCollectable(tapAble as CollectableByTongue);
-        }
-        else if (tapAble is DragAble)
-        {
-
-            if (tongueController.CheckReach(tapAble.gameObject))
+            if (tapAble is CollectableByTongue)
             {
-                Debug.Log("drag");
+                handleCollectable(tapAble as CollectableByTongue);
+            }
+            else if (tapAble is DragAble)
+            {
 
                 if (tongueController.InProgress)
                 {
                     tongueController.DetacheDragAble(tapAble as DragAble);
                     movementComponent.reverseDirection = false;
                 }
-                else if (!tongueController.InProgress)
+                else
                 {
                     tongueController.SetDragTarget(tapAble as DragAble);
                     movementComponent.reverseDirection = true;
+                }
+            }
+            else if (tapAble is Lamp)
+            {
+                Lamp lamp = tapAble as Lamp;
+                if (!lamp.IsLit && nrOfFlies > 0)
+                {
+                    lamp.LightUp();
+                    nrOfFlies--;
                 }
             }
         }
