@@ -15,12 +15,15 @@ public class PlayerManager : MonoBehaviour
     TongueController tongueController = null;
 
     [SerializeField]
-    int nrOfFlies = 10, health = 3;
+    int nrOfFlies = 10, score = 3;
 
-    public int Health { get => health; }
+    public int Score { get => score; }
     public Vector3 Position { get => transform.position; }
     public bool IsBusy { get => tongueController.InProgress; }
     public int NrOfFlies { get => nrOfFlies; set => nrOfFlies = value; }
+
+    [SerializeField]
+    private TempUpdateScore updateScore = null;
 
     private void Start()
     {
@@ -75,7 +78,11 @@ public class PlayerManager : MonoBehaviour
 
     public void takeDamage(int damage)
     {
-        health -= damage;
+        score -= damage;
+        if (score < 0)
+            score = 0;
+
+        updateScore.UpdateScore(score.ToString());
     }
 
     private void HandleTargetEaten(TapAble collectable)
@@ -84,12 +91,14 @@ public class PlayerManager : MonoBehaviour
         if (collectable is Fly)
         {
             nrOfFlies += (collectable as Fly).Value;
+            score += (collectable as Fly).Value;
         }
         // Do stuff when the heal item is eaten
         if (collectable is HealItem)
         {
-            health += (collectable as HealItem).HealAmount;
+            score += (collectable as HealItem).HealAmount;
         }
+        updateScore.UpdateScore(score.ToString());
     }
 
     private void HandleTargetReached(TapAble collectable)

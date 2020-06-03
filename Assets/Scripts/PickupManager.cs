@@ -25,9 +25,13 @@ public class PickupManager : MonoBehaviour
         tapMask = LayerMask.GetMask("TapLayer");
         playerManager.SubscribeToEatEvent(updateLevelItems);
 
-        foreach (Lamp lamp in tapAbles)
+        foreach (TapAble tapaBle in tapAbles)
         {
-            lamp.beetleSpawnEvent += updateLevelItems;
+            if (tapaBle is Lamp)
+            {
+                (tapaBle as Lamp).beetleSpawnEvent += updateLevelItems;
+                Debug.Log("lamp found");
+            }
         }
 
         LeanTouch.OnFingerTap += HandleFingerTap;
