@@ -11,6 +11,9 @@ public class TrashSpawner : MonoBehaviour
 
     private float timer = 2f;
 
+    [SerializeField]
+    private float spawnInterval = 3.0f;
+
     void Start()
     {
         boxCollider = GetComponent<BoxCollider>();
@@ -22,7 +25,7 @@ public class TrashSpawner : MonoBehaviour
 
         if (timer <= 0)
         {
-            timer = 2.0f;
+            timer = spawnInterval;
             SpawnTrash();
         }
     }

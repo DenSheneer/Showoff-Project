@@ -15,17 +15,23 @@ public class PlayerManager : MonoBehaviour
     TongueController tongueController = null;
 
     [SerializeField]
-    int nrOfFlies = 0, health = 3;
+    int nrOfFlies = 0;
 
-    public int Health { get => health; }
+    public int Score { get; private set; }
     public Vector3 Position { get => transform.position; }
     public bool IsBusy { get => tongueController.InProgress; }
+
+
+    [SerializeField]
+    private TempUpdateScore scoreUpdater = null;
 
     private void Start()
     {
         movementComponent = GetComponent<FollowRaycastNavMesh>();
         tongueController.tongueReachedTarget += HandleTargetReached;
         tongueController.targetEaten += HandleTargetEaten;
+
+        Score = 0;
     }
 
     public bool CheckInReach(GameObject gameObject)
@@ -35,7 +41,6 @@ public class PlayerManager : MonoBehaviour
 
     public void HandleTapAble(TapAble tapAble)
     {
-
         if (tapAble is CollectableByTongue)
         {
             if ((tapAble as CollectableByTongue).IsInRange)
@@ -43,17 +48,17 @@ public class PlayerManager : MonoBehaviour
         }
         else if (tapAble is DragAble)
         {
+            if (tongueController.InProgress)
+            {
+                tongueController.DetacheDragAble(tapAble as DragAble);
+                movementComponent.reverseDirection = false;
+
+                return;
+            }
 
             if (tongueController.CheckReach(tapAble.gameObject))
             {
-                Debug.Log("drag");
-
-                if (tongueController.InProgress)
-                {
-                    tongueController.DetacheDragAble(tapAble as DragAble);
-                    movementComponent.reverseDirection = false;
-                }
-                else if (!tongueController.InProgress)
+                if (!tongueController.InProgress)
                 {
                     tongueController.SetDragTarget(tapAble as DragAble);
                     movementComponent.reverseDirection = true;
@@ -69,7 +74,11 @@ public class PlayerManager : MonoBehaviour
 
     public void takeDamage(int damage)
     {
-        health -= damage;
+        Score -= damage;
+        if (Score < 0)
+            Score = 0;
+
+        scoreUpdater.UpdateScore(Score.ToString());
     }
 
     private void HandleTargetEaten(TapAble collectable)
@@ -77,13 +86,15 @@ public class PlayerManager : MonoBehaviour
         // Do stuff when the fly is eaten
         if (collectable is Fly)
         {
-            nrOfFlies += (collectable as Fly).Value;
+            Score += (collectable as Fly).Value;
+            
         }
         // Do stuff when the heal item is eaten
         if (collectable is HealItem)
         {
-            health += (collectable as HealItem).HealAmount;
+
         }
+        scoreUpdater.UpdateScore(Score.ToString());
     }
 
     private void HandleTargetReached(TapAble collectable)

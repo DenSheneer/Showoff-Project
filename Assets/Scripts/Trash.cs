@@ -13,6 +13,8 @@ public class Trash : MonoBehaviour
 
     private Rigidbody rb = null;
 
+    private bool hitGround = false;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -28,13 +30,12 @@ public class Trash : MonoBehaviour
 
     private void FixedUpdate()
     {
-
         rb.AddForce(Physics.gravity * 0.25f);
     }
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.collider.tag == "Player")
+        if (collision.collider.tag == "Player" && hitGround == false)
         {
             PlayerManager player = collision.collider.GetComponent<PlayerManager>();
 
@@ -43,6 +44,11 @@ public class Trash : MonoBehaviour
                 player.takeDamage(damage);
                 Despawn();
             }
+        }
+        
+        if (collision.collider.tag == "Ground")
+        {
+            hitGround = true;
         }
     }
     void Despawn()
