@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -11,11 +10,8 @@ public class DragAble : TapAble
     private void Start()
     {
         navAgent = GetComponent<NavMeshAgent>();
-
-        Highscore.LoadHighscores();
-        Highscore.NewScore("wessel",69,"2020-06-02");
-        Highscore.SaveHighscores();
     }
+
 
     public void MoveTo(Vector3 pTarget,float dragLenght = 2)
     {
@@ -28,21 +24,30 @@ public class DragAble : TapAble
             dir *= sqrDist;
             navAgent.Move(dir);
         }
-
-    }
-
-    public override void InRange()
-    {
-
-    }
-
-    public override void OutOfRange()
-    {
-
     }
 
     public override void Tab()
     {
+        return;
+    }
 
+    protected override void OnInRangeEnter()
+    {
+        return;
+    }
+
+    protected override void OnInRangeStay()
+    {
+        return;
+    }
+
+    protected override void OnExitRange()
+    {
+        return;
+    }
+
+    protected override void OnOutOfRangeStay()
+    {
+        return;
     }
 }

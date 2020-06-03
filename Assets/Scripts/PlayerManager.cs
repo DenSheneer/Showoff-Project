@@ -15,23 +15,18 @@ public class PlayerManager : MonoBehaviour
     TongueController tongueController = null;
 
     [SerializeField]
-    int nrOfFlies = 0;
+    int nrOfFlies = 10, health = 3;
 
-    public int Score { get; private set; }
+    public int Health { get => health; }
     public Vector3 Position { get => transform.position; }
     public bool IsBusy { get => tongueController.InProgress; }
-
-
-    [SerializeField]
-    private TempUpdateScore scoreUpdater = null;
+    public int NrOfFlies { get => nrOfFlies; set => nrOfFlies = value; }
 
     private void Start()
     {
         movementComponent = GetComponent<FollowRaycastNavMesh>();
         tongueController.tongueReachedTarget += HandleTargetReached;
         tongueController.targetEaten += HandleTargetEaten;
-
-        Score = 0;
     }
 
     public bool CheckInReach(GameObject gameObject)
@@ -41,27 +36,33 @@ public class PlayerManager : MonoBehaviour
 
     public void HandleTapAble(TapAble tapAble)
     {
-        if (tapAble is CollectableByTongue)
+        if (tapAble.IsInReach)
         {
-            if ((tapAble as CollectableByTongue).IsInRange)
+            if (tapAble is CollectableByTongue)
+            {
                 handleCollectable(tapAble as CollectableByTongue);
-        }
-        else if (tapAble is DragAble)
-        {
-            if (tongueController.InProgress)
-            {
-                tongueController.DetacheDragAble(tapAble as DragAble);
-                movementComponent.reverseDirection = false;
-
-                return;
             }
-
-            if (tongueController.CheckReach(tapAble.gameObject))
+            else if (tapAble is DragAble)
             {
-                if (!tongueController.InProgress)
+
+                if (tongueController.InProgress)
+                {
+                    tongueController.DetacheDragAble(tapAble as DragAble);
+                    movementComponent.reverseDirection = false;
+                }
+                else
                 {
                     tongueController.SetDragTarget(tapAble as DragAble);
                     movementComponent.reverseDirection = true;
+                }
+            }
+            else if (tapAble is Lamp)
+            {
+                Lamp lamp = tapAble as Lamp;
+                if (!lamp.IsLit && nrOfFlies > 0)
+                {
+                    lamp.LightUp();
+                    nrOfFlies--;
                 }
             }
         }
@@ -74,11 +75,7 @@ public class PlayerManager : MonoBehaviour
 
     public void takeDamage(int damage)
     {
-        Score -= damage;
-        if (Score < 0)
-            Score = 0;
-
-        scoreUpdater.UpdateScore(Score.ToString());
+        health -= damage;
     }
 
     private void HandleTargetEaten(TapAble collectable)
@@ -86,15 +83,13 @@ public class PlayerManager : MonoBehaviour
         // Do stuff when the fly is eaten
         if (collectable is Fly)
         {
-            Score += (collectable as Fly).Value;
-            
+            nrOfFlies += (collectable as Fly).Value;
         }
         // Do stuff when the heal item is eaten
         if (collectable is HealItem)
         {
-
+            health += (collectable as HealItem).HealAmount;
         }
-        scoreUpdater.UpdateScore(Score.ToString());
     }
 
     private void HandleTargetReached(TapAble collectable)

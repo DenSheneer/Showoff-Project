@@ -6,7 +6,44 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public abstract class TapAble : MonoBehaviour
 {
+    private FirstFrameType firstFrameType = FirstFrameType.ENTERED;
+
+    private bool isInReach = false;
+
+    public bool IsInReach { get => isInReach; }
+
     public abstract void Tab();
-    public abstract void InRange();
-    public abstract void OutOfRange();
+    protected abstract void OnInRangeEnter();
+    protected abstract void OnInRangeStay();
+    protected abstract void OnExitRange();
+    protected abstract void OnOutOfRangeStay();
+
+
+    private void OnEnable()
+    {
+        gameObject.layer = LayerMask.NameToLayer("TapLayer");
+    }
+
+    public void InRange()
+    {
+        if (firstFrameType == FirstFrameType.ENTERED)
+        {
+            isInReach = true;
+            firstFrameType = FirstFrameType.EXITED;
+            OnInRangeEnter();
+        }
+        OnInRangeStay();
+    }
+    public void OutOfRange()
+    {
+        if (firstFrameType == FirstFrameType.EXITED)
+        {
+            isInReach = false;
+            firstFrameType = FirstFrameType.ENTERED;
+            OnExitRange();
+        }
+        OnOutOfRangeStay();
+    }
 }
+
+public enum FirstFrameType { ENTERED, EXITED }
