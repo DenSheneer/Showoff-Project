@@ -6,7 +6,6 @@ using Lean.Touch;
 
 public class PickupManager : MonoBehaviour
 {
-
     [SerializeField]
     List<CollectableByTongue> collectables = null, collected = null;
 
@@ -33,7 +32,6 @@ public class PickupManager : MonoBehaviour
                 TapAble tapAble = hit.collider.gameObject.GetComponent<TapAble>();
                 if (tapAble != null)
                 {
-                    Debug.Log("test");
                     tapAble.Tab();
                     playerManager.HandleTapAble(tapAble);   
                 }
