@@ -1210,7 +1210,7 @@ TerrainCollider:
   m_GameObject: {fileID: 250750163}
   m_Material: {fileID: 0}
   m_Enabled: 1
-  m_TerrainData: {fileID: 15600000, guid: b291eff01c910d043893d93f9819fe97, type: 2}
+  m_TerrainData: {fileID: 15600000, guid: 666bcaa6bc3062c48b846d7ea48efb87, type: 2}
   m_EnableTreeColliders: 1
 --- !u!218 &250750165
 Terrain:
@@ -1221,7 +1221,7 @@ Terrain:
   m_GameObject: {fileID: 250750163}
   m_Enabled: 1
   serializedVersion: 6
-  m_TerrainData: {fileID: 15600000, guid: b291eff01c910d043893d93f9819fe97, type: 2}
+  m_TerrainData: {fileID: 15600000, guid: 666bcaa6bc3062c48b846d7ea48efb87, type: 2}
   m_TreeDistance: 5000
   m_TreeBillboardDistance: 10
   m_TreeCrossFadeLength: 20
@@ -2838,7 +2838,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cd053f4bc628d54eb7bc6471dc09000, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collectables:
+  tapAbles:
   - {fileID: 296365257}
   - {fileID: 836358623}
   - {fileID: 430398762}
@@ -2871,8 +2871,11 @@ MonoBehaviour:
   - {fileID: 663909342}
   - {fileID: 291332016}
   - {fileID: 1193930691}
-  collected: []
+  - {fileID: 165113399}
   playerManager: {fileID: 1867569033}
+  beetlePrefab: {fileID: 5754188021534821478, guid: 7d3153f79d3a65f49a1d78a225318c4e,
+    type: 3}
+  spawnCoolDown: 10
 --- !u!4 &634020541
 Transform:
   m_ObjectHideFlags: 0
@@ -6432,7 +6435,7 @@ PrefabInstance:
     - target: {fileID: 6668305791139104370, guid: 879c12f5a6c5b1941a18fbcb88af9fe0,
         type: 3}
       propertyPath: reachDistance
-      value: 4
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6668305791139104370, guid: 879c12f5a6c5b1941a18fbcb88af9fe0,
         type: 3}

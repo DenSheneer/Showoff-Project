@@ -47,7 +47,7 @@ public class PlayerManager : MonoBehaviour
             }
             else if (tapAble is DragAble)
             {
-
+                Debug.Log("drag");
                 if (tongueController.InProgress)
                 {
                     tongueController.DetacheDragAble(tapAble as DragAble);
@@ -82,7 +82,8 @@ public class PlayerManager : MonoBehaviour
         if (score < 0)
             score = 0;
 
-        updateScore.UpdateScore(score.ToString());
+        if (updateScore != null)
+            updateScore.UpdateScore(score.ToString());
     }
 
     private void HandleTargetEaten(TapAble collectable)
@@ -98,7 +99,8 @@ public class PlayerManager : MonoBehaviour
         {
             score += (collectable as HealItem).HealAmount;
         }
-        updateScore.UpdateScore(score.ToString());
+        if (updateScore != null)
+            updateScore.UpdateScore(score.ToString());
     }
 
     private void HandleTargetReached(TapAble collectable)
