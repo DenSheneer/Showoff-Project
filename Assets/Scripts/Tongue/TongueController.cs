@@ -185,13 +185,11 @@ public class TongueController : MonoBehaviour
 
         if (hitRay.collider == null)
         {
-
             Vector3 delta = tongueStart.position - target.transform.position;
             float distance = Vector3.SqrMagnitude(delta);
 
             if (distance < reachDistance)
             {
-
                 float angle = Vector3.Angle(tongueStart.transform.forward, delta);
 
                 if (angle >= maxAngle)

@@ -3,25 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-[RequireComponent(typeof(NavMeshAgent))]
 public class Beetle : CollectableByTongue
 {
     bool idle = true;
-    float minRoamDist = 1.1f;
-    float maxRoamDist = 2.0f;
+
+    [SerializeField]
+    float speed = 1.0f, minRoamDist = 1.1f, maxRoamDist = 2.0f;
 
     Vector3 currentTarget;
-    NavMeshAgent agent;
 
-    private void Awake()
+    private void Start()
     {
-        agent = GetComponent<NavMeshAgent>();
-        NewRandomRoamTarget(minRoamDist, maxRoamDist);
-    }
-
-    public override void Tab()
-    {
-        StopAllCoroutines();
+        maxScaleFactor = 1.5f;
+        scaleSpeed = 0.75f;
+        NewRandomDestination(minRoamDist, maxRoamDist);
     }
 
     public void SpawnAtTarget(Transform target, float minDist, float maxDist)
@@ -35,7 +30,7 @@ public class Beetle : CollectableByTongue
         else
             transform.position = hitRay.point;
     }
-    public void NewRandomRoamTarget(float minDist, float maxDist)
+    public void NewRandomDestination(float minDist, float maxDist)
     {
         idle = false;
         float randomDistance = Random.Range(minDist, maxDist);
@@ -47,7 +42,7 @@ public class Beetle : CollectableByTongue
         else
             currentTarget = hitray.point;
 
-        agent.SetDestination(currentTarget);
+        RotateTowardsTarget(currentTarget - transform.position);
     }
 
     RaycastHit checkLoS(Transform target, Vector3 direction, float distance)
@@ -64,23 +59,42 @@ public class Beetle : CollectableByTongue
         newDir.Normalize();
         return newDir;
     }
+    bool moveTowardsDestination(Vector3 target)
+    {
+        transform.position += transform.forward * speed * Time.deltaTime;
+
+        Vector3 delta = target - transform.position;
+        if (Vector3.SqrMagnitude(delta) < 1.0f)
+            return true;
+        else
+            return false;
+    }
+    public void RotateTowardsTarget(Vector3 delta)
+    {
+        Quaternion rotation = Quaternion.LookRotation(delta);
+        transform.rotation = rotation;
+    }
 
     private void Update()
     {
         if (!idle)
         {
-            Vector3 delta = currentTarget - transform.position;
-            if (Vector3.SqrMagnitude(delta) < 1.0f)
+            if (moveTowardsDestination(currentTarget))
             {
                 idle = true;
                 float randomIdleTime = Random.Range(0, 2.5f);
-                StartCoroutine(hold(randomIdleTime));
+                StartCoroutine(idleUntilNextMove(randomIdleTime));
             }
         }
     }
-    IEnumerator hold(float time)
+    IEnumerator idleUntilNextMove(float time)
     {
         yield return new WaitForSeconds(time);
-        NewRandomRoamTarget(minRoamDist, maxRoamDist);
+        NewRandomDestination(minRoamDist, maxRoamDist);
+    }
+
+    public override void Tab()
+    {
+        return;
     }
 }

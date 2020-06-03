@@ -14,7 +14,7 @@ public class PickupManager : MonoBehaviour
     PlayerManager playerManager = null;
 
     [SerializeField]
-    GameObject beetlePrefab;
+    Beetle beetlePrefab = null;
 
     int tapMask;
 
@@ -23,6 +23,11 @@ public class PickupManager : MonoBehaviour
         tapMask = LayerMask.GetMask("TapLayer");
         playerManager.SubscribeToEatEvent(updateLevelItems);
         LeanTouch.OnFingerTap += HandleFingerTap;
+    }
+
+    private void Start()
+    {
+        StartCoroutine(flySpawnTimer(3.0f));
     }
 
     void HandleFingerTap(LeanFinger finger)
@@ -37,7 +42,7 @@ public class PickupManager : MonoBehaviour
                 if (tapAble != null)
                 {
                     tapAble.Tab();
-                    playerManager.HandleTapAble(tapAble);   
+                    playerManager.HandleTapAble(tapAble);
                 }
             }
         }
@@ -54,10 +59,10 @@ public class PickupManager : MonoBehaviour
 
     void SpawnBugs()
     {
-        GameObject beetle = Instantiate(beetlePrefab);
-        Beetle beetleComponent = beetle.GetComponent<Beetle>();
-        beetleComponent.SpawnAtTarget(playerManager.transform, 0.0f, 5.0f);
-        collectables.Add(beetleComponent as CollectableByTongue);
+        Beetle newBeetle = Instantiate(beetlePrefab);
+
+        newBeetle.SpawnAtTarget(playerManager.transform, 0.0f, 5.0f);
+        collectables.Add(newBeetle as CollectableByTongue);
 
         playerManager.NrOfFlies--;
     }
@@ -71,10 +76,15 @@ public class PickupManager : MonoBehaviour
             else
                 collectable.OutOfRange();
         }
-        if (playerManager.NrOfFlies > 0)
-        {
-            SpawnBugs();
-        }
+    }
 
+    IEnumerator flySpawnTimer(float time)
+    {
+        yield return new WaitForSeconds(time);
+
+        if (playerManager.NrOfFlies > 0)
+            SpawnBugs();
+
+        StartCoroutine(flySpawnTimer(3.0f));
     }
 }
