@@ -1856,7 +1856,7 @@ GameObject:
   - component: {fileID: 250750164}
   m_Layer: 12
   m_Name: Terrain
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -1870,7 +1870,7 @@ TerrainCollider:
   m_GameObject: {fileID: 250750163}
   m_Material: {fileID: 0}
   m_Enabled: 1
-  m_TerrainData: {fileID: 15600000, guid: b291eff01c910d043893d93f9819fe97, type: 2}
+  m_TerrainData: {fileID: 15600000, guid: 666bcaa6bc3062c48b846d7ea48efb87, type: 2}
   m_EnableTreeColliders: 1
 --- !u!218 &250750165
 Terrain:
@@ -1881,7 +1881,7 @@ Terrain:
   m_GameObject: {fileID: 250750163}
   m_Enabled: 1
   serializedVersion: 6
-  m_TerrainData: {fileID: 15600000, guid: b291eff01c910d043893d93f9819fe97, type: 2}
+  m_TerrainData: {fileID: 15600000, guid: 666bcaa6bc3062c48b846d7ea48efb87, type: 2}
   m_TreeDistance: 5000
   m_TreeBillboardDistance: 10
   m_TreeCrossFadeLength: 20
@@ -3920,41 +3920,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cd053f4bc628d54eb7bc6471dc09000, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collectables:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  collected: []
+  tapAbles: []
   playerManager: {fileID: 1867569033}
+  beetlePrefab: {fileID: 0}
+  spawnCoolDown: 10
 --- !u!4 &634020541
 Transform:
   m_ObjectHideFlags: 0
