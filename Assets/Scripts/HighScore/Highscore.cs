@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using UnityEditor.Profiling.Memory.Experimental;
 using UnityEngine;
 
 public static class Highscore

@@ -46,25 +46,21 @@ public class PlayerManager : MonoBehaviour
 
     public void HandleTapAble(TapAble tapAble)
     {
+        if (tapAble is DragAble)
+        {
+            if (tongueController.InProgress)
+            {
+                tongueController.DetacheDragAble(tapAble as DragAble);
+                movementComponent.reverseDirection = false;
+                return;
+            }
+        }
+
         if (tapAble.IsInReach)
         {
             if (tapAble is CollectableByTongue)
             {
                 handleCollectable(tapAble as CollectableByTongue);
-            }
-            else if (tapAble is DragAble)
-            {
-                Debug.Log("drag");
-                if (tongueController.InProgress)
-                {
-                    tongueController.DetacheDragAble(tapAble as DragAble);
-                    movementComponent.reverseDirection = false;
-                }
-                else
-                {
-                    tongueController.SetDragTarget(tapAble as DragAble);
-                    movementComponent.reverseDirection = true;
-                }
             }
             else if (tapAble is Lamp)
             {
@@ -75,7 +71,17 @@ public class PlayerManager : MonoBehaviour
                     nrOfFlies--;
                 }
             }
+            else if (tapAble is DragAble)
+            {
+                if (!tongueController.InProgress)
+                {
+                    tongueController.SetDragTarget(tapAble as DragAble);
+                    movementComponent.reverseDirection = true;
+                }
+            }
+
         }
+
     }
     void handleCollectable(CollectableByTongue collectable)
     {

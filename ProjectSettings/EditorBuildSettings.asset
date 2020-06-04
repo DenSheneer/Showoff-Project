@@ -5,19 +5,10 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
   - enabled: 1
     path: Assets/Scenes/StartScreen.unity
     guid: 9540a99c0d4ff904490259b053c35476
-  - enabled: 0
-    path: Assets/Scenes/DragScene.unity
-    guid: e9fed60615a72ba4ea9ac661bddcb080
   - enabled: 1
-    path: Assets/Scenes/Prototype.unity
-    guid: da7fa937bb8baeb48930868977c56615
+    path: Assets/Scenes/Prototype_Daan.unity
+    guid: 82a4af8d32a1cd9479ac2b5514958e6d
   m_configObjects: {}

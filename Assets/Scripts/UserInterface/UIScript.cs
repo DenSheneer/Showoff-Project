@@ -162,7 +162,7 @@ public class UIScript : MonoBehaviour
     {
         changeState((int)currentState + 1);
         PlayerInfo.PlayerName = osk.TargetTextField.text;
-        SceneManager.LoadScene("Prototype");
+        SceneManager.LoadScene("Prototype_Daan");
     }
     void changeState(int nextStage)
     {
