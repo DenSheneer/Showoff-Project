@@ -9,23 +9,24 @@ public abstract class CollectableByTongue : TapAble
 
     // InRange shrink-expand variables:
     protected float minScaleFactor = 1.0f, maxScaleFactor = 2.0f, scaleSpeed = 1.00f;
-    Vector3 originalScale;
+    protected Vector3 originalScale;
     FloatingBehaviour floatingBehaviour;
+
+    [SerializeField]
+    Transform GFXTransform;
 
     public int CollectingWeight { get => collectingWeight; }
     public Vector3 Position { get => transform.position; }
 
     void OnEnable()
     {
-        originalScale = transform.localScale;
+        originalScale = GFXTransform.localScale;
         this.tag = "TongueCollectable";
     }
 
     public void Collect(TongueController collector)
     {
-        transform.localScale = originalScale;
         transform.parent = collector.transform;
-        originalScale = transform.localScale;
     }
 
     protected override void OnInRangeEnter()
@@ -34,12 +35,12 @@ public abstract class CollectableByTongue : TapAble
     }
     protected override void OnInRangeStay()
     {
-        transform.localScale = originalScale * floatingBehaviour.GetScaleFactor();
+        GFXTransform.localScale = originalScale * floatingBehaviour.GetScaleFactor();
         return;
     }
     protected override void OnExitRange()
     {
-        gameObject.transform.localScale = originalScale;
+        GFXTransform.localScale = originalScale;
         floatingBehaviour = null;
     }
     protected override void OnOutOfRangeStay()

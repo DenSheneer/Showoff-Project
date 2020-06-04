@@ -11,12 +11,33 @@ public class Beetle : CollectableByTongue
     float speed = 1.0f, minRoamDist = 1.1f, maxRoamDist = 2.0f;
 
     Vector3 currentTarget;
+    TutorialIcon tutorialIcon;
 
     private void Start()
     {
         maxScaleFactor = 1.5f;
         scaleSpeed = 0.75f;
         NewRandomDestination(minRoamDist, maxRoamDist);
+    }
+    protected override void OnInRangeEnter()
+    {
+        base.OnInRangeEnter();
+
+        tutorialIcon = new TutorialIcon(transform, TutorialType.TAB_BEETLE);
+    }
+    protected override void OnInRangeStay()
+    {
+        base.OnInRangeStay();
+
+
+        tutorialIcon.UpdateIcon();
+    }
+    protected override void OnExitRange()
+    {
+        base.OnExitRange();
+
+        tutorialIcon.Destroy();
+        tutorialIcon = null;
     }
 
     public void SpawnAtTarget(Transform target, float minDist, float maxDist)
