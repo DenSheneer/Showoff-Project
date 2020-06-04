@@ -15,6 +15,7 @@ public static class Highscore
 
     public static void LoadHighscores()
     {
+
         currentDayScores = new List<PlayerScore>();
         allAroundScores = new List<PlayerScore>(); 
 
@@ -264,4 +265,9 @@ public static class Highscore
 
         return true;
     }
+
+
+
+
+
 }
