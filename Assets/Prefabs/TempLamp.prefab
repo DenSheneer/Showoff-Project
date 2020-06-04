@@ -107,5 +107,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 042beebc9baffcb4ebf22e8dcd6b5e5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  beetlePrefab: {fileID: 5754188021534821478, guid: 7d3153f79d3a65f49a1d78a225318c4e,
+  fliesLeft: 5
+  spawnCooldown: 3
+  minSpawnDistance: 0.01
+  maxSpawnDistance: 3
+  beetlePrefab: {fileID: 2286792753161514793, guid: 04171140a5bcfa34bb903afe70adbb9b,
     type: 3}

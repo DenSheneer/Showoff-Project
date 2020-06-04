@@ -15,6 +15,8 @@ public class Lamp : TapAble
     public delegate void BeetleSpawnEvent(Beetle newBeetle);
     public BeetleSpawnEvent beetleSpawnEvent;
 
+    TutorialIcon tutorialIcon = null;
+
     [SerializeField]
     Beetle beetlePrefab;
 
@@ -25,19 +27,19 @@ public class Lamp : TapAble
         return;
     }
 
-    protected override void OnExitRange()
-    {
-        return;
-    }
-
     protected override void OnInRangeEnter()
     {
-        return;
+        tutorialIcon = new TutorialIcon(transform, TutorialType.TAB_LANTERN);
     }
 
     protected override void OnInRangeStay()
     {
-        return;
+        tutorialIcon.UpdateIcon();
+    }
+    protected override void OnExitRange()
+    {
+        tutorialIcon.Destroy();
+        tutorialIcon = null;
     }
 
     protected override void OnOutOfRangeStay()

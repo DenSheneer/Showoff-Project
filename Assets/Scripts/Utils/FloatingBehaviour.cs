@@ -4,7 +4,7 @@ using UnityEngine;
 public class FloatingBehaviour
 {
     private float min, max, speed;
-    public float scaleFactor;
+    private float scaleFactor;
 
     public FloatingBehaviour(float pSpeed = 1, float pMin = 1, float pMax = 2)
     {

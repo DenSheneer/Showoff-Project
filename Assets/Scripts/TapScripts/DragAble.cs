@@ -6,6 +6,7 @@ using UnityEngine.AI;
 public class DragAble : TapAble
 {
     private NavMeshAgent navAgent = null;
+    TutorialIcon tutorialIcon = null;
 
     private void Start()
     {
@@ -33,17 +34,17 @@ public class DragAble : TapAble
 
     protected override void OnInRangeEnter()
     {
-        return;
+        tutorialIcon = new TutorialIcon(transform, TutorialType.TAB_DRAGABLE);
     }
 
     protected override void OnInRangeStay()
     {
-        return;
+        tutorialIcon.UpdateIcon();
     }
-
     protected override void OnExitRange()
     {
-        return;
+        tutorialIcon.Destroy();
+        tutorialIcon = null;
     }
 
     protected override void OnOutOfRangeStay()

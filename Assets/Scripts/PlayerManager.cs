@@ -14,6 +14,8 @@ public class PlayerManager : MonoBehaviour
     [SerializeField]
     TongueController tongueController = null;
 
+    TutorialIcon tutorialIcon;
+
     [SerializeField]
     int nrOfFlies = 10, score = 3;
 
@@ -30,6 +32,11 @@ public class PlayerManager : MonoBehaviour
         movementComponent = GetComponent<FollowRaycastNavMesh>();
         tongueController.tongueReachedTarget += HandleTargetReached;
         tongueController.targetEaten += HandleTargetEaten;
+        tutorialIcon = new TutorialIcon(transform, TutorialType.SWIPE_TO_MOVE);
+    }
+    private void Update()
+    {
+        tutorialIcon.UpdateIcon();
     }
 
     public bool CheckInReach(GameObject gameObject)
