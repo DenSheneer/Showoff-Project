@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Remoting.Messaging;
 using Lean.Touch;
 using UnityEngine;
 using UnityEngine.AI;
@@ -19,11 +20,14 @@ public class FollowRaycastNavMesh : MonoBehaviour
     private int layerMask;
     private int groundMask;
 
+    float distanceWalked = 0.0f;
+
 
     float timer = 0;
     float tapDelay = 1.00f;     // Default delay for registering a tap as a gesture is 1/10 of a second .
 
     public bool reverseDirection = false;
+    public float DistanceWalked { get => distanceWalked; }
 
     void OnEnable() { LeanTouch.OnGesture += handleFingerGesture; }
     void OnDisable() { LeanTouch.OnGesture -= handleFingerGesture; }
@@ -95,13 +99,12 @@ public class FollowRaycastNavMesh : MonoBehaviour
             agent.speed = startSpeed;
             delta.Normalize();
 
-            //agent.Move(transform.forward * Time.deltaTime * 3.0f);
-
             if (reverseDirection)
                 agent.Move(-transform.forward * Time.deltaTime * agent.speed);
             else if (!reverseDirection)
                 agent.Move(transform.forward * Time.deltaTime * agent.speed);
-        
+
+            distanceWalked += (transform.forward * Time.deltaTime * agent.speed).magnitude;
         }
     }
     private void stop()

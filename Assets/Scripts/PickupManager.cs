@@ -25,21 +25,16 @@ public class PickupManager : MonoBehaviour
         tapMask = LayerMask.GetMask("TapLayer");
         playerManager.SubscribeToEatEvent(updateLevelItems);
 
-        foreach (TapAble tapaBle in tapAbles)
-        {
-            if (tapaBle is Lamp)
-            {
-                (tapaBle as Lamp).beetleSpawnEvent += updateLevelItems;
-                Debug.Log("lamp found");
-            }
-        }
+        foreach (TapAble tapAble in tapAbles)
+            if (tapAble is Lamp)
+                (tapAble as Lamp).beetleSpawnEvent += updateLevelItems;
 
         LeanTouch.OnFingerTap += HandleFingerTap;
     }
 
     private void Start()
     {
-        StartCoroutine(flySpawnTimer(spawnCoolDown));
+        //StartCoroutine(flySpawnTimer(spawnCoolDown));     // Passive Beetle spawning without lantern, uncomment to turn on.
     }
 
     void HandleFingerTap(LeanFinger finger)
@@ -82,10 +77,16 @@ public class PickupManager : MonoBehaviour
     {
         foreach (TapAble tapAble in tapAbles)
         {
-            if (playerManager.CheckInReach(tapAble.gameObject))
+            if (playerManager.CheckInReach(tapAble))
+            {
                 tapAble.InRange();
+                playerManager.HandleInReachTapAble(tapAble);
+            }
             else
+            {
+                tapAble.ExitEvent += playerManager.TapAbleOutOfReach;
                 tapAble.OutOfRange();
+            }
         }
     }
 

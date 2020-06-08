@@ -7,16 +7,24 @@ using UnityEngine;
 public abstract class TapAble : MonoBehaviour
 {
     private FirstFrameType firstFrameType = FirstFrameType.ENTERED;
+    protected TabAbleType tapAbleType;
+
+    public delegate void OnExitEvent(TapAble tapable);
+    public delegate void OnExitStayEvent(TapAble tapable);
+    public delegate void OnEnterEvent(TapAble tapable);
+    public delegate void OnEnterStayEvent(TapAble tapable);
+
+    public OnExitEvent ExitEvent;
+    public OnExitStayEvent ExitStayEvent;
+    public OnEnterEvent EnterEvent;
+    public OnEnterStayEvent EnterStayEvent;
 
     private bool isInReach = false;
 
     public bool IsInReach { get => isInReach; }
+    public TabAbleType TapAbleType { get => tapAbleType; }
 
     public abstract void Tab();
-    protected abstract void OnInRangeEnter();
-    protected abstract void OnInRangeStay();
-    protected abstract void OnExitRange();
-    protected abstract void OnOutOfRangeStay();
 
 
     private void OnEnable()
@@ -30,9 +38,9 @@ public abstract class TapAble : MonoBehaviour
         {
             isInReach = true;
             firstFrameType = FirstFrameType.EXITED;
-            OnInRangeEnter();
+            EnterEvent?.Invoke(this);
         }
-        OnInRangeStay();
+        EnterStayEvent?.Invoke(this);
     }
     public void OutOfRange()
     {
@@ -40,9 +48,9 @@ public abstract class TapAble : MonoBehaviour
         {
             isInReach = false;
             firstFrameType = FirstFrameType.ENTERED;
-            OnExitRange();
+            ExitEvent?.Invoke(this);
         }
-        OnOutOfRangeStay();
+        ExitStayEvent?.Invoke(this);
     }
 }
 

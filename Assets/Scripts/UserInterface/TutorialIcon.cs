@@ -14,7 +14,11 @@ public class TutorialIcon
     Vector3 originalScale;
     FloatingBehaviour floatingBehaviour = new FloatingBehaviour(0.25f, 1f, 1.1f);
 
-    public TutorialIcon(Transform pParent, TutorialType pTutorialType)
+    TabAbleType type;
+
+    public TabAbleType Type { get => type; }
+
+    public TutorialIcon(Transform pParent, TabAbleType pTutorialType)
     {
         targetObject = Object.Instantiate(Resources.Load("Prefabs/TutorialCanvas") as GameObject);
         transform = targetObject.transform;
@@ -36,36 +40,39 @@ public class TutorialIcon
         transform.rotation = rotation;
     }
 
-    void SetTutorialType(TutorialType tutorialType)
+    void SetTutorialType(TabAbleType tutorialType)
     {
+        type = tutorialType;
+
         Image image = targetObject.GetComponent<Image>();
         switch (tutorialType)
         {
-            case TutorialType.TAB_BEETLE:
+            case TabAbleType.TAB_BEETLE:
                 image.sprite = Resources.Load<Sprite>(imgPath + "Beetle4");
                 break;
-            case TutorialType.TAB_FIREFLY:
+            case TabAbleType.TAB_FIREFLY:
                 image.sprite = Resources.Load<Sprite>(imgPath + "Firefly4");
                 break;
-            case TutorialType.TAB_DRAGABLE:
+            case TabAbleType.TAB_DRAGABLE:
                 image.sprite = Resources.Load<Sprite>(imgPath + "Trash4");
                 break;
-            case TutorialType.TAB_LANTERN:
+            case TabAbleType.TAB_LANTERN:
                 image.sprite = Resources.Load<Sprite>(imgPath + "Lantern4");
                 break;
-            case TutorialType.SWIPE_TO_MOVE:
+            case TabAbleType.SWIPE_TO_MOVE:
                 image.sprite = Resources.Load<Sprite>(imgPath + "Swipe4");
                 break;
         }
     }
 
-    public void Destroy()
+    public void DestroySelf()
     {
+        floatingBehaviour = null;
         GameObject.Destroy(targetObject);
     }
 }
 
-public enum TutorialType
+public enum TabAbleType
 {
     TAB_BEETLE,
     TAB_DRAGABLE,

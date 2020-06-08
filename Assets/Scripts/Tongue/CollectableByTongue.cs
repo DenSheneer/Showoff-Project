@@ -20,8 +20,12 @@ public abstract class CollectableByTongue : TapAble
 
     void OnEnable()
     {
-        originalScale = GFXTransform.localScale;
         this.tag = "TongueCollectable";
+        originalScale = GFXTransform.localScale;
+
+        EnterEvent += collectable_OnInRange;
+        EnterStayEvent += collectable_InRangeStay;
+        ExitEvent += collectable_OnExit;
     }
 
     public void Collect(TongueController collector)
@@ -29,23 +33,19 @@ public abstract class CollectableByTongue : TapAble
         transform.parent = collector.transform;
     }
 
-    protected override void OnInRangeEnter()
-    {
-        floatingBehaviour = new FloatingBehaviour(scaleSpeed, minScaleFactor, maxScaleFactor);
-    }
-    protected override void OnInRangeStay()
-    {
-        GFXTransform.localScale = originalScale * floatingBehaviour.GetScaleFactor();
-        return;
-    }
-    protected override void OnExitRange()
+    void collectable_OnExit(TapAble tapAble)
     {
         GFXTransform.localScale = originalScale;
         floatingBehaviour = null;
     }
-    protected override void OnOutOfRangeStay()
+
+    private void collectable_OnInRange(TapAble tapAble)
     {
-        return;
+        floatingBehaviour = new FloatingBehaviour(scaleSpeed, minScaleFactor, maxScaleFactor);
+    }
+    private void collectable_InRangeStay(TapAble tapAble)
+    {
+        GFXTransform.localScale = originalScale * floatingBehaviour.GetScaleFactor();
     }
 
     public static void Disable(CollectableByTongue collectable)

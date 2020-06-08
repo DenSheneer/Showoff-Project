@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class Lamp : TapAble
@@ -8,6 +9,7 @@ public class Lamp : TapAble
     int fliesLeft = 5;
 
     bool isLit = false;
+    protected TabAbleType tapableType;
 
     [SerializeField]
     float spawnCooldown = 3.0f, minSpawnDistance = 0.01f, maxSpawnDistance = 3.0f;
@@ -15,34 +17,17 @@ public class Lamp : TapAble
     public delegate void BeetleSpawnEvent(Beetle newBeetle);
     public BeetleSpawnEvent beetleSpawnEvent;
 
-    TutorialIcon tutorialIcon = null;
-
     [SerializeField]
     Beetle beetlePrefab;
 
     public bool IsLit { get => isLit; }
 
+    private void Start()
+    {
+        tapAbleType = TabAbleType.TAB_LANTERN;
+    }
+
     public override void Tab()
-    {
-        return;
-    }
-
-    protected override void OnInRangeEnter()
-    {
-        tutorialIcon = new TutorialIcon(transform, TutorialType.TAB_LANTERN);
-    }
-
-    protected override void OnInRangeStay()
-    {
-        tutorialIcon.UpdateIcon();
-    }
-    protected override void OnExitRange()
-    {
-        tutorialIcon.Destroy();
-        tutorialIcon = null;
-    }
-
-    protected override void OnOutOfRangeStay()
     {
         return;
     }
@@ -66,7 +51,6 @@ public class Lamp : TapAble
         if (fliesLeft > 0)
         {
             spawnBeetle();
-
             StartCoroutine(flySpawnTimer(spawnCooldown));
         }
 
@@ -75,10 +59,8 @@ public class Lamp : TapAble
     void spawnBeetle()
     {
         Beetle newBeetle = Instantiate(beetlePrefab);
-
         newBeetle.SpawnAtTarget(transform, minSpawnDistance, maxSpawnDistance);
-
-        newBeetle.transform.position += new Vector3(0, -transform.position.y + 0.05f, 0);     // Might change, this forces the new beetle's y position to be a given number.
+        newBeetle.transform.position += new Vector3(0, -transform.position.y, 0);     // Might change, this forces the new beetle's y position to be a given number.
 
         beetleSpawnEvent?.Invoke(newBeetle);
         fliesLeft--;
