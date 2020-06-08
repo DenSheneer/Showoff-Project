@@ -9,27 +9,27 @@ public class Lamp : TapAble
     int fliesLeft = 5;
 
     bool isLit = false;
-    protected TabAbleType tapableType;
 
     [SerializeField]
     float spawnCooldown = 3.0f, minSpawnDistance = 0.01f, maxSpawnDistance = 3.0f;
 
-    public delegate void BeetleSpawnEvent(Beetle newBeetle);
-    public BeetleSpawnEvent beetleSpawnEvent;
-
-    [SerializeField]
-    Beetle beetlePrefab;
+    BeetleSpawner beetleSpawner;
 
     public bool IsLit { get => isLit; }
 
     private void Start()
     {
         tapAbleType = TabAbleType.TAB_LANTERN;
+        beetleSpawner = new BeetleSpawner(transform, 5, 3.0f);
     }
 
     public override void Tab()
     {
         return;
+    }
+    public void SubscribeToBeetleSpawnEvent(BeetleSpawner.BeetleSpawnEvent beetleSpawnEvent)
+    {
+        beetleSpawner.SubscribeToBeetleSpawnEvent(beetleSpawnEvent);
     }
 
     public void LightUp()
@@ -39,30 +39,15 @@ public class Lamp : TapAble
             // > code that changes the graphics to a lit lamp
 
             isLit = true;
-            StartCoroutine(flySpawnTimer(spawnCooldown));
+            beetleSpawner.SetSpawnerActivity(true);
         }
         return;
     }
 
-    IEnumerator flySpawnTimer(float time)
+    private void Update()
     {
-        yield return new WaitForSeconds(time);
-
-        if (fliesLeft > 0)
-        {
-            spawnBeetle();
-            StartCoroutine(flySpawnTimer(spawnCooldown));
-        }
-
+        beetleSpawner.UpdateSpawner();
     }
 
-    void spawnBeetle()
-    {
-        Beetle newBeetle = Instantiate(beetlePrefab);
-        newBeetle.SpawnAtTarget(transform, minSpawnDistance, maxSpawnDistance);
-        newBeetle.transform.position += new Vector3(0, -transform.position.y, 0);     // Might change, this forces the new beetle's y position to be a given number.
 
-        beetleSpawnEvent?.Invoke(newBeetle);
-        fliesLeft--;
-    }
 }

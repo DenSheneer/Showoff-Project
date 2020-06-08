@@ -6,9 +6,9 @@ using UnityEngine;
 using static TongueController;
 
 [RequireComponent(typeof(FollowRaycastNavMesh))]
+[RequireComponent(typeof(BeetleSpawner))]
 public class PlayerManager : MonoBehaviour
 {
-    [SerializeField]
     FollowRaycastNavMesh movementComponent = null;
 
     [SerializeField]
@@ -18,20 +18,21 @@ public class PlayerManager : MonoBehaviour
     private TempUpdateScore updateScore = null;
 
     [SerializeField]
-    int nrOfFlies = 10, nrOfBeetles = 0, score = 3;
+    uint nrOfFlies = 10, nrOfBeetles = 0, score = 0;
 
-    bool hasDragged = false, hasEatenFly = false, hasLamped = false, hasEatenBeetle = false, allTutorialsCompleted = false;
+    bool hasDragged = false, hasEatenFly = false, hasLamped = false, hasEatenBeetle = false;
 
     TutorialIcon tutorialIcon;
 
-    public int Score { get => score; }
     public Vector3 Position { get => transform.position; }
     public bool IsBusy { get => tongueController.InProgress; }
-    public int NrOfFlies { get => nrOfFlies; set => nrOfFlies = value; }
+    public uint NrOfFlies { get => nrOfFlies; set => nrOfFlies = value; }
+    public uint Score { get => score; }
 
     private void Start()
     {
         movementComponent = GetComponent<FollowRaycastNavMesh>();
+
         tongueController.tongueReachedTarget += HandleTargetReached;
         tongueController.targetEaten += HandleTargetEaten;
         tutorialIcon = new TutorialIcon(transform, TabAbleType.SWIPE_TO_MOVE);
@@ -43,8 +44,7 @@ public class PlayerManager : MonoBehaviour
 
     public bool CheckInReach(TapAble tapbAble)
     {
-        bool inReach = tongueController.CheckReach(tapbAble);
-        return inReach;
+        return tongueController.CheckReach(tapbAble);
     }
 
     public void HandleInReachTapAble(TapAble tapAble)
@@ -114,7 +114,7 @@ public class PlayerManager : MonoBehaviour
         SubscribeToEatEvent(CollectableByTongue.Disable);
     }
 
-    public void takeDamage(int damage)
+    public void takeDamage(uint damage)
     {
         score -= damage;
         if (score < 0)
@@ -130,7 +130,7 @@ public class PlayerManager : MonoBehaviour
         if (collectable is Fly)
         {
             hasEatenFly = true;
-            nrOfFlies += (collectable as Fly).Value;
+            nrOfFlies += ((collectable as Fly).Value);
             score += (collectable as Fly).Value;
         }
         // Do stuff when a Beetle is eaten
@@ -194,7 +194,7 @@ public class PlayerManager : MonoBehaviour
                 break;
 
             case TabAbleType.TAB_LANTERN:
-                if (hasLamped)
+                if (hasLamped || !hasEatenFly)
                     return true;
                 break;
         }

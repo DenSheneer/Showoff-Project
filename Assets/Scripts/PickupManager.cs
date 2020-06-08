@@ -15,9 +15,6 @@ public class PickupManager : MonoBehaviour
     [SerializeField]
     Beetle beetlePrefab = null;
 
-    [SerializeField]
-    float spawnCoolDown = 10.0f;
-
     int tapMask;
 
     void OnEnable()
@@ -25,16 +22,14 @@ public class PickupManager : MonoBehaviour
         tapMask = LayerMask.GetMask("TapLayer");
         playerManager.SubscribeToEatEvent(updateLevelItems);
 
-        foreach (TapAble tapAble in tapAbles)
-            if (tapAble is Lamp)
-                (tapAble as Lamp).beetleSpawnEvent += updateLevelItems;
-
         LeanTouch.OnFingerTap += HandleFingerTap;
     }
 
     private void Start()
     {
-        //StartCoroutine(flySpawnTimer(spawnCoolDown));     // Passive Beetle spawning without lantern, uncomment to turn on.
+        foreach (TapAble tapAble in tapAbles)
+            if (tapAble is Lamp)
+                (tapAble as Lamp).SubscribeToBeetleSpawnEvent(updateLevelItems);
     }
 
     void HandleFingerTap(LeanFinger finger)
@@ -63,16 +58,6 @@ public class PickupManager : MonoBehaviour
             tapAbles.Add(tapAble);
     }
 
-    void SpawnBugs()
-    {
-        Beetle newBeetle = Instantiate(beetlePrefab);
-
-        newBeetle.SpawnAtTarget(playerManager.transform, 0.0f, 5.0f);
-        tapAbles.Add(newBeetle as TapAble);
-
-        playerManager.NrOfFlies--;
-    }
-
     private void Update()
     {
         foreach (TapAble tapAble in tapAbles)
@@ -88,15 +73,5 @@ public class PickupManager : MonoBehaviour
                 tapAble.OutOfRange();
             }
         }
-    }
-
-    IEnumerator flySpawnTimer(float time)
-    {
-        yield return new WaitForSeconds(time);
-
-        if (playerManager.NrOfFlies > 0)
-            SpawnBugs();
-
-        StartCoroutine(flySpawnTimer(spawnCoolDown));
     }
 }

@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class Fly : CollectableByTongue
 {
-    int value = 1;
-    public int Value { get => value; }
+    uint value = 1;
+    public uint Value { get => value; }
 
     private void Start()
     {
