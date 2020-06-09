@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2531327112593122881}
   - component: {fileID: 8078786976270408376}
   m_Layer: 0
-  m_Name: mesh_Environment_Fern
+  m_Name: pref_Environment_Fern
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7503362013120458340}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalPosition: {x: -0, y: 2.5, z: 0}
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_Children: []
   m_Father: {fileID: 0}
