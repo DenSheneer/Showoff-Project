@@ -48,7 +48,7 @@ public class TrashSpawner : MonoBehaviour
 
         GameObject trash = Instantiate(prefabList[randomIndex],new Vector3(0,0,0),Quaternion.identity,null);
         trash.transform.localPosition = randomPos;
-        trash.transform.localScale = new Vector3(scale, scale, scale);
+        //trash.transform.localScale = new Vector3(scale, scale, scale);
         trash.transform.localRotation = Quaternion.Euler(x*10, y*10, z*10);
     }
 }

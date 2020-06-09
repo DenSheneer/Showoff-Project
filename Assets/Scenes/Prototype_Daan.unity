@@ -14,7 +14,7 @@ OcclusionCullingSettings:
 RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 9
-  m_Fog: 0
+  m_Fog: 1
   m_FogColor: {r: 0.06666667, g: 0.09411766, b: 0.227451, a: 1}
   m_FogMode: 2
   m_FogDensity: 0.15
@@ -3269,42 +3269,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tapAbles:
-  - {fileID: 1753269486}
-  - {fileID: 1990462694}
-  - {fileID: 829675089}
-  - {fileID: 558011996}
-  - {fileID: 1063844243}
-  - {fileID: 707298935}
-  - {fileID: 1343904604}
   - {fileID: 2104527531}
-  - {fileID: 0}
-  - {fileID: 857673293}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 1274598744}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 713115924}
-  - {fileID: 0}
   - {fileID: 2012252417}
-  - {fileID: 0}
+  - {fileID: 1990462694}
   - {fileID: 1845048518}
-  - {fileID: 0}
-  - {fileID: 1425791727}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 1470252030}
-  - {fileID: 938044788}
-  - {fileID: 1344438447}
-  - {fileID: 657797140}
+  - {fileID: 1753269486}
   - {fileID: 1676883273}
-  - {fileID: 890500638}
+  - {fileID: 1470252030}
+  - {fileID: 1425791727}
+  - {fileID: 1344438447}
+  - {fileID: 1343904604}
+  - {fileID: 1274598744}
+  - {fileID: 1394794837}
   - {fileID: 1109932205}
+  - {fileID: 1063844243}
+  - {fileID: 938044788}
+  - {fileID: 890500638}
+  - {fileID: 857673293}
+  - {fileID: 829675089}
+  - {fileID: 713115924}
+  - {fileID: 707298935}
+  - {fileID: 657797140}
+  - {fileID: 558011996}
   - {fileID: 63621553}
   playerManager: {fileID: 1867569033}
   beetlePrefab: {fileID: 2286792753161514793, guid: 04171140a5bcfa34bb903afe70adbb9b,
     type: 3}
-  spawnCoolDown: 10
 --- !u!4 &634020541
 Transform:
   m_ObjectHideFlags: 0
@@ -8653,6 +8643,18 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 4081867598839204590, guid: f514305f053b23141b3862fcb110b7fb, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: f514305f053b23141b3862fcb110b7fb, type: 3}
+--- !u!114 &1394794837 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 588283866737959218, guid: 2958a5b81c4a9f149a01f579d30ae34b,
+    type: 3}
+  m_PrefabInstance: {fileID: 1194443390}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e53e61417b4bcfe45a9e94051d746aca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1407893252
 GameObject:
   m_ObjectHideFlags: 0
