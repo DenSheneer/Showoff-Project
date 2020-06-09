@@ -169,8 +169,8 @@ public static class Highscore
     public static void NewScore(string pName,int pScore,string pDate)
     {
         // Checks if name is avaliable
-        if (!IsNameAvailable(pName))
-            return;
+        //if (!IsNameAvailable(pName))
+        //    return;
 
         PlayerScore newScore = new PlayerScore(pName, pDate, pScore);
 

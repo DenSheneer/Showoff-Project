@@ -127,7 +127,6 @@ public class PlayerManager : MonoBehaviour
 
         }
     }
-
     public void SubscribeToEatEvent(TongueEvent eatEvent)
     {
         tongueController.targetEaten += eatEvent;
