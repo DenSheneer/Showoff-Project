@@ -12,6 +12,7 @@ TagManager:
   - Synty Small Farm
   - TongueCollectable
   - Ground
+  - TapAble
   layers:
   - Default
   - TransparentFX

@@ -2,7 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor.SceneManagement;
 using Lean.Touch;
+using UnityEngine.SceneManagement;
 
 public class PickupManager : MonoBehaviour
 {
@@ -35,12 +37,23 @@ public class PickupManager : MonoBehaviour
         }
 
         LeanTouch.OnFingerTap += HandleFingerTap;
+
     }
 
     private void Start()
     {
         StartCoroutine(flySpawnTimer(spawnCoolDown));
     }
+
+
+    public void AddTapble(TapAble pTapAble)
+    {
+        if (pTapAble != null && (!tapAbles.Contains(pTapAble)))
+        {
+            tapAbles.Add(pTapAble);
+        }
+    }
+
 
     void HandleFingerTap(LeanFinger finger)
     {
@@ -94,7 +107,7 @@ public class PickupManager : MonoBehaviour
         yield return new WaitForSeconds(time);
 
         if (playerManager.NrOfFlies > 0)
-            SpawnBugs();
+            //SpawnBugs();
 
         StartCoroutine(flySpawnTimer(spawnCoolDown));
     }

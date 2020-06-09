@@ -21,7 +21,6 @@ public abstract class CollectableByTongue : TapAble
     void OnEnable()
     {
         originalScale = GFXTransform.localScale;
-        this.tag = "TongueCollectable";
     }
 
     public void Collect(TongueController collector)

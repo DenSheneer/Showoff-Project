@@ -19,6 +19,11 @@ public abstract class TapAble : MonoBehaviour
     protected abstract void OnOutOfRangeStay();
 
 
+    private void Reset()
+    {
+        tag = "TapAble";
+    }
+
     private void OnEnable()
     {
         gameObject.layer = LayerMask.NameToLayer("TapLayer");
