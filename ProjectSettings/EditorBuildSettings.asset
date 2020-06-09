@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/UIReset.unity
+    path: Assets/Scenes/UIInGame.unity
     guid: 94f427befb89fec41b66a8e356c465dd
   - enabled: 1
     path: Assets/Scenes/UIStartscreen.unity
