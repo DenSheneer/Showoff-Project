@@ -12,9 +12,6 @@ public class PickupManager : MonoBehaviour
     [SerializeField]
     PlayerManager playerManager = null;
 
-    [SerializeField]
-    Beetle beetlePrefab = null;
-
     int tapMask;
 
     void OnEnable()

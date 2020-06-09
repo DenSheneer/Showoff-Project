@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Prototype_Daan_WithEnd.unity
     guid: 6753fa63367166b40adf9adaa5dcd40b
+  - enabled: 1
+    path: Assets/Scenes/CutScene.unity
+    guid: 9d8e25a1c1ba9774aa82c953d4f1e64a
   m_configObjects: {}

@@ -193,8 +193,10 @@ public class PlayerManager : MonoBehaviour
 
         }
         // Do stuff when a Beetle is eaten
+        // TO DO: give good value score for beetle
         if (collectable is Beetle)
         {
+            score += 1;
         }
         if (updateScore != null)
             updateScore.UpdateScore(score.ToString());

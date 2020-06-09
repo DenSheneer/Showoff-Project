@@ -11,6 +11,8 @@ public class FollowRaycastNavMesh : MonoBehaviour
     private float minRotateSpeed = 5;
     [SerializeField]
     private float maxRotateSpeed = 50;
+    [SerializeField]
+    private Animator animator = null;
 
     private Camera mainCamera;
     private NavMeshAgent agent;
@@ -44,6 +46,7 @@ public class FollowRaycastNavMesh : MonoBehaviour
         if ((LeanTouch.Fingers.Count == 0))
             stop();
 
+        animator.SetBool("anim_isWalking", isMoving);
     }
 
     public void handleFingerGesture(List<LeanFinger> fingers)

@@ -66,7 +66,7 @@ public class BeetleSpawner
     {
         Beetle newBeetle = GameObject.Instantiate(Resources.Load<Beetle>(prefabPath));
         newBeetle.SpawnAtTarget(target, minSpawnDistance, maxSpawnDistance);
-        newBeetle.transform.position += new Vector3(0, -target.position.y, 0);     // Might change, this forces the new beetle's y position to be a given number.
+        newBeetle.transform.position += new Vector3(0, -target.position.y+0.1f, 0);     // Might change, this forces the new beetle's y position to be a given number.
 
         beetleSpawnEvent?.Invoke(newBeetle);
         fliesLeft--;
