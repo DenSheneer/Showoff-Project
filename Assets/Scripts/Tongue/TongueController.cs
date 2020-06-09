@@ -159,6 +159,8 @@ public class TongueController : MonoBehaviour
         {
             tongueProgress -= Time.smoothDeltaTime * tongueSpeed;
 
+            (tongueTarget as CollectableByTongue).GetGFXTransform().localScale = Vector3.one * Mathf.Clamp(tongueProgress, 0.0f, 1.0f);
+
             if (tongueProgress <= 0)
             {
                 targetReached = false;
