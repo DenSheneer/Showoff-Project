@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.Remoting.Messaging;
 using Lean.Touch;
 using UnityEngine;
 using UnityEngine.AI;
@@ -15,7 +14,6 @@ public class FollowRaycastNavMesh : MonoBehaviour
 
     private Camera mainCamera;
     private NavMeshAgent agent;
-    private float startSpeed;
 
     private int layerMask;
     private int groundMask;
@@ -39,7 +37,6 @@ public class FollowRaycastNavMesh : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         layerMask = LayerMask.GetMask("Obstacles");
         groundMask = LayerMask.GetMask("RaycastGround");
-        startSpeed = agent.speed;
     }
 
     void Update()
@@ -101,7 +98,6 @@ public class FollowRaycastNavMesh : MonoBehaviour
 
         if (delta.magnitude > 0.5f)
         {
-            agent.speed = startSpeed;
             delta.Normalize();
 
             if (reverseDirection)

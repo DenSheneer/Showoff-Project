@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.Rendering.UI;
 
 public class Lamp : TapAble
 {
@@ -20,10 +21,10 @@ public class Lamp : TapAble
 
     public bool IsLit { get => isLit; }
 
-    private void Start()
+    private void OnEnable()
     {
         tapAbleType = InputType.TAP_LANTERN;
-        beetleSpawner = new BeetleSpawner(transform, 5, 3.0f);
+        beetleSpawner = new BeetleSpawner(transform, fliesLeft, spawnCooldown);
     }
 
     public override void Tab()
@@ -31,7 +32,7 @@ public class Lamp : TapAble
         return;
     }
     public void SubscribeToBeetleSpawnEvent(BeetleSpawner.BeetleSpawnEvent beetleSpawnEvent)
-    {
+    {        
         beetleSpawner.SubscribeToBeetleSpawnEvent(beetleSpawnEvent);
     }
 

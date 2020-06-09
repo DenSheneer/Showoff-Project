@@ -190,6 +190,7 @@ public class PlayerManager : MonoBehaviour
         {
             nrOfFlies += ((collectable as Fly).Value);
             score += (collectable as Fly).Value;
+
         }
         // Do stuff when a Beetle is eaten
         if (collectable is Beetle)
@@ -197,6 +198,8 @@ public class PlayerManager : MonoBehaviour
         }
         if (updateScore != null)
             updateScore.UpdateScore(score.ToString());
+
+        Destroy(collectable.gameObject);
     }
 
     private void HandleTargetReached(TapAble collectable)

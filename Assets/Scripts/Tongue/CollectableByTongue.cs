@@ -45,7 +45,8 @@ public abstract class CollectableByTongue : TapAble
     }
     private void collectable_InRangeStay(TapAble tapAble)
     {
-        GFXTransform.localScale = originalScale * floatingBehaviour.GetScaleFactor();
+        if (floatingBehaviour != null)
+            GFXTransform.localScale = originalScale * floatingBehaviour.GetScaleFactor();
     }
 
 

@@ -3469,42 +3469,41 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tapAbles:
-  - {fileID: 1753269486}
-  - {fileID: 1990462694}
-  - {fileID: 829675089}
-  - {fileID: 558011996}
-  - {fileID: 1063844243}
-  - {fileID: 707298935}
-  - {fileID: 1343904604}
   - {fileID: 2104527531}
-  - {fileID: 1195283264}
-  - {fileID: 857673293}
-  - {fileID: 1051213734}
-  - {fileID: 600671644}
-  - {fileID: 1274598744}
-  - {fileID: 313793592}
-  - {fileID: 1195395016}
-  - {fileID: 713115924}
-  - {fileID: 1418327893}
   - {fileID: 2012252417}
-  - {fileID: 1241324217}
+  - {fileID: 1990462694}
   - {fileID: 1845048518}
-  - {fileID: 1365920687}
-  - {fileID: 1425791727}
-  - {fileID: 1535838093}
-  - {fileID: 31140840}
-  - {fileID: 1470252030}
-  - {fileID: 938044788}
-  - {fileID: 1344438447}
-  - {fileID: 657797140}
+  - {fileID: 1753269486}
   - {fileID: 1676883273}
-  - {fileID: 890500638}
+  - {fileID: 1535838093}
+  - {fileID: 1470252030}
+  - {fileID: 1425791727}
+  - {fileID: 1418327893}
+  - {fileID: 1365920687}
+  - {fileID: 1344438447}
+  - {fileID: 1343904604}
+  - {fileID: 1274598744}
+  - {fileID: 1241324217}
+  - {fileID: 1195395016}
+  - {fileID: 1195283264}
   - {fileID: 1109932205}
+  - {fileID: 1063844243}
+  - {fileID: 1051213734}
+  - {fileID: 938044788}
+  - {fileID: 890500638}
+  - {fileID: 857673293}
+  - {fileID: 829675089}
+  - {fileID: 713115924}
+  - {fileID: 707298935}
+  - {fileID: 657797140}
+  - {fileID: 600671644}
+  - {fileID: 558011996}
+  - {fileID: 313793592}
   - {fileID: 63621553}
+  - {fileID: 31140840}
   playerManager: {fileID: 1867569033}
   beetlePrefab: {fileID: 2286792753161514793, guid: 04171140a5bcfa34bb903afe70adbb9b,
     type: 3}
-  spawnCoolDown: 10
 --- !u!4 &634020541
 Transform:
   m_ObjectHideFlags: 0
@@ -5432,6 +5431,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1617147378}
     m_Modifications:
+    - target: {fileID: 2228331147508315801, guid: 1ad2a7ea5f055814ba9ff587a2ceebad,
+        type: 3}
+      propertyPath: fliesLeft
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 2228331147508315801, guid: 1ad2a7ea5f055814ba9ff587a2ceebad,
+        type: 3}
+      propertyPath: spawnCooldown
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4222134072398405986, guid: 1ad2a7ea5f055814ba9ff587a2ceebad,
         type: 3}
       propertyPath: m_Layer
@@ -6510,7 +6519,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1028934267}
   m_LocalRotation: {x: 0.21132158, y: 0.6747878, z: -0.21132308, w: 0.67479414}
-  m_LocalPosition: {x: 81.67, y: 2.1599998, z: 50.28}
+  m_LocalPosition: {x: 18.55, y: 2.1599998, z: 56.05}
   m_LocalScale: {x: 0.49999997, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 0}
@@ -10730,7 +10739,7 @@ PrefabInstance:
     - target: {fileID: 6668305790120004332, guid: 879c12f5a6c5b1941a18fbcb88af9fe0,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6668305790170180489, guid: 879c12f5a6c5b1941a18fbcb88af9fe0,
         type: 3}
@@ -10755,7 +10764,7 @@ PrefabInstance:
     - target: {fileID: 7385716596803916918, guid: 879c12f5a6c5b1941a18fbcb88af9fe0,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 84.44
+      value: 21.320004
       objectReference: {fileID: 0}
     - target: {fileID: 7385716596803916918, guid: 879c12f5a6c5b1941a18fbcb88af9fe0,
         type: 3}
@@ -10765,7 +10774,7 @@ PrefabInstance:
     - target: {fileID: 7385716596803916918, guid: 879c12f5a6c5b1941a18fbcb88af9fe0,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 50.28
+      value: 56.05
       objectReference: {fileID: 0}
     - target: {fileID: 7385716596803916918, guid: 879c12f5a6c5b1941a18fbcb88af9fe0,
         type: 3}

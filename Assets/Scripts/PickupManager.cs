@@ -2,9 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor.SceneManagement;
 using Lean.Touch;
-using UnityEngine.SceneManagement;
 
 public class PickupManager : MonoBehaviour
 {
@@ -31,12 +29,15 @@ public class PickupManager : MonoBehaviour
     private void Start()
     {
         foreach (TapAble tapAble in tapAbles)
+        {
+            tapAble.ExitEvent += playerManager.TapAbleOutOfReach;
+
             if (tapAble is Lamp)
             {
                 (tapAble as Lamp).SubscribeToBeetleSpawnEvent(updateLevelItems);
                 (tapAble as Lamp).onLitEvent += updateLevelItems;
             }
-                
+        }                
     }
 
 
@@ -86,7 +87,6 @@ public class PickupManager : MonoBehaviour
             }
             else
             {
-                tapAble.ExitEvent += playerManager.TapAbleOutOfReach;
                 tapAble.OutOfRange();
             }
         }
