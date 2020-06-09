@@ -9,7 +9,7 @@ public class Trash : MonoBehaviour
     private float despawnTime = 2f;
     public float speed;
 
-    int damage = 1;
+    uint damage = 1;
 
     private Rigidbody rb = null;
 

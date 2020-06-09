@@ -14,7 +14,11 @@ public class TutorialIcon
     Vector3 originalScale;
     FloatingBehaviour floatingBehaviour = new FloatingBehaviour(0.25f, 1f, 1.1f);
 
-    public TutorialIcon(Transform pParent, TutorialType pTutorialType)
+    InputType type;
+
+    public InputType Type { get => type; }
+
+    public TutorialIcon(Transform pParent, InputType pTutorialType)
     {
         targetObject = Object.Instantiate(Resources.Load("Prefabs/TutorialCanvas") as GameObject);
         transform = targetObject.transform;
@@ -36,40 +40,43 @@ public class TutorialIcon
         transform.rotation = rotation;
     }
 
-    void SetTutorialType(TutorialType tutorialType)
+    void SetTutorialType(InputType tutorialType)
     {
+        type = tutorialType;
+
         Image image = targetObject.GetComponent<Image>();
         switch (tutorialType)
         {
-            case TutorialType.TAB_BEETLE:
+            case InputType.TAP_BEETLE:
                 image.sprite = Resources.Load<Sprite>(imgPath + "Beetle4");
                 break;
-            case TutorialType.TAB_FIREFLY:
+            case InputType.TAP_FIREFLY:
                 image.sprite = Resources.Load<Sprite>(imgPath + "Firefly4");
                 break;
-            case TutorialType.TAB_DRAGABLE:
+            case InputType.TAP_DRAGABLE:
                 image.sprite = Resources.Load<Sprite>(imgPath + "Trash4");
                 break;
-            case TutorialType.TAB_LANTERN:
+            case InputType.TAP_LANTERN:
                 image.sprite = Resources.Load<Sprite>(imgPath + "Lantern4");
                 break;
-            case TutorialType.SWIPE_TO_MOVE:
+            case InputType.SWIPE_TO_MOVE:
                 image.sprite = Resources.Load<Sprite>(imgPath + "Swipe4");
                 break;
         }
     }
 
-    public void Destroy()
+    public void DestroySelf()
     {
+        floatingBehaviour = null;
         GameObject.Destroy(targetObject);
     }
 }
 
-public enum TutorialType
+public enum InputType
 {
-    TAB_BEETLE,
-    TAB_DRAGABLE,
-    TAB_FIREFLY,
-    TAB_LANTERN,
+    TAP_BEETLE,
+    TAP_DRAGABLE,
+    TAP_FIREFLY,
+    TAP_LANTERN,
     SWIPE_TO_MOVE
 }

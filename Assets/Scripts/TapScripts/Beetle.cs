@@ -11,36 +11,16 @@ public class Beetle : CollectableByTongue
     float speed = 1.0f, minRoamDist = 1.1f, maxRoamDist = 2.0f;
 
     Vector3 currentTarget;
-    TutorialIcon tutorialIcon;
 
     private void Start()
     {
+        tapAbleType = InputType.TAP_BEETLE;
         maxScaleFactor = 1.5f;
         scaleSpeed = 0.75f;
         NewRandomDestination(minRoamDist, maxRoamDist);
     }
-    protected override void OnInRangeEnter()
-    {
-        base.OnInRangeEnter();
 
-        tutorialIcon = new TutorialIcon(transform, TutorialType.TAB_BEETLE);
-    }
-    protected override void OnInRangeStay()
-    {
-        base.OnInRangeStay();
-
-
-        tutorialIcon.UpdateIcon();
-    }
-    protected override void OnExitRange()
-    {
-        base.OnExitRange();
-
-        tutorialIcon.Destroy();
-        tutorialIcon = null;
-    }
-
-    public void SpawnAtTarget(Transform target, float minDist, float maxDist)
+    public void SpawnAtTarget(Transform target, float minDist, float maxDist)               // Spawn Beetle in line of sight of the target.
     {
         float randomDistance = Random.Range(minDist, maxDist);
         Vector3 newDir = randomDirection();
@@ -51,7 +31,7 @@ public class Beetle : CollectableByTongue
         else
             transform.position = hitRay.point;
     }
-    public void NewRandomDestination(float minDist, float maxDist)
+    public void NewRandomDestination(float minDist, float maxDist)                          // Returns a random angle with unit length. (0-360 degrees)
     {
         idle = false;
         float randomDistance = Random.Range(minDist, maxDist);
@@ -66,7 +46,7 @@ public class Beetle : CollectableByTongue
         RotateTowardsTarget(currentTarget - transform.position);
     }
 
-    RaycastHit checkLoS(Transform target, Vector3 direction, float distance)
+    RaycastHit checkLoS(Transform target, Vector3 direction, float distance)                // Cheks Line of sight with target.
     {
         RaycastHit hitRay;
         int obstacleLayer = LayerMask.GetMask("Obstacles");
@@ -76,11 +56,11 @@ public class Beetle : CollectableByTongue
 
     static Vector3 randomDirection()
     {
-        Vector3 newDir = new Vector3(Random.Range(-1.0f, 1.0f), 0, Random.Range(-1.0f, 1.0f));
+        Vector3 newDir = new Vector3(Random.Range(-1f,1f), 0, Random.Range(-1f, 1f));
         newDir.Normalize();
         return newDir;
     }
-    bool moveTowardsDestination(Vector3 target)
+    bool moveTowardsDestination(Vector3 target)                                             // Move first --> target reached? return 'true' if yes, return 'false' if no.
     {
         transform.position += transform.forward * speed * Time.deltaTime;
 
@@ -90,7 +70,7 @@ public class Beetle : CollectableByTongue
         else
             return false;
     }
-    public void RotateTowardsTarget(Vector3 delta)
+    public void RotateTowardsTarget(Vector3 delta)                                          // Sets the transform.forward towards target
     {
         Quaternion rotation = Quaternion.LookRotation(delta);
         transform.rotation = rotation;

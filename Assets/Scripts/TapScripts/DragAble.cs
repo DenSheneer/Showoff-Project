@@ -6,10 +6,10 @@ using UnityEngine.AI;
 public class DragAble : TapAble
 {
     private NavMeshAgent navAgent = null;
-    TutorialIcon tutorialIcon = null;
 
     private void Start()
     {
+        tapAbleType = InputType.TAP_DRAGABLE;
         navAgent = GetComponent<NavMeshAgent>();
     }
 
@@ -28,26 +28,6 @@ public class DragAble : TapAble
     }
 
     public override void Tab()
-    {
-        return;
-    }
-
-    protected override void OnInRangeEnter()
-    {
-        tutorialIcon = new TutorialIcon(transform, TutorialType.TAB_DRAGABLE);
-    }
-
-    protected override void OnInRangeStay()
-    {
-        tutorialIcon.UpdateIcon();
-    }
-    protected override void OnExitRange()
-    {
-        tutorialIcon.Destroy();
-        tutorialIcon = null;
-    }
-
-    protected override void OnOutOfRangeStay()
     {
         return;
     }

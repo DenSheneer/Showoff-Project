@@ -112,8 +112,6 @@ MonoBehaviour:
   spawnCooldown: 3
   minSpawnDistance: 0.01
   maxSpawnDistance: 3
-  beetlePrefab: {fileID: 2286792753161514793, guid: 04171140a5bcfa34bb903afe70adbb9b,
-    type: 3}
 --- !u!1001 &5573319693261544252
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -17,9 +17,6 @@ public class PickupManager : MonoBehaviour
     [SerializeField]
     Beetle beetlePrefab = null;
 
-    [SerializeField]
-    float spawnCoolDown = 10.0f;
-
     int tapMask;
 
     void OnEnable()
@@ -27,22 +24,19 @@ public class PickupManager : MonoBehaviour
         tapMask = LayerMask.GetMask("TapLayer");
         playerManager.SubscribeToEatEvent(updateLevelItems);
 
-        foreach (TapAble tapaBle in tapAbles)
-        {
-            if (tapaBle is Lamp)
-            {
-                (tapaBle as Lamp).beetleSpawnEvent += updateLevelItems;
-                Debug.Log("lamp found");
-            }
-        }
-
         LeanTouch.OnFingerTap += HandleFingerTap;
 
     }
 
     private void Start()
     {
-        StartCoroutine(flySpawnTimer(spawnCoolDown));
+        foreach (TapAble tapAble in tapAbles)
+            if (tapAble is Lamp)
+            {
+                (tapAble as Lamp).SubscribeToBeetleSpawnEvent(updateLevelItems);
+                (tapAble as Lamp).onLitEvent += updateLevelItems;
+            }
+                
     }
 
 
@@ -81,34 +75,20 @@ public class PickupManager : MonoBehaviour
             tapAbles.Add(tapAble);
     }
 
-    void SpawnBugs()
-    {
-        Beetle newBeetle = Instantiate(beetlePrefab);
-
-        newBeetle.SpawnAtTarget(playerManager.transform, 0.0f, 5.0f);
-        tapAbles.Add(newBeetle as TapAble);
-
-        playerManager.NrOfFlies--;
-    }
-
     private void Update()
     {
         foreach (TapAble tapAble in tapAbles)
         {
-            if (playerManager.CheckInReach(tapAble.gameObject))
+            if (playerManager.CheckInReach(tapAble))
+            {
                 tapAble.InRange();
+                playerManager.HandleInReachTapAble(tapAble);
+            }
             else
+            {
+                tapAble.ExitEvent += playerManager.TapAbleOutOfReach;
                 tapAble.OutOfRange();
+            }
         }
-    }
-
-    IEnumerator flySpawnTimer(float time)
-    {
-        yield return new WaitForSeconds(time);
-
-        if (playerManager.NrOfFlies > 0)
-            //SpawnBugs();
-
-        StartCoroutine(flySpawnTimer(spawnCoolDown));
     }
 }
