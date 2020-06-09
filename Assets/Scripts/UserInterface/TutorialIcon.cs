@@ -14,11 +14,11 @@ public class TutorialIcon
     Vector3 originalScale;
     FloatingBehaviour floatingBehaviour = new FloatingBehaviour(0.25f, 1f, 1.1f);
 
-    TabAbleType type;
+    InputType type;
 
-    public TabAbleType Type { get => type; }
+    public InputType Type { get => type; }
 
-    public TutorialIcon(Transform pParent, TabAbleType pTutorialType)
+    public TutorialIcon(Transform pParent, InputType pTutorialType)
     {
         targetObject = Object.Instantiate(Resources.Load("Prefabs/TutorialCanvas") as GameObject);
         transform = targetObject.transform;
@@ -40,26 +40,26 @@ public class TutorialIcon
         transform.rotation = rotation;
     }
 
-    void SetTutorialType(TabAbleType tutorialType)
+    void SetTutorialType(InputType tutorialType)
     {
         type = tutorialType;
 
         Image image = targetObject.GetComponent<Image>();
         switch (tutorialType)
         {
-            case TabAbleType.TAB_BEETLE:
+            case InputType.TAP_BEETLE:
                 image.sprite = Resources.Load<Sprite>(imgPath + "Beetle4");
                 break;
-            case TabAbleType.TAB_FIREFLY:
+            case InputType.TAP_FIREFLY:
                 image.sprite = Resources.Load<Sprite>(imgPath + "Firefly4");
                 break;
-            case TabAbleType.TAB_DRAGABLE:
+            case InputType.TAP_DRAGABLE:
                 image.sprite = Resources.Load<Sprite>(imgPath + "Trash4");
                 break;
-            case TabAbleType.TAB_LANTERN:
+            case InputType.TAP_LANTERN:
                 image.sprite = Resources.Load<Sprite>(imgPath + "Lantern4");
                 break;
-            case TabAbleType.SWIPE_TO_MOVE:
+            case InputType.SWIPE_TO_MOVE:
                 image.sprite = Resources.Load<Sprite>(imgPath + "Swipe4");
                 break;
         }
@@ -72,11 +72,11 @@ public class TutorialIcon
     }
 }
 
-public enum TabAbleType
+public enum InputType
 {
-    TAB_BEETLE,
-    TAB_DRAGABLE,
-    TAB_FIREFLY,
-    TAB_LANTERN,
+    TAP_BEETLE,
+    TAP_DRAGABLE,
+    TAP_FIREFLY,
+    TAP_LANTERN,
     SWIPE_TO_MOVE
 }

@@ -7,7 +7,7 @@ using UnityEngine;
 public abstract class TapAble : MonoBehaviour
 {
     private FirstFrameType firstFrameType = FirstFrameType.ENTERED;
-    protected TabAbleType tapAbleType;
+    protected InputType tapAbleType;
 
     public delegate void OnExitEvent(TapAble tapable);
     public delegate void OnExitStayEvent(TapAble tapable);
@@ -22,7 +22,7 @@ public abstract class TapAble : MonoBehaviour
     private bool isInReach = false;
 
     public bool IsInReach { get => isInReach; }
-    public TabAbleType TapAbleType { get => tapAbleType; }
+    public InputType TapAbleType { get => tapAbleType; }
 
     public abstract void Tab();
 

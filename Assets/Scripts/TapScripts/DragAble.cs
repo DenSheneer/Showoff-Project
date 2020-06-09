@@ -9,7 +9,7 @@ public class DragAble : TapAble
 
     private void Start()
     {
-        tapAbleType = TabAbleType.TAB_DRAGABLE;
+        tapAbleType = InputType.TAP_DRAGABLE;
         navAgent = GetComponent<NavMeshAgent>();
     }
 

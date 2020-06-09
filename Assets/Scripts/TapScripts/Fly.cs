@@ -10,7 +10,7 @@ public class Fly : CollectableByTongue
 
     private void Start()
     {
-        tapAbleType = TabAbleType.TAB_FIREFLY;
+        tapAbleType = InputType.TAP_FIREFLY;
     }
 
     public override void Tab()

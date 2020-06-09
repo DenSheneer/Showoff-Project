@@ -8,6 +8,9 @@ public class Lamp : TapAble
     [SerializeField]
     int fliesLeft = 5;
 
+    public delegate void OnLitEvent(TapAble tapAble);
+    public OnLitEvent onLitEvent;
+
     bool isLit = false;
 
     [SerializeField]
@@ -19,7 +22,7 @@ public class Lamp : TapAble
 
     private void Start()
     {
-        tapAbleType = TabAbleType.TAB_LANTERN;
+        tapAbleType = InputType.TAP_LANTERN;
         beetleSpawner = new BeetleSpawner(transform, 5, 3.0f);
     }
 
@@ -40,6 +43,7 @@ public class Lamp : TapAble
 
             isLit = true;
             beetleSpawner.SetSpawnerActivity(true);
+            onLitEvent?.Invoke(this);
         }
         return;
     }

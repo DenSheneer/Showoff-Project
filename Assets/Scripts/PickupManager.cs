@@ -29,7 +29,11 @@ public class PickupManager : MonoBehaviour
     {
         foreach (TapAble tapAble in tapAbles)
             if (tapAble is Lamp)
+            {
                 (tapAble as Lamp).SubscribeToBeetleSpawnEvent(updateLevelItems);
+                (tapAble as Lamp).onLitEvent += updateLevelItems;
+            }
+                
     }
 
     void HandleFingerTap(LeanFinger finger)

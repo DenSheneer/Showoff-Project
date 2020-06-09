@@ -20,9 +20,12 @@ public class PlayerManager : MonoBehaviour
     [SerializeField]
     uint nrOfFlies = 10, nrOfBeetles = 0, score = 0;
 
-    bool hasDragged = false, hasEatenFly = false, hasLamped = false, hasEatenBeetle = false;
-
-    TutorialIcon tutorialIcon;
+    private Dictionary<InputType, bool> tutorials = new Dictionary<InputType, bool>();
+    private TutorialIcon tutorialIcon;
+    private TapAble nearbyTapAble = null;
+    private float hintIdleTime = 5.0f;
+    private float hintTimer = 0.0f;
+    private bool extraHintActive;
 
     public Vector3 Position { get => transform.position; }
     public bool IsBusy { get => tongueController.InProgress; }
@@ -35,11 +38,19 @@ public class PlayerManager : MonoBehaviour
 
         tongueController.tongueReachedTarget += HandleTargetReached;
         tongueController.targetEaten += HandleTargetEaten;
-        tutorialIcon = new TutorialIcon(transform, TabAbleType.SWIPE_TO_MOVE);
+
+
+        tutorials.Add(InputType.SWIPE_TO_MOVE, false);
+        tutorials.Add(InputType.TAP_FIREFLY, false);
+        tutorials.Add(InputType.TAP_BEETLE, false);
+        tutorials.Add(InputType.TAP_LANTERN, false);
+        tutorials.Add(InputType.TAP_DRAGABLE, false);
+
+        tutorialIcon = new TutorialIcon(transform, InputType.SWIPE_TO_MOVE);
     }
     private void Update()
     {
-        TutorialPopUps();
+        UpdateTutorialPopUps();
     }
 
     public bool CheckInReach(TapAble tapbAble)
@@ -49,11 +60,56 @@ public class PlayerManager : MonoBehaviour
 
     public void HandleInReachTapAble(TapAble tapAble)
     {
-        if (tutorialIcon == null)
+        nearbyTapAble = tapAble;        // will be overwritten
+        if (tutorialIcon == null && !IsBusy)
         {
-            if (!checkTutorialCompletion(tapAble.TapAbleType))
+            if (!checkTutorialCompletion(tapAble.TapAbleType))                              //  Check if this interactable's tutorial is completed.
+            {
                 tutorialIcon = new TutorialIcon(transform, tapAble.TapAbleType);
+            }
+            else if (!extraHintActive && timerUntilHint(tapAble, hintIdleTime))             //  If there is no extra hint already, start a timer that counts up until
+            {                                                                               //  a given idle time is reached. Then, set the interactable's tutorial 
+                setTutorialCompletion(tapAble.TapAbleType, false);                          //  to 'not completed' (false)
+                extraHintActive = true;
+            }
         }
+    }
+
+    private bool checkTutorialCompletion(InputType tutorialType)
+    {
+        if (extraHintActive)
+            if (movementComponent.IsMoving)
+            {
+                setTutorialCompletion(tutorialType, true);
+                extraHintActive = false;
+            }
+
+        if (tutorialType == InputType.TAP_LANTERN)
+            if (nrOfFlies < 1)
+                return true;
+
+        return tutorials[tutorialType];
+    }
+    private void setTutorialCompletion(InputType tutorialType, bool completion)
+    {
+        tutorials[tutorialType] = completion;
+    }
+
+    bool timerUntilHint(TapAble tapAble, float time)
+    {
+        hintTimer += Time.deltaTime;
+
+        if (movementComponent.IsMoving)
+            hintTimer = 0.0f;
+
+        if (hintTimer >= time)
+            if (tapAble == nearbyTapAble)
+            {
+                hintTimer = 0.0f;
+                return true;
+            }
+
+        return false;
     }
 
     public void TapAbleOutOfReach(TapAble tapAble)
@@ -70,42 +126,44 @@ public class PlayerManager : MonoBehaviour
     }
     public void HandleTapAble(TapAble tapAble)
     {
-        if (tapAble is DragAble)
+        if (tapAble is CollectableByTongue)
         {
-            if (tongueController.InProgress)
+            if (tapAble.IsInReach)
             {
-                hasDragged = true;
-                tongueController.DetacheDragAble(tapAble as DragAble);
-                movementComponent.reverseDirection = false;
-                return;
-            }
-        }
-
-        if (tapAble.IsInReach)
-        {
-            if (tapAble is CollectableByTongue)
-            {
+                setTutorialCompletion(tapAble.TapAbleType, true);
                 handleCollectable(tapAble as CollectableByTongue);
             }
-            else if (tapAble is Lamp)
+        }
+        else if (tapAble is Lamp)
+        {
+            if (tapAble.IsInReach)
             {
                 Lamp lamp = tapAble as Lamp;
                 if (!lamp.IsLit && nrOfFlies > 0)
                 {
-                    hasLamped = true;
                     lamp.LightUp();
+                    setTutorialCompletion(tapAble.TapAbleType, true);
                     nrOfFlies--;
                 }
             }
-            else if (tapAble is DragAble)
+        }
+        else if (tapAble is DragAble)
+        {
+            if (!tongueController.InProgress)
             {
-                if (!tongueController.InProgress)
+                if (tapAble.IsInReach)
                 {
+                    setTutorialCompletion(tapAble.TapAbleType, true);
                     tongueController.SetDragTarget(tapAble as DragAble);
                     movementComponent.reverseDirection = true;
                 }
             }
-
+            else
+            {
+                tongueController.DetacheDragAble(tapAble as DragAble);
+                movementComponent.reverseDirection = false;
+                return;
+            }
         }
     }
     void handleCollectable(CollectableByTongue collectable)
@@ -116,8 +174,9 @@ public class PlayerManager : MonoBehaviour
 
     public void takeDamage(uint damage)
     {
-        score -= damage;
-        if (score < 0)
+        if (score > damage)
+            score -= damage;
+        else
             score = 0;
 
         if (updateScore != null)
@@ -129,14 +188,12 @@ public class PlayerManager : MonoBehaviour
         // Do stuff when a fly is eaten
         if (collectable is Fly)
         {
-            hasEatenFly = true;
             nrOfFlies += ((collectable as Fly).Value);
             score += (collectable as Fly).Value;
         }
         // Do stuff when a Beetle is eaten
         if (collectable is Beetle)
         {
-            hasEatenBeetle = true;
         }
         if (updateScore != null)
             updateScore.UpdateScore(score.ToString());
@@ -152,11 +209,13 @@ public class PlayerManager : MonoBehaviour
 
         }
     }
-
-    void TutorialPopUps()
+    void UpdateTutorialPopUps()
     {
         if (tutorialIcon != null)
         {
+            if (movementComponent.DistanceWalked > 1.0f)
+                setTutorialCompletion(InputType.SWIPE_TO_MOVE, true);
+
             if (checkTutorialCompletion(tutorialIcon.Type))
             {
                 tutorialIcon.DestroySelf();
@@ -169,37 +228,7 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    private bool checkTutorialCompletion(TabAbleType tutorialType)
-    {
-        switch (tutorialType)
-        {
-            case TabAbleType.SWIPE_TO_MOVE:
-                if (movementComponent.DistanceWalked > 1.0f)
-                    return true;
-                break;
 
-            case TabAbleType.TAB_FIREFLY:
-                if (hasEatenFly)
-                    return true;
-                break;
-
-            case TabAbleType.TAB_BEETLE:
-                if (hasEatenBeetle)
-                    return true;
-                break;
-
-            case TabAbleType.TAB_DRAGABLE:
-                if (hasDragged)
-                    return true;
-                break;
-
-            case TabAbleType.TAB_LANTERN:
-                if (hasLamped || !hasEatenFly)
-                    return true;
-                break;
-        }
-        return false;
-    }
 
     public void SubscribeToEatEvent(TongueEvent eatEvent)
     {

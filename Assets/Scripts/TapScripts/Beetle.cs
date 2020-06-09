@@ -14,7 +14,7 @@ public class Beetle : CollectableByTongue
 
     private void Start()
     {
-        tapAbleType = TabAbleType.TAB_BEETLE;
+        tapAbleType = InputType.TAP_BEETLE;
         maxScaleFactor = 1.5f;
         scaleSpeed = 0.75f;
         NewRandomDestination(minRoamDist, maxRoamDist);

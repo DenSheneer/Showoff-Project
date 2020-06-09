@@ -19,6 +19,7 @@ public class FollowRaycastNavMesh : MonoBehaviour
 
     private int layerMask;
     private int groundMask;
+    private bool isMoving = false;
 
     float distanceWalked = 0.0f;
 
@@ -28,6 +29,7 @@ public class FollowRaycastNavMesh : MonoBehaviour
 
     public bool reverseDirection = false;
     public float DistanceWalked { get => distanceWalked; }
+    public bool IsMoving { get => isMoving; }
 
     void OnEnable() { LeanTouch.OnGesture += handleFingerGesture; }
     void OnDisable() { LeanTouch.OnGesture -= handleFingerGesture; }
@@ -44,6 +46,7 @@ public class FollowRaycastNavMesh : MonoBehaviour
     {
         if ((LeanTouch.Fingers.Count == 0))
             stop();
+
     }
 
     public void handleFingerGesture(List<LeanFinger> fingers)
@@ -91,6 +94,8 @@ public class FollowRaycastNavMesh : MonoBehaviour
 
     private void MoveTowardsTarget(Vector3 target)
     {
+        isMoving = true;
+
         Vector3 delta = target - transform.position;
         LerpRotateTowardsTarget(delta);
 
@@ -109,6 +114,7 @@ public class FollowRaycastNavMesh : MonoBehaviour
     }
     private void stop()
     {
+        isMoving = false;
         timer = 0;
     }
 
