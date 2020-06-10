@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Rendering.UI;
 
-public class Lamp : TapAble
+public class Lantern : TapAble
 {
     [SerializeField]
     int fliesLeft = 5;
