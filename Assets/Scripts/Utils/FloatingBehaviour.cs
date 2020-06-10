@@ -27,7 +27,6 @@ public class FloatingBehaviour
 
     private void updateResult()
     {
-
         scaleFactor += speed * Time.deltaTime;
 
         if (scaleFactor <= min)
