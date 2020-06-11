@@ -21,8 +21,8 @@ public class PlayerManager : MonoBehaviour
     [SerializeField]
     private TempUpdateScore updateScore = null;
 
-    [SerializeField]
-    uint nrOfFlies = 10, nrOfBeetles = 0, score = 0;
+    //made this public for the emission handler; xxx-Daan
+    public uint nrOfFlies = 10, nrOfBeetles = 0, score = 0;
 
     private Dictionary<InputType, bool> tutorials = new Dictionary<InputType, bool>();
     private TutorialIcon tutorialIcon;
