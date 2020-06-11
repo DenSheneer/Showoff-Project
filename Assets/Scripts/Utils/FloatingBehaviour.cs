@@ -20,11 +20,6 @@ public class FloatingBehaviour
         return scaleFactor;
     }
 
-    public void Restart()
-    {
-        scaleFactor = min;
-    }
-
     private void updateResult()
     {
         scaleFactor += speed * Time.deltaTime;
