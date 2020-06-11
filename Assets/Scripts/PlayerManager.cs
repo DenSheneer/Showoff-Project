@@ -27,7 +27,7 @@ public class PlayerManager : MonoBehaviour
     private TutorialIcon tutorialIcon;
     private TapAble nearbyTapAble = null;
     private float hintIdleTime = 5.0f;
-    private float hintTimer = 0.0f;
+    private float hintTimer = 0.0f;     // --> Do not change
     private bool extraHintActive;
 
     public Vector3 Position { get => transform.position; }
@@ -50,10 +50,7 @@ public class PlayerManager : MonoBehaviour
         tutorials.Add(InputType.TAP_LANTERN, false);
         tutorials.Add(InputType.TAP_DRAGABLE, false);
 
-        tutorialIcon = new TutorialIcon(transform, InputType.SWIPE_TO_MOVE);
-
-
-        originalRotation = Camera.main.transform.parent.rotation;
+        tutorialIcon = new TutorialIcon(InputType.SWIPE_TO_MOVE);
     }
     private void Update()
     {
@@ -68,12 +65,12 @@ public class PlayerManager : MonoBehaviour
 
     public void HandleInReachTapAble(TapAble tapAble)
     {
-        nearbyTapAble = tapAble;        // will be overwritten
+        nearbyTapAble = tapAble;        // --> NOTE: will be overwritten
         if (tutorialIcon == null && !IsBusy)
         {
             if (!checkTutorialCompletion(tapAble.TapAbleType))                              //  Check if this interactable's tutorial is completed.
             {
-                tutorialIcon = new TutorialIcon(transform, tapAble.TapAbleType);
+                tutorialIcon = new TutorialIcon(tapAble.TapAbleType);
             }
             else if (!extraHintActive && timerUntilHint(tapAble, hintIdleTime))             //  If there is no extra hint already, start a timer that counts up until
             {                                                                               //  a given idle time is reached. Then, set the interactable's tutorial 
@@ -97,8 +94,8 @@ public class PlayerManager : MonoBehaviour
                 extraHintActive = false;
             }
 
-        if (tutorialType == InputType.TAP_LANTERN)
-            if (nrOfFlies < 1)
+        if (tutorialType == InputType.TAP_LANTERN)                                          // The lantern is an exception, as it is also unavailable (==complete)
+            if (nrOfFlies < 1)                                                              // when the player is unable to light up the lamp.
                 return true;
 
         return tutorials[tutorialType];
@@ -131,7 +128,7 @@ public class PlayerManager : MonoBehaviour
         {
             if (tutorialIcon.Type == tapAble.TapAbleType)
             {
-                tutorialIcon.DestroySelf();
+                tutorialIcon.DisableTutorial();
                 tutorialIcon = null;
             }
         }
@@ -147,11 +144,11 @@ public class PlayerManager : MonoBehaviour
                 handleCollectable(tapAble as CollectableByTongue);
             }
         }
-        else if (tapAble is Lamp)
+        else if (tapAble is Lantern)
         {
             if (tapAble.IsInReach)
             {
-                Lamp lamp = tapAble as Lamp;
+                Lantern lamp = tapAble as Lantern;
                 if (!lamp.IsLit && nrOfFlies > 0)
                 {
                     lamp.LightUp();
@@ -237,12 +234,8 @@ public class PlayerManager : MonoBehaviour
 
             if (checkTutorialCompletion(tutorialIcon.Type))
             {
-                tutorialIcon.DestroySelf();
+                tutorialIcon.DisableTutorial();
                 tutorialIcon = null;
-            }
-            else
-            {
-                tutorialIcon.UpdateIcon();
             }
         }
     }

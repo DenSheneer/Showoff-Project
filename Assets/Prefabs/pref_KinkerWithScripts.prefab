@@ -4136,12 +4136,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2aa4c9e17f706064d9bd7ceafa80261a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnWay: 0
+  playerManager: {fileID: 6668305790170180489}
   prefabList:
-  - {fileID: 0}
+  - {fileID: 1487043465983049741, guid: efbfef4eb54347d49938d1c595b26ab3, type: 3}
   - {fileID: 0}
   spawnInterval: 3
   spawnHeight: 3
-  playerManager: {fileID: 6668305790170180489}
+  randomRangeSize: 3
 --- !u!1 &6691683822546215326
 GameObject:
   m_ObjectHideFlags: 0

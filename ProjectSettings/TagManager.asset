@@ -13,6 +13,7 @@ TagManager:
   - TongueCollectable
   - Ground
   - TapAble
+  - UI
   layers:
   - Default
   - TransparentFX
