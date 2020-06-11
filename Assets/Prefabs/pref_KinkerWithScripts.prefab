@@ -3542,7 +3542,7 @@ MonoBehaviour:
   updateScore: {fileID: 0}
   nrOfFlies: 0
   nrOfBeetles: 0
-  score: 3
+  score: 0
 --- !u!195 &6668305790170180494
 NavMeshAgent:
   m_ObjectHideFlags: 0

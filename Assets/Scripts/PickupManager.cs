@@ -12,6 +12,9 @@ public class PickupManager : MonoBehaviour
     [SerializeField]
     PlayerManager playerManager = null;
 
+    [SerializeField]
+    DebugUI debugUI;
+
     int tapMask;
 
     void OnEnable()
@@ -21,6 +24,10 @@ public class PickupManager : MonoBehaviour
 
         LeanTouch.OnFingerTap += HandleFingerTap;
 
+        GameObject go = GameObject.FindGameObjectWithTag("UI");
+        debugUI = go.GetComponent<DebugUI>();
+
+        playerManager.updateFirefliesEvent += debugUI.UpdateUI;
     }
 
     private void Start()
@@ -75,6 +82,7 @@ public class PickupManager : MonoBehaviour
 
     private void Update()
     {
+        debugUI.UpdateUI(playerManager.NrOfFlies);
         foreach (TapAble tapAble in tapAbles)
         {
             if (playerManager.CheckInReach(tapAble))

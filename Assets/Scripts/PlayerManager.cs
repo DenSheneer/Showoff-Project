@@ -11,6 +11,9 @@ public class PlayerManager : MonoBehaviour
 {
     FollowRaycastNavMesh movementComponent = null;
 
+    public delegate void UpdateFireflies(uint newNrOfFlies);
+    public UpdateFireflies updateFirefliesEvent;
+
     [SerializeField]
     TongueController tongueController = null;
 
@@ -52,8 +55,6 @@ public class PlayerManager : MonoBehaviour
     private void Update()
     {
         UpdateTutorialPopUps();
-
-
     }
 
     public bool CheckInReach(TapAble tapbAble)
@@ -152,6 +153,7 @@ public class PlayerManager : MonoBehaviour
                     lamp.LightUp();
                     setTutorialCompletion(tapAble.TapAbleType, true);
                     nrOfFlies--;
+                    updateFirefliesEvent(nrOfFlies);
                 }
             }
         }
@@ -199,6 +201,7 @@ public class PlayerManager : MonoBehaviour
         if (collectable is Fly)
         {
             nrOfFlies += ((collectable as Fly).Value);
+            updateFirefliesEvent(nrOfFlies);
         }
         if (collectable is Beetle)
         {

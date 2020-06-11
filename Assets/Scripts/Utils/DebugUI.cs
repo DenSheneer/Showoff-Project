@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DebugUI : MonoBehaviour
 {
     [SerializeField]
     TextMeshProUGUI tmp = null;
+
+    Image[] fireflyImages = new Image[3];
 
     float deltaTime = 0.0f;
 
@@ -14,9 +17,34 @@ public class DebugUI : MonoBehaviour
     {
         tmp.color = new Color(0, 1, 0);
         GetComponent<Canvas>().worldCamera = Camera.main;
+
+        GameObject fireflyElement = GameObject.Find("Fireflies_Background");
+
+        int i = 0;
+        foreach (Image image in fireflyElement.GetComponentsInChildren<Image>())
+        {
+            if (image.name != fireflyElement.name)
+            {
+                fireflyImages[i] = image;
+                image.color = new Color(1, 1, 1, .25f);
+                i++;
+            }
+        }
     }
 
-    private void Update()   // Author: Aras Pranckevicius (NeARAZ) 
+    public void UpdateUI(uint nrOfFlies)
+    {
+        if (nrOfFlies < 4)
+        {
+            foreach (Image image in fireflyImages)
+                image.color = new Color(1, 1, 1, .25f);
+
+            for (int i = 0; i < nrOfFlies; i++)
+                fireflyImages[i].color = new Color(1, 1, 1, 1);
+        }
+    }
+
+    private void Update()
     {
         deltaTime += (Time.unscaledDeltaTime - deltaTime) * 0.1f;
         float msec = deltaTime * 1000.0f;
