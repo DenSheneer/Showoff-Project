@@ -10245,22 +10245,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6668305790120004322, guid: 879c12f5a6c5b1941a18fbcb88af9fe0,
         type: 3}
-      propertyPath: prefabList.Array.data[0]
-      value: 
-      objectReference: {fileID: 3108828838859616656, guid: f514305f053b23141b3862fcb110b7fb,
-        type: 3}
-    - target: {fileID: 6668305790120004322, guid: 879c12f5a6c5b1941a18fbcb88af9fe0,
-        type: 3}
       propertyPath: prefabList.Array.data[1]
       value: 
-      objectReference: {fileID: 880238329237498502, guid: efbfef4eb54347d49938d1c595b26ab3,
-        type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 6668305790120004322, guid: 879c12f5a6c5b1941a18fbcb88af9fe0,
         type: 3}
       propertyPath: prefabList.Array.data[2]
       value: 
-      objectReference: {fileID: 4741155541664942612, guid: ebc98ab30131b0b41b59f70d936b8bb5,
+      objectReference: {fileID: 0}
+    - target: {fileID: 6668305790120004322, guid: 879c12f5a6c5b1941a18fbcb88af9fe0,
         type: 3}
+      propertyPath: prefabList.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 6668305790120004332, guid: 879c12f5a6c5b1941a18fbcb88af9fe0,
         type: 3}
       propertyPath: m_IsActive
