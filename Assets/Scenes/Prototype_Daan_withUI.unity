@@ -6154,6 +6154,7 @@ GameObject:
   - component: {fileID: 989920003}
   - component: {fileID: 989920005}
   - component: {fileID: 989920004}
+  - component: {fileID: 989920006}
   m_Layer: 5
   m_Name: Score_Background
   m_TagString: Untagged
@@ -6218,6 +6219,26 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 989920002}
   m_CullTransparentMesh: 0
+--- !u!114 &989920006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 989920002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e607df7b512ba864aad4b011a636ff4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inType: 0
+  outType: 0
+  duration: 1
+  delay: 1
+  onCompleteCallback:
+    m_PersistentCalls:
+      m_Calls: []
+  button: {fileID: 989920003}
 --- !u!4 &994394890 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5831213341176502264, guid: a8aaea92b29d0b740a364281ef6f985f,

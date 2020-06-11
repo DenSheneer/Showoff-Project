@@ -3890,7 +3890,7 @@ MonoBehaviour:
   mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
   material: {fileID: 2100000, guid: 78b9ccaf3657e464ca5a25560cec7361, type: 2}
   rotation: {x: 90, y: 90, z: 0}
-  scale: {x: 0.02, y: 0.012, z: 0.02}
+  scale: {x: 0.04, y: 0.024, z: 0.04}
 --- !u!114 &6668305791139104370
 MonoBehaviour:
   m_ObjectHideFlags: 0
