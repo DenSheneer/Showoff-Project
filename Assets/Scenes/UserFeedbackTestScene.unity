@@ -6815,11 +6815,6 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 4624461388577374744, guid: 3d3339f41a62fa84aac9633aae9fdcda,
-        type: 3}
-      propertyPath: m_Camera
-      value: 
-      objectReference: {fileID: 1028934270}
     - target: {fileID: 4624461388577374745, guid: 3d3339f41a62fa84aac9633aae9fdcda,
         type: 3}
       propertyPath: m_LocalPosition.x

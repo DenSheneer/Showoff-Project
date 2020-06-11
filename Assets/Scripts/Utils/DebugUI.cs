@@ -13,6 +13,7 @@ public class DebugUI : MonoBehaviour
     private void Start()
     {
         tmp.color = new Color(0, 1, 0);
+        GetComponent<Canvas>().worldCamera = Camera.main;
     }
 
     private void Update()   // Author: Aras Pranckevicius (NeARAZ) 
