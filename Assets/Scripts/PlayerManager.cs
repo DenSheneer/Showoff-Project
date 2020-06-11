@@ -185,18 +185,13 @@ public class PlayerManager : MonoBehaviour
 
     private void HandleTargetEaten(TapAble collectable)
     {
-        // Do stuff when a fly is eaten
         if (collectable is Fly)
         {
             nrOfFlies += ((collectable as Fly).Value);
-            score += (collectable as Fly).Value;
-
         }
-        // Do stuff when a Beetle is eaten
-        // TO DO: give good value score for beetle
         if (collectable is Beetle)
         {
-            score += 1;
+            score += (collectable as Beetle).Value;
         }
         if (updateScore != null)
             updateScore.UpdateScore(score.ToString());

@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class CollectableByTongue : TapAble
 {
     [SerializeField]
-    private int collectingWeight = 1;
+    protected uint value = 1;
 
     // InRange shrink-expand variables:
     protected float minScaleFactor = 1.0f, maxScaleFactor = 2.0f, scaleSpeed = 1.00f;
@@ -17,11 +17,11 @@ public abstract class CollectableByTongue : TapAble
 
     bool idle = true;
     [SerializeField]
-    protected float speed = 1.0f, minRoamDist = 1.1f, maxRoamDist = 2.0f;
+    protected float moveSpeed = 1.0f, minRoamDist = 1.1f, maxRoamDist = 2.0f;
 
     Vector3 currentTarget;
 
-    public int CollectingWeight { get => collectingWeight; }
+    public uint Value { get => value; }
     public Vector3 Position { get => transform.position; }
 
     void OnEnable()
@@ -97,7 +97,7 @@ public abstract class CollectableByTongue : TapAble
     }
     bool moveTowardsDestination(Vector3 target)                                             // Move first --> target reached? return 'true' if yes, return 'false' if no.
     {
-        transform.position += transform.forward * speed * Time.deltaTime;
+        transform.position += transform.forward * moveSpeed * Time.deltaTime;
 
         Vector3 delta = target - transform.position;
         if (Vector3.SqrMagnitude(delta) < 1.0f)
