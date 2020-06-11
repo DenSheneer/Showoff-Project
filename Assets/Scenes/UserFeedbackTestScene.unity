@@ -6293,6 +6293,7 @@ GameObject:
   - component: {fileID: 1028934269}
   - component: {fileID: 1028934268}
   - component: {fileID: 1028934272}
+  - component: {fileID: 1028934273}
   m_Layer: 0
   m_Name: Camera
   m_TagString: MainCamera
@@ -6409,6 +6410,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   followTarget: {fileID: 123044535}
+--- !u!114 &1028934273
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1028934267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe552ded4ff612e458371f6c411e1120, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1051104382
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6797,6 +6810,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4446681536658371052, guid: 3d3339f41a62fa84aac9633aae9fdcda,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4624461388577374744, guid: 3d3339f41a62fa84aac9633aae9fdcda,
+        type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 1028934270}
     - target: {fileID: 4624461388577374745, guid: 3d3339f41a62fa84aac9633aae9fdcda,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6906,6 +6929,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: DebugUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 4624461388577374748, guid: 3d3339f41a62fa84aac9633aae9fdcda,
+        type: 3}
+      propertyPath: m_TagString
+      value: UI
       objectReference: {fileID: 0}
     - target: {fileID: 4624461389612074198, guid: 3d3339f41a62fa84aac9633aae9fdcda,
         type: 3}

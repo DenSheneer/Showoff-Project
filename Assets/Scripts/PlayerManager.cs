@@ -20,9 +20,6 @@ public class PlayerManager : MonoBehaviour
     [SerializeField]
     uint nrOfFlies = 10, nrOfBeetles = 0, score = 0;
 
-    FloatingBehaviour camShake;
-    Quaternion originalRotation;
-
     private Dictionary<InputType, bool> tutorials = new Dictionary<InputType, bool>();
     private TutorialIcon tutorialIcon;
     private TapAble nearbyTapAble = null;
@@ -55,6 +52,7 @@ public class PlayerManager : MonoBehaviour
     private void Update()
     {
         UpdateTutorialPopUps();
+
 
     }
 
@@ -184,11 +182,8 @@ public class PlayerManager : MonoBehaviour
 
     public void takeDamage(uint damage)
     {
-        Transform cameraObject = Camera.main.transform.parent;
-        camShake = new FloatingBehaviour(0.75f, -1, 1);
-
-        cameraObject.rotation = originalRotation;   ///todo.
-
+        Camerashake cameraObject = Camera.main.GetComponent<Camerashake>();
+        cameraObject.CameraShake(200);
 
         if (score > damage)
             score -= damage;
