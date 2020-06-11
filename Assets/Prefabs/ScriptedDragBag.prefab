@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 588283866737959220}
   - component: {fileID: 588283866737959221}
   - component: {fileID: 588283866737959218}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: ScriptedDragBag
   m_TagString: Untagged
   m_Icon: {fileID: 0}
