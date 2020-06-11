@@ -1,22 +1,42 @@
-﻿using System.Collections;
+﻿using Cinemachine.Utility;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Lean.Touch;
 
-[RequireComponent(typeof(BoxCollider))]
 public class TrashSpawner : MonoBehaviour
 {
-    private BoxCollider boxCollider;
+    private enum SpawnWay
+    {
+        FORWARDVECTOR,
+        MOUSEVECTOR
+    }
+
     [SerializeField]
-    private List<GameObject> prefabList = new List<GameObject>();
+    private SpawnWay spawnWay = SpawnWay.FORWARDVECTOR;
+
+    [SerializeField]
+    private PlayerManager playerManager = null;
+
+    [SerializeField]
+    private List<Trash> prefabList = new List<Trash>();
 
     private float timer = 2f;
 
     [SerializeField]
     private float spawnInterval = 3.0f;
 
+    [SerializeField]
+    private float spawnHeight = 3.0f;
+
+    [SerializeField]
+    private float randomRangeSize = 3.0f;
+
+    int groundMask;
+
     void Start()
     {
-        boxCollider = GetComponent<BoxCollider>();
+        groundMask = LayerMask.GetMask("RaycastGround");
     }
 
     void Update()
@@ -32,23 +52,42 @@ public class TrashSpawner : MonoBehaviour
 
     private void SpawnTrash()
     {
-        // we have no prefabs to choose from
-        if (prefabList.Count <= 0)
-            return;
-
-        float x = Random.Range(-boxCollider.bounds.extents.x + transform.position.x + boxCollider.center.x, boxCollider.bounds.extents.x + transform.position.x + boxCollider.center.x);
-        float y = Random.Range(-boxCollider.bounds.extents.y + transform.position.y + boxCollider.center.y, boxCollider.bounds.extents.y + transform.position.y + boxCollider.center.y);
-        float z = Random.Range(-boxCollider.bounds.extents.z + transform.position.z + boxCollider.center.z, boxCollider.bounds.extents.z + transform.position.z + boxCollider.center.z);
-
-        float scale = Random.Range(0.4f, 1.6f);
-
-        Vector3 randomPos = new Vector3(x, y, z);
-
         int randomIndex = Random.Range(0, prefabList.Count);
+        Vector3 trashPos = new Vector3();
+        Vector3 randomAdditive = new Vector3(Random.Range(-randomRangeSize, randomRangeSize),0,Random.Range(-randomRangeSize, randomRangeSize));
 
-        GameObject trash = Instantiate(prefabList[randomIndex],new Vector3(0,0,0),Quaternion.identity,null);
-        trash.transform.localPosition = randomPos;
-        //trash.transform.localScale = new Vector3(scale, scale, scale);
-        trash.transform.localRotation = Quaternion.Euler(x*10, y*10, z*10);
+        if (playerManager.IsMoving && LeanTouch.Fingers.Count > 0)
+        {
+            if (spawnWay == SpawnWay.MOUSEVECTOR)
+            {
+                LeanFinger finger = LeanTouch.Fingers[0];
+
+                RaycastHit hit;
+                Ray ray = Camera.main.ScreenPointToRay(finger.ScreenPosition);
+
+                if (Physics.Raycast(ray, out hit, Mathf.Infinity, groundMask))
+                {
+                    if (hit.collider != null)
+                    {
+                        Vector3 delta = hit.point - transform.position;
+                        delta.Normalize();
+
+                        trashPos = transform.position + (delta * playerManager.GetPlayerSpeed()) + new Vector3(0, spawnHeight, 0);
+                    }
+                }
+            } else if (spawnWay == SpawnWay.FORWARDVECTOR)
+            {
+                trashPos = transform.position + (transform.forward * playerManager.GetPlayerSpeed()) + new Vector3(0, spawnHeight, 0);
+            }
+
+        }
+        else
+        {
+            trashPos = transform.position + new Vector3(0, spawnHeight, 0);
+        }
+
+        Trash trash = Instantiate(prefabList[randomIndex], trashPos+ randomAdditive, Quaternion.identity, null);
+        trash.transform.localRotation = Quaternion.Euler(Random.Range(0.0f,360.0f), Random.Range(0.0f, 360.0f), Random.Range(0.0f, 360.0f));
+        trash.RigiB.AddTorque(Random.Range(0.0f, 360.0f), Random.Range(0.0f, 360.0f), Random.Range(0.0f, 360.0f),ForceMode.VelocityChange);
     }
 }

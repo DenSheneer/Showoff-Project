@@ -3538,11 +3538,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95632397d75791b498e1c13217749695, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementComponent: {fileID: 6668305790170180495}
   tongueController: {fileID: 6668305791139104370}
-  nrOfFlies: 0
-  score: 3
   updateScore: {fileID: 0}
+  nrOfFlies: 0
+  nrOfBeetles: 0
+  score: 3
 --- !u!195 &6668305790170180494
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -3579,6 +3579,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minRotateSpeed: 5
   maxRotateSpeed: 8
+  animator: {fileID: 0}
   reverseDirection: 0
 --- !u!1 &5848887297846841072
 GameObject:
@@ -4101,7 +4102,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6668305790120004333}
-  - component: {fileID: 6668305790120004323}
   - component: {fileID: 6668305790120004322}
   m_Layer: 0
   m_Name: TrashSpawner
@@ -4124,19 +4124,6 @@ Transform:
   m_Father: {fileID: 7385716596803916918}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: -180.00002, z: 0}
---- !u!65 &6668305790120004323
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6668305790120004332}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 2.4078732, y: 1, z: 3.6449938}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &6668305790120004322
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4150,9 +4137,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefabList:
-  - {fileID: 3866193491786852129, guid: 6bcd1861413ecf34dba55036bdb1118f, type: 3}
-  - {fileID: 567190350159984433, guid: 314ce46cb790d5540ac353f1b912efaf, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
   spawnInterval: 3
+  spawnHeight: 3
+  playerManager: {fileID: 6668305790170180489}
 --- !u!1 &6691683822546215326
 GameObject:
   m_ObjectHideFlags: 0

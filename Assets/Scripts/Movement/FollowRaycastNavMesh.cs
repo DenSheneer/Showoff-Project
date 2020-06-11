@@ -70,6 +70,14 @@ public class FollowRaycastNavMesh : MonoBehaviour
         }
     }
 
+    public float GetAgentSpeed()
+    {
+        if (isMoving)
+            return agent.speed;
+        else
+            return 0;
+    }
+
     private void LerpRotateTowardsTarget(Vector3 delta)
     {
         Quaternion rotation = Quaternion.LookRotation(delta);
