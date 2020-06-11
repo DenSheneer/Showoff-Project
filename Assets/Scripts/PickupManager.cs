@@ -29,10 +29,10 @@ public class PickupManager : MonoBehaviour
         {
             tapAble.ExitEvent += playerManager.TapAbleOutOfReach;
 
-            if (tapAble is Lamp)
+            if (tapAble is Lantern)
             {
-                (tapAble as Lamp).SubscribeToBeetleSpawnEvent(updateLevelItems);
-                (tapAble as Lamp).onLitEvent += updateLevelItems;
+                (tapAble as Lantern).SubscribeToBeetleSpawnEvent(updateLevelItems);
+                (tapAble as Lantern).onLitEvent += updateLevelItems;
             }
         }                
     }

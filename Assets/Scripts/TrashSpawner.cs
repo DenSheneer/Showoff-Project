@@ -12,6 +12,8 @@ public class TrashSpawner : MonoBehaviour
         MOUSEVECTOR
     }
 
+    private static string prefabPath = "Prefabs/";
+
     [SerializeField]
     private SpawnWay spawnWay = SpawnWay.FORWARDVECTOR;
 
@@ -37,6 +39,9 @@ public class TrashSpawner : MonoBehaviour
     void Start()
     {
         groundMask = LayerMask.GetMask("RaycastGround");
+        prefabList.Add(Resources.Load<Trash>(prefabPath + "pref_WaterBottle"));
+        prefabList.Add(Resources.Load<Trash>(prefabPath + "pref_SodaCanTrash"));
+        prefabList.Add(Resources.Load<Trash>(prefabPath + "pref_AppleTrash"));
     }
 
     void Update()
