@@ -9,6 +9,7 @@ public class DragAble : TapAble
 
     private void Start()
     {
+        tapAbleType = InputType.TAP_DRAGABLE;
         navAgent = GetComponent<NavMeshAgent>();
     }
 
@@ -24,22 +25,10 @@ public class DragAble : TapAble
             dir *= sqrDist;
             navAgent.Move(dir);
         }
-
-    }
-
-
-    public override void InRange()
-    {
-
-    }
-
-    public override void OutOfRange()
-    {
-
     }
 
     public override void Tab()
     {
-
+        return;
     }
 }

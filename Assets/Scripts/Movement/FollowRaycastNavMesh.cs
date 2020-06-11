@@ -11,19 +11,25 @@ public class FollowRaycastNavMesh : MonoBehaviour
     private float minRotateSpeed = 5;
     [SerializeField]
     private float maxRotateSpeed = 50;
+    [SerializeField]
+    private Animator animator = null;
 
     private Camera mainCamera;
     private NavMeshAgent agent;
-    private float startSpeed;
 
     private int layerMask;
     private int groundMask;
+    private bool isMoving = false;
+
+    float distanceWalked = 0.0f;
 
 
     float timer = 0;
     float tapDelay = 1.00f;     // Default delay for registering a tap as a gesture is 1/10 of a second .
 
     public bool reverseDirection = false;
+    public float DistanceWalked { get => distanceWalked; }
+    public bool IsMoving { get => isMoving; }
 
     void OnEnable() { LeanTouch.OnGesture += handleFingerGesture; }
     void OnDisable() { LeanTouch.OnGesture -= handleFingerGesture; }
@@ -33,13 +39,14 @@ public class FollowRaycastNavMesh : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         layerMask = LayerMask.GetMask("Obstacles");
         groundMask = LayerMask.GetMask("RaycastGround");
-        startSpeed = agent.speed;
     }
 
     void Update()
     {
         if ((LeanTouch.Fingers.Count == 0))
             stop();
+
+        animator.SetBool("anim_isWalking", isMoving);
     }
 
     public void handleFingerGesture(List<LeanFinger> fingers)
@@ -61,6 +68,14 @@ public class FollowRaycastNavMesh : MonoBehaviour
                 }
             }
         }
+    }
+
+    public float GetAgentSpeed()
+    {
+        if (isMoving)
+            return agent.speed;
+        else
+            return 0;
     }
 
     private void LerpRotateTowardsTarget(Vector3 delta)
@@ -87,25 +102,26 @@ public class FollowRaycastNavMesh : MonoBehaviour
 
     private void MoveTowardsTarget(Vector3 target)
     {
+        isMoving = true;
+
         Vector3 delta = target - transform.position;
         LerpRotateTowardsTarget(delta);
 
         if (delta.magnitude > 0.5f)
         {
-            agent.speed = startSpeed;
             delta.Normalize();
-
-            //agent.Move(transform.forward * Time.deltaTime * 3.0f);
 
             if (reverseDirection)
                 agent.Move(-transform.forward * Time.deltaTime * agent.speed);
             else if (!reverseDirection)
                 agent.Move(transform.forward * Time.deltaTime * agent.speed);
-        
+
+            distanceWalked += (transform.forward * Time.deltaTime * agent.speed).magnitude;
         }
     }
     private void stop()
     {
+        isMoving = false;
         timer = 0;
     }
 

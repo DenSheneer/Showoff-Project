@@ -159,6 +159,8 @@ public class TongueController : MonoBehaviour
         {
             tongueProgress -= Time.smoothDeltaTime * tongueSpeed;
 
+            //(tongueTarget as CollectableByTongue).GetGFXTransform().localScale = Vector3.one * Mathf.Clamp(tongueProgress, 0.0f, 1.0f);
+
             if (tongueProgress <= 0)
             {
                 targetReached = false;
@@ -176,30 +178,24 @@ public class TongueController : MonoBehaviour
             tongueTarget.transform.localPosition = linearMesh.GetIntervalPosition(correctProgress + 0.05f);
     }
 
-    public bool CheckReach(GameObject target)
+    public bool CheckReach(TapAble tabAble)
     {
         RaycastHit hitRay;
         int obstacleLayer = LayerMask.GetMask("Obstacles");
-        Physics.Linecast(tongueStart.position, target.transform.position, out hitRay, obstacleLayer);
+        Physics.Linecast(tongueStart.position, tabAble.transform.position, out hitRay, obstacleLayer);
 
 
         if (hitRay.collider == null)
         {
-
-            Vector3 delta = tongueStart.position - target.transform.position;
+            Vector3 delta = tongueStart.position - tabAble.transform.position;
             float distance = Vector3.SqrMagnitude(delta);
-
-            //Debug.Log(distance);
-            //Debug.Log(reachDistance);
 
             if (distance < reachDistance)
             {
-
                 float angle = Vector3.Angle(tongueStart.transform.forward, delta);
 
                 if (angle >= maxAngle)
                 {
-
                     return true;
                 }
             }

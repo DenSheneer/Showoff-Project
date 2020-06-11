@@ -11,6 +11,9 @@ TagManager:
   - Synty Medium Farm
   - Synty Small Farm
   - TongueCollectable
+  - Ground
+  - TapAble
+  - UI
   layers:
   - Default
   - TransparentFX

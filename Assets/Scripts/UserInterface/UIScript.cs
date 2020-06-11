@@ -9,7 +9,7 @@ using Lean.Touch;
 public class UIScript : MonoBehaviour
 {
     [SerializeField]
-    GameObject pressToPlayText;
+    GameObject pressToPlayText = null;
 
     [SerializeField]
     Button nameTextField = null, BigEnterButton = null, SmallEnterButton = null, StartGameButton = null;
@@ -22,7 +22,7 @@ public class UIScript : MonoBehaviour
     Vector3 originalButtonPosition;
 
     [SerializeField]
-    KeyboardScript osk;
+    KeyboardScript osk  =null;
 
     StartScreenState currentState = StartScreenState.PRESSTOSTART;
 
@@ -162,7 +162,7 @@ public class UIScript : MonoBehaviour
     {
         changeState((int)currentState + 1);
         PlayerInfo.PlayerName = osk.TargetTextField.text;
-        SceneManager.LoadScene("Prototype");
+        SceneManager.LoadScene("CutScene");
     }
     void changeState(int nextStage)
     {

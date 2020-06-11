@@ -6,9 +6,8 @@ using Lean.Touch;
 
 public class PickupManager : MonoBehaviour
 {
-
     [SerializeField]
-    List<CollectableByTongue> collectables = null, collected = null;
+    List<TapAble> tapAbles = null;
 
     [SerializeField]
     PlayerManager playerManager = null;
@@ -19,8 +18,34 @@ public class PickupManager : MonoBehaviour
     {
         tapMask = LayerMask.GetMask("TapLayer");
         playerManager.SubscribeToEatEvent(updateLevelItems);
+
         LeanTouch.OnFingerTap += HandleFingerTap;
+
     }
+
+    private void Start()
+    {
+        foreach (TapAble tapAble in tapAbles)
+        {
+            tapAble.ExitEvent += playerManager.TapAbleOutOfReach;
+
+            if (tapAble is Lantern)
+            {
+                (tapAble as Lantern).SubscribeToBeetleSpawnEvent(updateLevelItems);
+                (tapAble as Lantern).onLitEvent += updateLevelItems;
+            }
+        }                
+    }
+
+
+    public void AddTapble(TapAble pTapAble)
+    {
+        if (pTapAble != null && (!tapAbles.Contains(pTapAble)))
+        {
+            tapAbles.Add(pTapAble);
+        }
+    }
+
 
     void HandleFingerTap(LeanFinger finger)
     {
@@ -33,32 +58,34 @@ public class PickupManager : MonoBehaviour
                 TapAble tapAble = hit.collider.gameObject.GetComponent<TapAble>();
                 if (tapAble != null)
                 {
-                    Debug.Log("test");
                     tapAble.Tab();
-                    playerManager.HandleTapAble(tapAble);   
+                    playerManager.HandleTapAble(tapAble);
                 }
             }
         }
     }
 
-    void updateLevelItems(CollectableByTongue collectable)
+    void updateLevelItems(TapAble tapAble)
     {
-        if (collectables.Contains(collectable))
-            collectables.Remove(collectable);
-
-        if (!collected.Contains(collectable))
-            collected.Add(collectable);
+        if (tapAbles.Contains(tapAble))
+            tapAbles.Remove(tapAble);
+        else if (!tapAbles.Contains(tapAble))
+            tapAbles.Add(tapAble);
     }
 
     private void Update()
     {
-        foreach (CollectableByTongue collectable in collectables)
+        foreach (TapAble tapAble in tapAbles)
         {
-            if (playerManager.CheckInReach(collectable.gameObject))
-                collectable.InRange();
-
+            if (playerManager.CheckInReach(tapAble))
+            {
+                tapAble.InRange();
+                playerManager.HandleInReachTapAble(tapAble);
+            }
             else
-                collectable.OutOfRange();
+            {
+                tapAble.OutOfRange();
+            }
         }
     }
 }
