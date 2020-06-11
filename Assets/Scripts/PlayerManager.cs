@@ -31,6 +31,7 @@ public class PlayerManager : MonoBehaviour
     public bool IsBusy { get => tongueController.InProgress; }
     public uint NrOfFlies { get => nrOfFlies; set => nrOfFlies = value; }
     public uint Score { get => score; }
+    public bool IsMoving { get => movementComponent.IsMoving; }
 
     private void Start()
     {
@@ -73,6 +74,11 @@ public class PlayerManager : MonoBehaviour
                 extraHintActive = true;
             }
         }
+    }
+
+    public float GetPlayerSpeed()
+    {
+        return movementComponent.GetAgentSpeed();
     }
 
     private bool checkTutorialCompletion(InputType tutorialType)
@@ -232,7 +238,6 @@ public class PlayerManager : MonoBehaviour
             }
         }
     }
-
 
 
     public void SubscribeToEatEvent(TongueEvent eatEvent)

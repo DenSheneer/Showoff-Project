@@ -704,11 +704,11 @@ PlayerSettings:
   m_MobileRenderingPath: 1
   metroPackageName: TemplateLightweight
   metroPackageVersion: 1.0.0.0
-  metroCertificatePath: 
+  metroCertificatePath: D:\D-School\D-ShowOff\repo\Assets\WSATestCertificate.pfx
   metroCertificatePassword: 
-  metroCertificateSubject: 
-  metroCertificateIssuer: 
-  metroCertificateNotAfter: 0000000000000000
+  metroCertificateSubject: ThePeoples
+  metroCertificateIssuer: ThePeoples
+  metroCertificateNotAfter: 80d9562e8b5dd701
   metroApplicationDescription: Template_Lightweight
   wsaImages: {}
   metroTileShortName: 
