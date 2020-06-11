@@ -23,7 +23,7 @@ public class TutorialIcon
 
     void SetTutorialType(InputType tutorialType)
     {
-        targetObject.color = new Color(1, 1, 1, 1);
+        targetObject.color = new Color(1, 1, 1, 0.25f);
         type = tutorialType;
         animator.SetInteger("tutorialType", (int)tutorialType);
     }
