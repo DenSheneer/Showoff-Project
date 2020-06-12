@@ -3375,6 +3375,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tapAbles:
+  - {fileID: 365061464}
   - {fileID: 2104527531}
   - {fileID: 2012252417}
   - {fileID: 1990462694}
@@ -3386,16 +3387,15 @@ MonoBehaviour:
   - {fileID: 1344438447}
   - {fileID: 1343904604}
   - {fileID: 1274598744}
-  - {fileID: 365061464}
   - {fileID: 1109932205}
   - {fileID: 1063844243}
+  - {fileID: 890500638}
   - {fileID: 857673293}
   - {fileID: 829675089}
   - {fileID: 713115924}
   - {fileID: 707298935}
   - {fileID: 558011996}
   - {fileID: 63621553}
-  - {fileID: 890500638}
   playerManager: {fileID: 1867569033}
   debugUI: {fileID: 0}
 --- !u!4 &634020541
@@ -9964,6 +9964,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3554744159548151969, guid: 879c12f5a6c5b1941a18fbcb88af9fe0,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 3825960550416005151, guid: 879c12f5a6c5b1941a18fbcb88af9fe0,
         type: 3}
