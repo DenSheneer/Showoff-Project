@@ -3,35 +3,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Lean.Touch;
+using UnityEditor;
 
 public class PickupManager : MonoBehaviour
 {
     [SerializeField]
     List<TapAble> tapAbles = null;
 
-    [SerializeField]
     PlayerManager playerManager = null;
-
-    [SerializeField]
-    DebugUI debugUI;
+    DebugUI debugUI = null;
 
     int tapMask;
 
     void OnEnable()
     {
         tapMask = LayerMask.GetMask("TapLayer");
-        playerManager.SubscribeToEatEvent(updateLevelItems);
 
         LeanTouch.OnFingerTap += HandleFingerTap;
 
-        GameObject go = GameObject.FindGameObjectWithTag("UI");
-        debugUI = go.GetComponent<DebugUI>();
+        GameObject playerGO = GameObject.FindGameObjectWithTag("Player");
+        playerManager = playerGO.GetComponent<PlayerManager>();
+        playerManager.SubscribeToEatEvent(updateLevelItems);
 
+        GameObject uiGO = GameObject.FindGameObjectWithTag("UI");
+        debugUI = uiGO.GetComponent<DebugUI>();
         playerManager.updateFirefliesEvent += debugUI.UpdateUI;
     }
 
     private void Start()
     {
+        GetAllTapables();
+
         foreach (TapAble tapAble in tapAbles)
         {
             tapAble.ExitEvent += playerManager.TapAbleOutOfReach;
@@ -82,7 +84,6 @@ public class PickupManager : MonoBehaviour
 
     private void Update()
     {
-        debugUI.UpdateUI(playerManager.NrOfFlies);
         foreach (TapAble tapAble in tapAbles)
         {
             if (playerManager.CheckInReach(tapAble))
@@ -94,6 +95,19 @@ public class PickupManager : MonoBehaviour
             {
                 tapAble.OutOfRange();
             }
+        }
+    }
+
+    public void GetAllTapables()
+    {
+        GameObject[] allGameObjects = FindObjectsOfType<GameObject>();
+
+        foreach (GameObject gameObject in allGameObjects)
+        {
+            TapAble tapAble = gameObject.GetComponent<TapAble>();
+
+            if (tapAble != null)
+                AddTapble(tapAble);
         }
     }
 }

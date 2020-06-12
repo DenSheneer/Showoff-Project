@@ -160,7 +160,7 @@ public class PlayerManager : MonoBehaviour
                     animator.SetTrigger("anim_tr_Lantern");
                     setTutorialCompletion(tapAble.TapAbleType, true);
                     nrOfFlies--;
-                    updateFirefliesEvent(nrOfFlies);
+                    updateFirefliesEvent?.Invoke(nrOfFlies);
                 }
             }
         }
@@ -212,7 +212,7 @@ public class PlayerManager : MonoBehaviour
         if (collectable is Fly)
         {
             nrOfFlies += ((collectable as Fly).Value);
-            updateFirefliesEvent(nrOfFlies);
+            updateFirefliesEvent?.Invoke(nrOfFlies);
         }
         if (collectable is Beetle)
         {

@@ -82,7 +82,7 @@ public abstract class CollectableByTongue : TapAble
     RaycastHit checkLoS(Transform target, Vector3 direction, float distance)                // Checks Line of sight with target.
     {
         RaycastHit hitRay;
-        Vector3 startPoint = new Vector3(target.position.x, 0.1f, target.position.z);
+        Vector3 startPoint = new Vector3(target.position.x, 0, target.position.z);
 
         int obstacleLayer = LayerMask.GetMask("Obstacles");
         Physics.Raycast(startPoint, direction, out hitRay, distance, obstacleLayer);

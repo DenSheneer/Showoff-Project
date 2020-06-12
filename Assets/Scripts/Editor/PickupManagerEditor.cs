@@ -20,16 +20,7 @@ public class PickupManagerEditor : Editor
     {
         if (GUILayout.Button("Get all tapbles"))
         {
-            allGameObjects = GameObject.FindObjectsOfType<GameObject>();
-
-            foreach (GameObject gameObject in allGameObjects)
-            {
-                TapAble tapAble = gameObject.GetComponent<TapAble>();
-
-                if (tapAble != null)
-                    pickupManager.AddTapble(tapAble);
-            }
-
+            pickupManager.GetAllTapables();
         }
 
         base.OnInspectorGUI();
