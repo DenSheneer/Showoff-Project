@@ -14,6 +14,7 @@ public class PlayerManager : MonoBehaviour
     public delegate void UpdateFireflies(uint newNrOfFlies);
     public UpdateFireflies updateFirefliesEvent;
     private Animator animator;
+    private ParticleSystem particleEffect;
 
     [SerializeField]
     TongueController tongueController = null;
@@ -21,8 +22,8 @@ public class PlayerManager : MonoBehaviour
     [SerializeField]
     private TempUpdateScore updateScore = null;
 
-    [SerializeField]
-    uint nrOfFlies = 10, nrOfBeetles = 0, score = 0;
+    //made this public for the emission handler; xxx-Daan
+    public uint nrOfFlies = 10, nrOfBeetles = 0, score = 0;
 
     private Dictionary<InputType, bool> tutorials = new Dictionary<InputType, bool>();
     private TutorialIcon tutorialIcon;
@@ -40,6 +41,8 @@ public class PlayerManager : MonoBehaviour
     private void Start()
     {
         animator = GetComponentInChildren<Animator>();
+
+        particleEffect = GetComponentInChildren<ParticleSystem>();
 
         movementComponent = GetComponent<FollowRaycastNavMesh>();
 
@@ -209,6 +212,7 @@ public class PlayerManager : MonoBehaviour
     private void HandleTargetEaten(TapAble collectable)
     {
         animator.SetBool("anim_isOpen", false);
+        particleEffect.Play();
         if (collectable is Fly)
         {
             nrOfFlies += ((collectable as Fly).Value);

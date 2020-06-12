@@ -236,7 +236,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   videoPlayer: {fileID: 1700215743}
-  nextSceneName: Prototype_Daan
+  nextSceneName: Prototype_Daan_withUI
 --- !u!1 &595888062
 GameObject:
   m_ObjectHideFlags: 0

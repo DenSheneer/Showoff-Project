@@ -40,7 +40,20 @@ public class Lantern : TapAble
     {
         if (!isLit)
         {
-            // > code that changes the graphics to a lit lamp
+            //Daan zet emission aan
+            Renderer renderer = GetComponentInChildren<Renderer>();
+            Material mat = renderer.materials[0];
+
+            float emission = 10;
+            Color baseColor = Color.white;
+
+            Color finalColor = baseColor * Mathf.LinearToGammaSpace(emission);
+            // en Daan zet licht aan
+            Light light = GetComponentInChildren<Light>();
+            light.intensity = 20;
+            //
+
+            mat.SetColor("_EmissionColor", finalColor);
 
             isLit = true;
             beetleSpawner.SetSpawnerActivity(true);
