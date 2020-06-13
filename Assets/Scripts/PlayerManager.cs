@@ -11,8 +11,12 @@ public class PlayerManager : MonoBehaviour
 {
     FollowRaycastNavMesh movementComponent = null;
 
-    public delegate void UpdateFireflies(uint newNrOfFlies);
-    public UpdateFireflies updateFirefliesEvent;
+    public delegate void OnTapableChange(TapAble changedTapable);
+    public delegate void OnFireflyChange(int newNrOfFireflies);
+
+    public OnTapableChange onTapableChange;
+    public OnFireflyChange onfireFlyChange;
+
     private Animator animator;
     private ParticleSystem particleEffect;
 
@@ -22,8 +26,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField]
     private TempUpdateScore updateScore = null;
 
-    //made this public for the emission handler; xxx-Daan
-    public uint nrOfFlies = 10, nrOfBeetles = 0, score = 0;
+    private uint nrOfFlies = 0, nrOfBeetles = 0, score = 0;
 
     private Dictionary<InputType, bool> tutorials = new Dictionary<InputType, bool>();
     private TutorialIcon tutorialIcon;
@@ -163,7 +166,7 @@ public class PlayerManager : MonoBehaviour
                     animator.SetTrigger("anim_tr_Lantern");
                     setTutorialCompletion(tapAble.TapAbleType, true);
                     nrOfFlies--;
-                    updateFirefliesEvent?.Invoke(nrOfFlies);
+                    onfireFlyChange?.Invoke((int)nrOfFlies);
                 }
             }
         }
@@ -212,11 +215,14 @@ public class PlayerManager : MonoBehaviour
     private void HandleTargetEaten(TapAble collectable)
     {
         animator.SetBool("anim_isOpen", false);
-        particleEffect.Play();
+
+        if (particleEffect != null)
+            particleEffect.Play();
+
         if (collectable is Fly)
         {
             nrOfFlies += ((collectable as Fly).Value);
-            updateFirefliesEvent?.Invoke(nrOfFlies);
+            onfireFlyChange?.Invoke((int)nrOfFlies);
         }
         if (collectable is Beetle)
         {
@@ -225,6 +231,8 @@ public class PlayerManager : MonoBehaviour
         if (updateScore != null)
             updateScore.UpdateScore(score.ToString());
 
+
+        onTapableChange?.Invoke(collectable);
         Destroy(collectable.gameObject);
     }
 

@@ -23,11 +23,11 @@ public class PickupManager : MonoBehaviour
 
         GameObject playerGO = GameObject.FindGameObjectWithTag("Player");
         playerManager = playerGO.GetComponent<PlayerManager>();
-        playerManager.SubscribeToEatEvent(updateLevelItems);
+        playerManager.onTapableChange += updateLevelItems;
 
-        GameObject uiGO = GameObject.FindGameObjectWithTag("UI");
+        GameObject uiGO = GameObject.Find("DebugUI");
         debugUI = uiGO.GetComponent<DebugUI>();
-        playerManager.updateFirefliesEvent += debugUI.UpdateUI;
+        playerManager.onfireFlyChange += debugUI.UpdateUI;
     }
 
     private void Start()
@@ -43,7 +43,7 @@ public class PickupManager : MonoBehaviour
                 (tapAble as Lantern).SubscribeToBeetleSpawnEvent(updateLevelItems);
                 (tapAble as Lantern).onLitEvent += updateLevelItems;
             }
-        }                
+        }
     }
 
 
@@ -78,6 +78,7 @@ public class PickupManager : MonoBehaviour
     {
         if (tapAbles.Contains(tapAble))
             tapAbles.Remove(tapAble);
+
         else if (!tapAbles.Contains(tapAble))
             tapAbles.Add(tapAble);
     }

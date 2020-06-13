@@ -5,17 +5,24 @@ using UnityEngine;
 public class PlayerEmissionHandler : MonoBehaviour
 {
     [SerializeField]
-    float EmissionMultiplier;
+    float EmissionMultiplier = 1.0f;
+
+    PlayerManager playerManager;
+    Material mat;
+    Color baseColor = Color.white;
+
+    private void Start()
+    {
+        GameObject bodyGO = GameObject.Find("kinker");
+        SkinnedMeshRenderer renderer = bodyGO.GetComponent<SkinnedMeshRenderer>();
+        mat = renderer.material;
+
+        playerManager = GetComponent<PlayerManager>();
+    }
 
     void Update()
     {
-        SkinnedMeshRenderer renderer = GetComponentInChildren<SkinnedMeshRenderer>();
-        Material mat = renderer.material;
-
-        PlayerManager playerManager = GetComponent<PlayerManager>();
-
-        float emission = playerManager.nrOfFlies * EmissionMultiplier;
-        Color baseColor = Color.white;
+        float emission = playerManager.NrOfFlies * EmissionMultiplier;
 
         Color finalColor = baseColor * Mathf.LinearToGammaSpace(emission);
 
