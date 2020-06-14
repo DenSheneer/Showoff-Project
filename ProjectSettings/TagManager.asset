@@ -4,9 +4,16 @@
 TagManager:
   serializedVersion: 2
   tags:
+  - PW - Prop
+  - PW - Building
+  - Synty Tree
+  - PW - Nature
+  - Synty Medium Farm
+  - Synty Small Farm
   - TongueCollectable
-  - CollisionLine
-  - Moveable
+  - Ground
+  - TapAble
+  - UI
   layers:
   - Default
   - TransparentFX
@@ -16,13 +23,13 @@ TagManager:
   - UI
   - 
   - 
-  - Collectables
-  - Collector
+  - PW_VFX
+  - PW_Object_Small
+  - PW_Object_Medium
+  - PW_Object_Large
   - RaycastGround
-  - Obstacles
-  - Pollution
   - TapLayer
-  - 
+  - Obstacles
   - 
   - 
   - 

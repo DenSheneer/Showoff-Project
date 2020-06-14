@@ -7,65 +7,114 @@ using System;
 [RequireComponent(typeof(Spline), typeof(LinearMeshAlongSpline))]
 public class TongueController : MonoBehaviour
 {
-    public delegate void EatEvent(CollectableByTongue tongue);
-    public EatEvent eatEvent;
+    private enum TongueEventType
+    {
+        COLLECTING,
+        DRAGGING
+    }
+
+    private TongueEventType tongueEventType;
+
+    public delegate void TongueEvent(CollectableByTongue tongue);
+    // Event that is called when the tongue reached its target
+    public TongueEvent tongueReachedTarget;
+
+    // Event that is called when the tongue has eaten its target
+    public TongueEvent targetEaten;
 
     [SerializeField]
     private Transform tongueStart = null;
 
-    private Spline spline;
-    private LinearMeshAlongSpline linearMesh;
+    private Spline spline = null;
+    private LinearMeshAlongSpline linearMesh = null;
 
     [SerializeField]
-    private float tongueSpeed = 1.0f, reachDistance = 3.0f;
+    private float tongueSpeed = 1.0f, reachDistance = 9.0f, maxAngle = 85.0f,tongueDragLength = 2;
 
-    [SerializeField]
-    private int StartCollectingStrenght = 1;
-    private int currentCollectStrenght;
-
-    CollectableByTongue currenctCollect = null;
-    private float eatProgress = 0;
-    private bool collectableAttached = false;
-    private bool collecting = false;
-
-    public int CurrectCollectStrenght { get => currentCollectStrenght; }
-    public bool Collecting { get => collecting; }
     public float Reach { get => reachDistance; }
+
+    private TapAble tongueTarget = null;
+
+    private bool inProgress = false;
+    public bool InProgress { get => inProgress; }
+
+    private float tongueProgress = 0;
+    private bool targetReached = false;
+
+    [SerializeField]
+    private float invokeTime = 0.01f;
 
     void Start()
     {
         spline = GetComponent<Spline>();
         linearMesh = GetComponent<LinearMeshAlongSpline>();
-        currentCollectStrenght = StartCollectingStrenght;
     }
 
     void Update()
     {
-        if (collecting)
-            EatLoop();
+        if (InProgress)
+            tongueLoop();
     }
 
-    public void Collect(CollectableByTongue collectable)
+    public bool SetCollectTarget(CollectableByTongue collectable)
     {
-        SetSplineToTarget(collectable.transform);
-        collecting = true;
-        currenctCollect = collectable;
+        if (inProgress)
+        {
+            Debug.Log("Tongue was busy doing something else ");
+
+            return false;
+        }
+        inProgress = true;
+        tongueTarget = collectable;
+        tongueEventType = TongueEventType.COLLECTING;
+        linearMesh.UpdateMeshFillingMode(MeshBender.FillingMode.Repeat);
+
+
+        return true;
     }
 
-    public void FailCollect(CollectableByTongue collectable)
+    public bool SetDragTarget(DragAble dragAble)
     {
-        //Debug.Log("item to big to be eaten");
+        if (inProgress)
+        {
+            Debug.Log("Tongue was busy doing something else ");
+
+            return false;
+        }
+        inProgress = true;
+        tongueTarget = dragAble;
+        tongueEventType = TongueEventType.DRAGGING;
+
+        // TO-DO: We prop want to make the tongue go slowly back but for now we don't
+        tongueProgress = 0;
+
+        float correctProgress = 0.99f - tongueProgress;
+        linearMesh.UpdateMeshFillingMode(MeshBender.FillingMode.StretchToInterval);
+        linearMesh.UpdateMeshInterval(correctProgress);
+
+        return true;
     }
 
-    public void EatCollectable(CollectableByTongue collectable)
+    public void DetacheDragAble(DragAble dragAble)
     {
-        // call eat events
-        eatEvent?.Invoke(collectable);
+        // Can't detache if we have nothing to detache
+        if (!inProgress || tongueEventType == TongueEventType.COLLECTING)
+            return;
 
-        currenctCollect.gameObject.SetActive(false);
-        currentCollectStrenght += currenctCollect.CollectingWeight; // currentCollectStrength is 'progress' gained from the collectable
-        currenctCollect = null;
-        collecting = false;
+        if (tongueTarget == dragAble)
+        {
+            tongueTarget = null;
+            inProgress = false;
+
+            // TO-DO: We prop want to make the tongue go slowly back but for now we don't
+            tongueProgress = 0;
+            targetReached = false;
+
+            float correctProgress = 0.99f - tongueProgress;
+            linearMesh.UpdateMeshInterval(correctProgress);
+        }
+        if (IsInvoking("dragLoop"))
+            CancelInvoke("dragLoop");
     }
 
     private void SetSplineToTarget(Transform pTarget)
@@ -79,53 +128,78 @@ public class TongueController : MonoBehaviour
         spline.nodes[0].Position = newSplinePos;
     }
 
-    private void EatLoop()
+
+    private void dragLoop()
     {
-        // Eat loop while the tongue hasn't reached yet
-        if (!collectableAttached)
-        {
-            eatProgress += Time.smoothDeltaTime * tongueSpeed;
-            SetSplineToTarget(currenctCollect.transform);
+        (tongueTarget as DragAble).MoveTo(this.transform.position, tongueDragLength);
+        SetSplineToTarget(tongueTarget.transform);
+    }
 
-            if (eatProgress >= 1)
+
+    private void tongueLoop()
+    {
+        if (!targetReached)
+        {
+            tongueProgress += Time.smoothDeltaTime * tongueSpeed;
+            SetSplineToTarget(tongueTarget.transform);
+
+            if (tongueProgress >= 1)
             {
-                collectableAttached = true;
-                currenctCollect.transform.SetParent(this.transform);
+                targetReached = true;
+                tongueReachedTarget?.Invoke(tongueTarget as CollectableByTongue);
             }
-        }
-        // Eat loop with the target attaced to the tongue
-        else if (collectableAttached)
-        {
-            eatProgress -= (Time.smoothDeltaTime * tongueSpeed);
 
-            if (eatProgress <= 0)
+        }
+        else if (tongueEventType == TongueEventType.DRAGGING)
+        {
+            if (!IsInvoking("dragLoop"))
+                Invoke("dragLoop", invokeTime);
+        }
+        else if (tongueEventType == TongueEventType.COLLECTING)
+        {
+            tongueProgress -= Time.smoothDeltaTime * tongueSpeed;
+
+            //(tongueTarget as CollectableByTongue).GetGFXTransform().localScale = Vector3.one * Mathf.Clamp(tongueProgress, 0.0f, 1.0f);
+
+            if (tongueProgress <= 0)
             {
-                eatProgress = 0;
-                collectableAttached = false;
-                EatCollectable(currenctCollect);
+                targetReached = false;
+                targetEaten?.Invoke(tongueTarget as CollectableByTongue);
+                inProgress = false;
+
                 return;
             }
         }
 
-        // Because spline mesh is weird. 0 means full progress and 0.99f means no progress. so we reverse eating progress
-        float correctProgress = 0.99f - eatProgress;
-
+        float correctProgress = 0.99f - tongueProgress;
         linearMesh.UpdateMeshInterval(correctProgress);
 
-        if (collectableAttached)
-            currenctCollect.transform.localPosition = linearMesh.GetIntervalPosition(correctProgress + 0.05f);
+        if (targetReached && tongueEventType == TongueEventType.COLLECTING)
+            tongueTarget.transform.localPosition = linearMesh.GetIntervalPosition(correctProgress + 0.05f);
     }
 
-    public bool CheckReach(GameObject target)
+    public bool CheckReach(TapAble tabAble)
     {
         RaycastHit hitRay;
         int obstacleLayer = LayerMask.GetMask("Obstacles");
-        Physics.Linecast(tongueStart.position, target.transform.position, out hitRay, obstacleLayer);
-        float distance = Vector3.Distance(tongueStart.position, target.transform.position);
+        Physics.Linecast(tongueStart.position, tabAble.transform.position, out hitRay, obstacleLayer);
 
-        if (hitRay.collider == null && distance < reachDistance)
-            return true;
-        else
-            return false;
+
+        if (hitRay.collider == null)
+        {
+            Vector3 delta = tongueStart.position - tabAble.transform.position;
+            float distance = Vector3.SqrMagnitude(delta);
+
+            if (distance < reachDistance)
+            {
+                float angle = Vector3.Angle(tongueStart.transform.forward, delta);
+
+                if (angle >= maxAngle)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

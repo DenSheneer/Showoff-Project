@@ -14,10 +14,20 @@ public class FollowRaycastNavMesh : MonoBehaviour
 
     private Camera mainCamera;
     private NavMeshAgent agent;
-    private float startSpeed;
 
     private int layerMask;
     private int groundMask;
+    private bool isMoving = false;
+
+    float distanceWalked = 0.0f;
+
+
+    float timer = 0;
+    float tapDelay = 1.00f;     // Default delay for registering a tap as a gesture is 1/10 of a second .
+
+    public bool reverseDirection = false;
+    public float DistanceWalked { get => distanceWalked; }
+    public bool IsMoving { get => isMoving; }
 
     void OnEnable() { LeanTouch.OnGesture += handleFingerGesture; }
     void OnDisable() { LeanTouch.OnGesture -= handleFingerGesture; }
@@ -27,56 +37,88 @@ public class FollowRaycastNavMesh : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         layerMask = LayerMask.GetMask("Obstacles");
         groundMask = LayerMask.GetMask("RaycastGround");
-        startSpeed = agent.speed;
     }
 
     void Update()
     {
         if ((LeanTouch.Fingers.Count == 0))
-        {
-            agent.speed = 0;
-        }
+            stop();
     }
 
-    void handleFingerGesture(List<LeanFinger> fingers)
+    public void handleFingerGesture(List<LeanFinger> fingers)
     {
-        LeanFinger finger = fingers[0];
-        if (finger != null)
+        if (timer < tapDelay)
+            timer += Time.deltaTime * 10.0f;
+        else
         {
-            RaycastHit hit;
-            Ray ray = mainCamera.ScreenPointToRay(finger.ScreenPosition);
-
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, groundMask))
+            LeanFinger finger = fingers[0];
+            if (finger != null)
             {
-                if (hit.collider != null)
+                RaycastHit hit;
+                Ray ray = mainCamera.ScreenPointToRay(finger.ScreenPosition);
+
+                if (Physics.Raycast(ray, out hit, Mathf.Infinity, groundMask))
                 {
-                    MoveTowardsTarget(hit.point);
+                    if (hit.collider != null)
+                        MoveTowardsTarget(hit.point);
                 }
             }
         }
     }
 
-    private void RotateTowardsTarget(Vector3 delta)
+    public float GetAgentSpeed()
+    {
+        if (isMoving)
+            return agent.speed;
+        else
+            return 0;
+    }
+
+    private void LerpRotateTowardsTarget(Vector3 delta)
     {
         Quaternion rotation = Quaternion.LookRotation(delta);
+
+        if (reverseDirection)
+        {
+            Vector3 rot = rotation.eulerAngles;
+            rot = new Vector3(rot.x, rot.y + 180, rot.z);
+            rotation = Quaternion.Euler(rot);
+        }
+
         float rotateSpeed = maxRotateSpeed - delta.magnitude;
         rotateSpeed = Mathf.Clamp(rotateSpeed, minRotateSpeed, maxRotateSpeed);
-
         transform.rotation = Quaternion.Lerp(transform.rotation, rotation, rotateSpeed * Time.deltaTime);
+    }
+
+    public void RotateTowardsTarget(Vector3 delta)
+    {
+        Quaternion rotation = Quaternion.LookRotation(delta);
+        transform.rotation = rotation;
     }
 
     private void MoveTowardsTarget(Vector3 target)
     {
+        isMoving = true;
+
         Vector3 delta = target - transform.position;
-        RotateTowardsTarget(delta);
+        LerpRotateTowardsTarget(delta);
 
         if (delta.magnitude > 0.5f)
         {
-            agent.speed = startSpeed;
             delta.Normalize();
-            agent.Move(transform.forward * Time.deltaTime * 3.0f);
-        }
 
+            if (reverseDirection)
+                agent.Move(-transform.forward * Time.deltaTime * agent.speed);
+            else if (!reverseDirection)
+                agent.Move(transform.forward * Time.deltaTime * agent.speed);
+
+            distanceWalked += (transform.forward * Time.deltaTime * agent.speed).magnitude;
+        }
+    }
+    private void stop()
+    {
+        isMoving = false;
+        timer = 0;
     }
 
 }

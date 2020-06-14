@@ -3,24 +3,58 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Lean.Touch;
+using UnityEditor;
 
 public class PickupManager : MonoBehaviour
 {
-
     [SerializeField]
-    List<TapAble> collectables = null, collected = null;
+    List<TapAble> tapAbles = null;
 
-    [SerializeField]
     PlayerManager playerManager = null;
+    DebugUI debugUI = null;
 
     int tapMask;
 
     void OnEnable()
     {
         tapMask = LayerMask.GetMask("TapLayer");
-        playerManager.SubscribeToEatEvent(updateLevelItems);
+
         LeanTouch.OnFingerTap += HandleFingerTap;
+
+        GameObject playerGO = GameObject.FindGameObjectWithTag("Player");
+        playerManager = playerGO.GetComponent<PlayerManager>();
+        playerManager.SubscribeToEatEvent(updateLevelItems);
+
+        GameObject uiGO = GameObject.FindGameObjectWithTag("UI");
+        debugUI = uiGO.GetComponent<DebugUI>();
+        playerManager.updateFirefliesEvent += debugUI.UpdateUI;
     }
+
+    private void Start()
+    {
+        GetAllTapables();
+
+        foreach (TapAble tapAble in tapAbles)
+        {
+            tapAble.ExitEvent += playerManager.TapAbleOutOfReach;
+
+            if (tapAble is Lantern)
+            {
+                (tapAble as Lantern).SubscribeToBeetleSpawnEvent(updateLevelItems);
+                (tapAble as Lantern).onLitEvent += updateLevelItems;
+            }
+        }                
+    }
+
+
+    public void AddTapble(TapAble pTapAble)
+    {
+        if (pTapAble != null && (!tapAbles.Contains(pTapAble)))
+        {
+            tapAbles.Add(pTapAble);
+        }
+    }
+
 
     void HandleFingerTap(LeanFinger finger)
     {
@@ -33,34 +67,47 @@ public class PickupManager : MonoBehaviour
                 TapAble tapAble = hit.collider.gameObject.GetComponent<TapAble>();
                 if (tapAble != null)
                 {
-                    if (!playerManager.IsBusy)
-                    {
-                        tapAble.Tab();
-                        playerManager.HandleTapAble(tapAble);
-                    }
+                    tapAble.Tab();
+                    playerManager.HandleTapAble(tapAble);
                 }
             }
         }
     }
 
-    void updateLevelItems(CollectableByTongue collectable)
+    void updateLevelItems(TapAble tapAble)
     {
-        if (collectables.Contains(collectable))
-            collectables.Remove(collectable);
-
-        if (!collected.Contains(collectable))
-            collected.Add(collectable);
+        if (tapAbles.Contains(tapAble))
+            tapAbles.Remove(tapAble);
+        else if (!tapAbles.Contains(tapAble))
+            tapAbles.Add(tapAble);
     }
 
     private void Update()
     {
-        foreach (CollectableByTongue collectable in collectables)
+        foreach (TapAble tapAble in tapAbles)
         {
-            if (playerManager.CheckInReach(collectable.gameObject))
-                collectable.InRange();
-
+            if (playerManager.CheckInReach(tapAble))
+            {
+                tapAble.InRange();
+                playerManager.HandleInReachTapAble(tapAble);
+            }
             else
-                collectable.OutOfRange();
+            {
+                tapAble.OutOfRange();
+            }
+        }
+    }
+
+    public void GetAllTapables()
+    {
+        GameObject[] allGameObjects = FindObjectsOfType<GameObject>();
+
+        foreach (GameObject gameObject in allGameObjects)
+        {
+            TapAble tapAble = gameObject.GetComponent<TapAble>();
+
+            if (tapAble != null)
+                AddTapble(tapAble);
         }
     }
 }

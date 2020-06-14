@@ -5,10 +5,19 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/Scenes/DemoWeek2.unity
-    guid: 3a9f6e74f7bf443449e302f59c7a1e11
   - enabled: 1
-    path: Assets/Scenes/levelTest.unity
-    guid: 0326199de04fa774e9fe2538a50efa55
+    path: Assets/Scenes/StartScreen.unity
+    guid: 9540a99c0d4ff904490259b053c35476
+  - enabled: 1
+    path: Assets/Scenes/Prototype_Daan.unity
+    guid: 82a4af8d32a1cd9479ac2b5514958e6d
+  - enabled: 1
+    path: Assets/Scenes/Highscore_Scene.unity
+    guid: 5ad8aabb6b3d77445885586db5034e8d
+  - enabled: 1
+    path: Assets/Scenes/Prototype_Daan_WithEnd.unity
+    guid: 6753fa63367166b40adf9adaa5dcd40b
+  - enabled: 1
+    path: Assets/Scenes/CutScene.unity
+    guid: 9d8e25a1c1ba9774aa82c953d4f1e64a
   m_configObjects: {}
