@@ -19,12 +19,17 @@ public class Lantern : TapAble
 
     BeetleSpawner beetleSpawner;
 
+    Renderer GFX_Renderer;
+    Light GFX_Light;
+
     public bool IsLit { get => isLit; }
 
     private void OnEnable()
     {
+        beetleSpawner = new BeetleSpawner(transform, fliesLeft, spawnCooldown, minSpawnDistance, maxSpawnDistance);
         tapAbleType = InputType.TAP_LANTERN;
-        beetleSpawner = new BeetleSpawner(transform, fliesLeft, spawnCooldown);
+        GFX_Renderer = GetComponentInChildren<Renderer>();
+        GFX_Light = GetComponentInChildren<Light>();
     }
 
     public override void Tab()
@@ -32,7 +37,7 @@ public class Lantern : TapAble
         return;
     }
     public void SubscribeToBeetleSpawnEvent(BeetleSpawner.BeetleSpawnEvent beetleSpawnEvent)
-    {        
+    {
         beetleSpawner.SubscribeToBeetleSpawnEvent(beetleSpawnEvent);
     }
 
@@ -40,21 +45,20 @@ public class Lantern : TapAble
     {
         if (!isLit)
         {
-            //Daan zet emission aan
-            Renderer renderer = GetComponentInChildren<Renderer>();
-            Material mat = renderer.materials[0];
+            // Daan zet emission aan
+            Material mat = GFX_Renderer.materials[0];
 
             float emission = 10;
             Color baseColor = Color.white;
 
             Color finalColor = baseColor * Mathf.LinearToGammaSpace(emission);
             // en Daan zet licht aan
-            Light light = GetComponentInChildren<Light>();
-            light.intensity = 20;
-            //
+            GFX_Light.intensity = 20;
 
             mat.SetColor("_EmissionColor", finalColor);
 
+
+            gameObject.layer = LayerMask.NameToLayer("Default");
             isLit = true;
             beetleSpawner.SetSpawnerActivity(true);
             onLitEvent?.Invoke(this);
