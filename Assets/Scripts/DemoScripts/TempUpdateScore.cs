@@ -15,6 +15,6 @@ public class TempUpdateScore : MonoBehaviour
 
     public void UpdateScore(string pScore)
     {
-        scoreText.text = "Score = " + pScore;
+        scoreText.text = pScore;
     }
 }

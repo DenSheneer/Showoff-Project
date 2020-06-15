@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8905134311906984843}
   - component: {fileID: 490438015136889277}
   - component: {fileID: 6193271569882481988}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: pref_TreeTrunk_01 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

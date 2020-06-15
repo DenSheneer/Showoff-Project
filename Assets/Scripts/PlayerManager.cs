@@ -11,29 +11,42 @@ public class PlayerManager : MonoBehaviour
 {
     FollowRaycastNavMesh movementComponent = null;
 
+    public delegate void OnTapableChange(TapAble changedTapable);
+    public delegate void OnFireflyChange(int newNrOfFireflies);
+
+    public OnTapableChange onTapableChange;
+    public OnFireflyChange onfireFlyChange;
+
+    private Animator animator;
+    private ParticleSystem particleEffect;
+
     [SerializeField]
     TongueController tongueController = null;
 
     [SerializeField]
     private TempUpdateScore updateScore = null;
 
-    [SerializeField]
-    uint nrOfFlies = 10, nrOfBeetles = 0, score = 0;
+    private uint nrOfFlies = 0, nrOfBeetles = 0, score = 0;
 
     private Dictionary<InputType, bool> tutorials = new Dictionary<InputType, bool>();
     private TutorialIcon tutorialIcon;
     private TapAble nearbyTapAble = null;
     private float hintIdleTime = 5.0f;
-    private float hintTimer = 0.0f;
+    private float hintTimer = 0.0f;     // --> Do not change
     private bool extraHintActive;
 
     public Vector3 Position { get => transform.position; }
     public bool IsBusy { get => tongueController.InProgress; }
     public uint NrOfFlies { get => nrOfFlies; set => nrOfFlies = value; }
     public uint Score { get => score; }
+    public bool IsMoving { get => movementComponent.IsMoving; }
 
     private void Start()
     {
+        animator = GetComponentInChildren<Animator>();
+
+        particleEffect = GetComponentInChildren<ParticleSystem>();
+
         movementComponent = GetComponent<FollowRaycastNavMesh>();
 
         tongueController.tongueReachedTarget += HandleTargetReached;
@@ -46,11 +59,13 @@ public class PlayerManager : MonoBehaviour
         tutorials.Add(InputType.TAP_LANTERN, false);
         tutorials.Add(InputType.TAP_DRAGABLE, false);
 
-        tutorialIcon = new TutorialIcon(transform, InputType.SWIPE_TO_MOVE);
+        tutorialIcon = new TutorialIcon(InputType.SWIPE_TO_MOVE);
     }
     private void Update()
     {
         UpdateTutorialPopUps();
+
+        animator.SetBool("anim_isWalking", movementComponent.IsMoving);
     }
 
     public bool CheckInReach(TapAble tapbAble)
@@ -60,12 +75,12 @@ public class PlayerManager : MonoBehaviour
 
     public void HandleInReachTapAble(TapAble tapAble)
     {
-        nearbyTapAble = tapAble;        // will be overwritten
+        nearbyTapAble = tapAble;        // --> NOTE: will be overwritten
         if (tutorialIcon == null && !IsBusy)
         {
             if (!checkTutorialCompletion(tapAble.TapAbleType))                              //  Check if this interactable's tutorial is completed.
             {
-                tutorialIcon = new TutorialIcon(transform, tapAble.TapAbleType);
+                tutorialIcon = new TutorialIcon(tapAble.TapAbleType);
             }
             else if (!extraHintActive && timerUntilHint(tapAble, hintIdleTime))             //  If there is no extra hint already, start a timer that counts up until
             {                                                                               //  a given idle time is reached. Then, set the interactable's tutorial 
@@ -73,6 +88,11 @@ public class PlayerManager : MonoBehaviour
                 extraHintActive = true;
             }
         }
+    }
+
+    public float GetPlayerSpeed()
+    {
+        return movementComponent.GetAgentSpeed();
     }
 
     private bool checkTutorialCompletion(InputType tutorialType)
@@ -84,8 +104,8 @@ public class PlayerManager : MonoBehaviour
                 extraHintActive = false;
             }
 
-        if (tutorialType == InputType.TAP_LANTERN)
-            if (nrOfFlies < 1)
+        if (tutorialType == InputType.TAP_LANTERN)                                          // The lantern is an exception, as it is also unavailable (==complete)
+            if (nrOfFlies < 1)                                                              // when the player is unable to light up the lamp.
                 return true;
 
         return tutorials[tutorialType];
@@ -118,7 +138,7 @@ public class PlayerManager : MonoBehaviour
         {
             if (tutorialIcon.Type == tapAble.TapAbleType)
             {
-                tutorialIcon.DestroySelf();
+                tutorialIcon.DisableTutorial();
                 tutorialIcon = null;
             }
         }
@@ -130,20 +150,23 @@ public class PlayerManager : MonoBehaviour
         {
             if (tapAble.IsInReach)
             {
+                animator.SetBool("anim_isOpen", true);
                 setTutorialCompletion(tapAble.TapAbleType, true);
                 handleCollectable(tapAble as CollectableByTongue);
             }
         }
-        else if (tapAble is Lamp)
+        else if (tapAble is Lantern)
         {
             if (tapAble.IsInReach)
             {
-                Lamp lamp = tapAble as Lamp;
-                if (!lamp.IsLit && nrOfFlies > 0)
+                Lantern lantern = tapAble as Lantern;
+                if (!lantern.IsLit && nrOfFlies > 0)
                 {
-                    lamp.LightUp();
+                    lantern.LightUp();
+                    animator.SetTrigger("anim_tr_Lantern");
                     setTutorialCompletion(tapAble.TapAbleType, true);
                     nrOfFlies--;
+                    onfireFlyChange?.Invoke((int)nrOfFlies);
                 }
             }
         }
@@ -153,6 +176,7 @@ public class PlayerManager : MonoBehaviour
             {
                 if (tapAble.IsInReach)
                 {
+                    animator.SetBool("anim_isOpen", true);
                     setTutorialCompletion(tapAble.TapAbleType, true);
                     tongueController.SetDragTarget(tapAble as DragAble);
                     movementComponent.reverseDirection = true;
@@ -160,6 +184,7 @@ public class PlayerManager : MonoBehaviour
             }
             else
             {
+                animator.SetBool("anim_isOpen", false);
                 tongueController.DetacheDragAble(tapAble as DragAble);
                 movementComponent.reverseDirection = false;
                 return;
@@ -174,6 +199,10 @@ public class PlayerManager : MonoBehaviour
 
     public void takeDamage(uint damage)
     {
+        Camerashake cameraObject = Camera.main.GetComponent<Camerashake>();
+        cameraObject.CameraShake(200);
+        animator.SetTrigger("anim_tr_Hit");
+
         if (score > damage)
             score -= damage;
         else
@@ -185,22 +214,25 @@ public class PlayerManager : MonoBehaviour
 
     private void HandleTargetEaten(TapAble collectable)
     {
-        // Do stuff when a fly is eaten
+        animator.SetBool("anim_isOpen", false);
+
+        if (particleEffect != null)
+            particleEffect.Play();
+
         if (collectable is Fly)
         {
             nrOfFlies += ((collectable as Fly).Value);
-            score += (collectable as Fly).Value;
-
+            onfireFlyChange?.Invoke((int)nrOfFlies);
         }
-        // Do stuff when a Beetle is eaten
-        // TO DO: give good value score for beetle
         if (collectable is Beetle)
         {
-            score += 1;
+            score += (collectable as Beetle).Value;
         }
         if (updateScore != null)
             updateScore.UpdateScore(score.ToString());
 
+
+        onTapableChange?.Invoke(collectable);
         Destroy(collectable.gameObject);
     }
 
@@ -223,16 +255,11 @@ public class PlayerManager : MonoBehaviour
 
             if (checkTutorialCompletion(tutorialIcon.Type))
             {
-                tutorialIcon.DestroySelf();
+                tutorialIcon.DisableTutorial();
                 tutorialIcon = null;
-            }
-            else
-            {
-                tutorialIcon.UpdateIcon();
             }
         }
     }
-
 
 
     public void SubscribeToEatEvent(TongueEvent eatEvent)

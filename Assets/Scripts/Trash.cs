@@ -13,9 +13,11 @@ public class Trash : MonoBehaviour
 
     private Rigidbody rb = null;
 
+    public Rigidbody RigiB { get => rb; }
+
     private bool hitGround = false;
 
-    private void Start()
+    private void Awake()
     {
         rb = GetComponent<Rigidbody>();
     }
@@ -30,7 +32,7 @@ public class Trash : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rb.AddForce(Physics.gravity * 0.25f);
+        rb.AddForce(Physics.gravity * 0.50f);
     }
 
     void OnCollisionEnter(Collision collision)

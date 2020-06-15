@@ -11,7 +11,7 @@ public class FloatingBehaviour
         min = pMin;
         max = pMax;
         speed = pSpeed;
-        scaleFactor = min;
+        scaleFactor = (pMin + pMax) * 0.5f;
     }
 
     public float GetScaleFactor()
@@ -20,14 +20,8 @@ public class FloatingBehaviour
         return scaleFactor;
     }
 
-    public void Restart()
-    {
-        scaleFactor = min;
-    }
-
     private void updateResult()
     {
-
         scaleFactor += speed * Time.deltaTime;
 
         if (scaleFactor <= min)

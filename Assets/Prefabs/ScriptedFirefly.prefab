@@ -146,8 +146,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.19530928, y: 0.1206636, z: 0.18929647}
-  m_Center: {x: -0.011120865, y: 0.00243966, z: 0}
+  m_Size: {x: 0.6, y: 0.25, z: 0.3}
+  m_Center: {x: 0, y: 0.08798, z: 0}
 --- !u!114 &2630822851846950010
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162,6 +162,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collectingWeight: 1
   GFXTransform: {fileID: 7239079246509647283}
+  speed: 1
+  minRoamDist: 1.1
+  maxRoamDist: 2
 --- !u!1 &5921452721487665056
 GameObject:
   m_ObjectHideFlags: 0
@@ -187,14 +190,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5921452721487665056}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2381512459038236278}
   m_Father: {fileID: 2630822851846950013}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!33 &1814218956984229765
 MeshFilter:
   m_ObjectHideFlags: 0
