@@ -39,7 +39,7 @@ public abstract class CollectableByTongue : TapAble
 
     protected void Start()
     {
-        StartCoroutine(idleUntilNextMove(0));
+        StartCoroutine(idleUntilNextMove(0.5f));
     }
 
     protected void Update()
@@ -119,7 +119,7 @@ public abstract class CollectableByTongue : TapAble
         Vector3 delta = target - transform.position;
         float distanceTo = delta.magnitude;
 
-        if (distanceTo < 1.0f)
+        if (distanceTo < 1.0f)                                                              //  WARNING: MIGHT OVERSHOOT AND CAUSE IT TO CLIP TROUGH WALLS
             return true;
         else
             return false;

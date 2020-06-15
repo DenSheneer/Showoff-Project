@@ -190,12 +190,8 @@ public class TongueController : MonoBehaviour
             Vector3 delta = tongueStart.position - tapAble.transform.position;
             float distance = Vector3.Magnitude(delta);
 
-            float newReachDist = reachDistance;
 
-            if (tapAble is Lantern)
-                newReachDist = reachDistance - 1.0f;
-
-            if (distance < newReachDist)
+            if (distance < reachDistance)
             {
                 float angle = Vector3.Angle(tongueStart.transform.forward, delta);
 

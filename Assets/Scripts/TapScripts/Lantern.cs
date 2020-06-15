@@ -7,7 +7,7 @@ using UnityEngine.Rendering.UI;
 public class Lantern : TapAble
 {
     [SerializeField]
-    int fliesLeft = 5;
+    int spawnsLeft = 5;
 
     public delegate void OnLitEvent(TapAble tapAble);
     public OnLitEvent onLitEvent;
@@ -26,7 +26,7 @@ public class Lantern : TapAble
 
     private void OnEnable()
     {
-        beetleSpawner = new BeetleSpawner(transform, fliesLeft, spawnCooldown, minSpawnDistance, maxSpawnDistance);
+        beetleSpawner = new BeetleSpawner(transform, spawnsLeft, spawnCooldown, minSpawnDistance, maxSpawnDistance);
         tapAbleType = InputType.TAP_LANTERN;
         GFX_Renderer = GetComponentInChildren<Renderer>();
         GFX_Light = GetComponentInChildren<Light>();
