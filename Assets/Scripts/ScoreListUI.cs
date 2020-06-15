@@ -15,8 +15,11 @@ public class ScoreListUI : MonoBehaviour
     private ScrollRect scrollWindowAllAround = null;
 
     [SerializeField]
-    private int maxScrollViewWidth = 900;
-    
+    private bool showDateCurrentDay = false;
+
+    [SerializeField]
+    private bool showDateAllAround = false;
+
     void Start()
     {
         Highscore.LoadHighscores();
@@ -55,24 +58,46 @@ public class ScoreListUI : MonoBehaviour
 
         // END PROTOTYPEING
 
-        LoadList(Highscore.currentDayScores, scrollWindowCurrentDay);
-        LoadList(Highscore.allAroundScores, scrollWindowAllAround);
+        LoadList(Highscore.currentDayScores, scrollWindowCurrentDay, showDateCurrentDay);
+        LoadList(Highscore.allAroundScores, scrollWindowAllAround, showDateAllAround);
         scrollWindowAllAround.gameObject.SetActive(false);
 
     }
 
 
-    private void LoadList(List<PlayerScore> pPlayerScores, ScrollRect pScrollWindow)
+    private void LoadList(List<PlayerScore> pPlayerScores, ScrollRect pScrollWindow,bool showDate)
     {
-        RectTransform scrollRect = pScrollWindow.GetComponent<RectTransform>();
-        scrollRect.sizeDelta = new Vector2(Mathf.Clamp((Screen.width - 400),0, maxScrollViewWidth), Screen.height - 100);
 
         for (int i = 0; i < pPlayerScores.Count; i++)
         {
             ScoreListElement scoreElement = Instantiate(scoreElementPrefab, pScrollWindow.content);
             scoreElement.NameText.text = pPlayerScores[i].name;
-            scoreElement.ScoreText.text = pPlayerScores[i].score.ToString();
+
+            string scoreTextWithZeros;
+
+            if (pPlayerScores[i].score < 10)
+            {
+                scoreTextWithZeros = "000" + pPlayerScores[i].score.ToString();
+            } 
+            else if (pPlayerScores[i].score < 100)
+            {
+                scoreTextWithZeros = "00" + pPlayerScores[i].score.ToString();
+            }
+            else if (pPlayerScores[i].score < 1000)
+            {
+                scoreTextWithZeros = "0" + pPlayerScores[i].score.ToString();
+            } 
+            else
+            {
+                scoreTextWithZeros = pPlayerScores[i].score.ToString();
+            }
+
+            scoreElement.ScoreText.text = scoreTextWithZeros;
             scoreElement.DatePlayedText.text = pPlayerScores[i].datePlayed;
+            scoreElement.DatePlayedText.gameObject.SetActive(false);
+
+            if (showDate)
+                scoreElement.DatePlayedText.gameObject.SetActive(true);
         }
     }
 

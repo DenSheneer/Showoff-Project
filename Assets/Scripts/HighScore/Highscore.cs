@@ -11,6 +11,13 @@ public static class Highscore
     private static int currentDayScoreLimit = 25;
     private static int allAroundScoreLimit = 10;
 
+    public enum HighscoreType
+    {
+        NONE,
+        DAILY,
+        ALLTIME
+    }
+
     public static void LoadHighscores()
     {
 
@@ -40,11 +47,11 @@ public static class Highscore
         // Add empty scores
         for (int i = 0; i < currentDayScoreLimit; i++)
         {
-            currentDayScores.Add(new PlayerScore("empty", DateTime.Now.ToString("yyyy-MM-dd"), 0));
+            currentDayScores.Add(new PlayerScore("empty", DateTime.Now.ToString("yyyy-MM-dd"), 5));
         }
         for (int i = 0; i < allAroundScoreLimit; i++)
         {
-            allAroundScores.Add(new PlayerScore("empty", DateTime.Now.ToString("yyyy-MM-dd"), 0));
+            allAroundScores.Add(new PlayerScore("empty", DateTime.Now.ToString("yyyy-MM-dd"), 5));
         }
 
 
@@ -264,8 +271,14 @@ public static class Highscore
         return true;
     }
 
-
-
-
+    public static HighscoreType checkHighscoreType(uint pScore)
+    {
+        if (NewScoreIndexAllTime(pScore) != -1)
+            return HighscoreType.ALLTIME;
+        else if (NewScoreIndexCurrentDay(pScore) != -1)
+            return HighscoreType.DAILY;
+        else
+            return HighscoreType.NONE;
+    }
 
 }
