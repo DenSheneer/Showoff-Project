@@ -19,13 +19,8 @@ public class TempGoToEndScreen : MonoBehaviour
 
     private void OnClickButton()
     {
-        Highscore.LoadHighscores();
-        Highscore.NewScore("Wessel",0,"2020/06/11");
-        Highscore.NewScore("Wessel Bus",9,"2020/06/11");
-        Highscore.NewScore("Wessel Zus",81,"2020/06/11");
-        Highscore.NewScore("Wessel Kus",714,"2020/06/11");
-        Highscore.NewScore("Wessel Rus",5214,"2020/06/11");
-        Highscore.SaveHighscores();
+        PlayerInfo.Score = 333;
+        PlayerInfo.Language = Language.GERMAN;
 
         SceneManager.LoadScene(sceneName);
     }

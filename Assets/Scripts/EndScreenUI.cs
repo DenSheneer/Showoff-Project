@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Lean.Touch;
+using UnityEngine.Rendering;
 
 public class EndScreenUI : MonoBehaviour
 {
@@ -10,6 +12,9 @@ public class EndScreenUI : MonoBehaviour
 
     [SerializeField]
     private EndOverviewUI endOverviewUI = null;
+
+    [SerializeField]
+    private ScoreListUI scoreList = null;
 
     private void Awake()
     {
@@ -22,7 +27,20 @@ public class EndScreenUI : MonoBehaviour
         }
         else
         {
-            endOverviewUI.gameObject.SetActive(true);
+            SwitchToOverview();
         }
     }
+
+    public void SwitchToOverview()
+    {
+        scoreList.LoadAndShowScore();
+        newHighscoreUI.gameObject.SetActive(false);
+        endOverviewUI.gameObject.SetActive(true);
+    }
+
+    public void Update()
+    {
+
+    }
+
 }

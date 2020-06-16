@@ -20,6 +20,7 @@ public class NextSceneColider : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+
         if (other.tag == "Player")
         {
             PlayerManager pm = other.GetComponent<PlayerManager>();

@@ -14,8 +14,9 @@ public class SetLanguageText : MonoBehaviour
     private string[] Text_ENG_DUTCH_GER = new string[3];
 
     private TextMeshProUGUI textGUI = null;
-    private void Awake()
+    private void OnEnable()
     {
+
         textGUI = GetComponent<TextMeshProUGUI>();
 
         switch (PlayerInfo.Language)

@@ -26,6 +26,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField]
     private TempUpdateScore updateScore = null;
 
+    [SerializeField]
     private uint nrOfFlies = 0, nrOfBeetles = 0, score = 0;
 
     private Dictionary<InputType, bool> tutorials = new Dictionary<InputType, bool>();

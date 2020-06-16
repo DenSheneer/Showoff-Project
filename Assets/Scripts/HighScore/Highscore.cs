@@ -11,6 +11,8 @@ public static class Highscore
     private static int currentDayScoreLimit = 25;
     private static int allAroundScoreLimit = 10;
 
+    private static bool scoreIsLoading = false;
+
     public enum HighscoreType
     {
         NONE,
@@ -20,6 +22,10 @@ public static class Highscore
 
     public static void LoadHighscores()
     {
+        if (scoreIsLoading)
+            return;
+
+        scoreIsLoading = true;
 
         currentDayScores = new List<PlayerScore>();
         allAroundScores = new List<PlayerScore>(); 
@@ -47,13 +53,12 @@ public static class Highscore
         // Add empty scores
         for (int i = 0; i < currentDayScoreLimit; i++)
         {
-            currentDayScores.Add(new PlayerScore("empty", DateTime.Now.ToString("yyyy-MM-dd"), 5));
+            currentDayScores.Add(new PlayerScore("empty", DateTime.Now.ToString("yyyy-MM-dd"), 0));
         }
         for (int i = 0; i < allAroundScoreLimit; i++)
         {
-            allAroundScores.Add(new PlayerScore("empty", DateTime.Now.ToString("yyyy-MM-dd"), 5));
+            allAroundScores.Add(new PlayerScore("empty", DateTime.Now.ToString("yyyy-MM-dd"), 0));
         }
-
 
         // ############ LOADING ALL SCORES FROM THE JSON FILES ###########
         // LOADING CURRENT DAY FIRST
@@ -92,6 +97,7 @@ public static class Highscore
             }
         }
         RemoveListExcess();
+
     }
 
 
@@ -120,6 +126,9 @@ public static class Highscore
 
     public static void SaveHighscores()
     {
+        if (scoreIsLoading == false)
+            LoadHighscores();
+
         // #### saving current day ####
         JSONObject jFileToday = new JSONObject(JSONObject.Type.OBJECT);
         JSONObject jScoresToday = new JSONObject(JSONObject.Type.ARRAY);
@@ -179,6 +188,9 @@ public static class Highscore
         //if (!IsNameAvailable(pName))
         //    return;
 
+        if (scoreIsLoading == false)
+            LoadHighscores();
+
         PlayerScore newScore = new PlayerScore(pName, pDate, pScore);
 
         // Check for the current day
@@ -195,11 +207,16 @@ public static class Highscore
             allAroundScores.Insert(newAllTimeScoreIndex, newScore);
         }
         RemoveListExcess();
+
+        SaveHighscores();
     }
 
     // These functions return where the new score is should be in the list
     public static int NewScoreIndexCurrentDay(uint pScore)
     {
+        if (scoreIsLoading == false)
+            LoadHighscores();
+
         // For when its the first score
         if (currentDayScores.Count == 0)
             return 0;
@@ -221,6 +238,9 @@ public static class Highscore
     
     public static int NewScoreIndexAllTime(uint pScore)
     {
+        if (scoreIsLoading == false)
+            LoadHighscores();
+
         // For when its the first score
         if (allAroundScores.Count == 0)
             return 0;
@@ -255,6 +275,9 @@ public static class Highscore
 
     public static bool IsNameAvailable(string pName)
     {
+        if (scoreIsLoading == false)
+            LoadHighscores();
+
         for (int i = 0; i < currentDayScores.Count; i++)
         {
             // NAME IS NOT AVAIALBE
@@ -273,6 +296,9 @@ public static class Highscore
 
     public static HighscoreType checkHighscoreType(uint pScore)
     {
+        if (scoreIsLoading == false)
+            LoadHighscores();
+
         if (NewScoreIndexAllTime(pScore) != -1)
             return HighscoreType.ALLTIME;
         else if (NewScoreIndexCurrentDay(pScore) != -1)
