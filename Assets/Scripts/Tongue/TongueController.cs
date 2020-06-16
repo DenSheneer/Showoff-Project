@@ -166,6 +166,8 @@ public class TongueController : MonoBehaviour
                 targetReached = false;
                 targetEaten?.Invoke(tongueTarget as CollectableByTongue);
                 inProgress = false;
+                linearMesh.UpdateMeshInterval(0.99f);
+
 
                 return;
             }

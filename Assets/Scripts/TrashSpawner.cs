@@ -23,16 +23,26 @@ public class TrashSpawner : MonoBehaviour
     [SerializeField]
     private List<Trash> prefabList = new List<Trash>();
 
-    private float timer = 2f;
+    private float timer;
 
     [SerializeField]
-    private float spawnInterval = 3.0f;
+    private float spawnIntervalMin = 3.0f;
+
+    [SerializeField]
+    private float spawnIntervalMax = 10.0f;
 
     [SerializeField]
     private float spawnHeight = 3.0f;
 
     [SerializeField]
-    private float randomRangeSize = 3.0f;
+    private float randomRangeSizeOnPlayer = 3.0f;
+
+    [SerializeField]
+    private float randomRangeAroundPlayer = 5.0f;
+
+    private float randomSpawnChance = 0.5f;
+
+    private GameObject trashParent = null;
 
     int groundMask;
 
@@ -42,6 +52,10 @@ public class TrashSpawner : MonoBehaviour
         prefabList.Add(Resources.Load<Trash>(prefabPath + "pref_WaterBottle"));
         prefabList.Add(Resources.Load<Trash>(prefabPath + "pref_SodaCanTrash"));
         prefabList.Add(Resources.Load<Trash>(prefabPath + "pref_AppleTrash"));
+
+        timer = UnityEngine.Random.Range(spawnIntervalMin, spawnIntervalMax);
+
+        trashParent = new GameObject("Trash Parent");
     }
 
     void Update()
@@ -50,16 +64,44 @@ public class TrashSpawner : MonoBehaviour
 
         if (timer <= 0)
         {
-            timer = spawnInterval;
-            SpawnTrash();
+            timer = UnityEngine.Random.Range(spawnIntervalMin, spawnIntervalMax);
+
+            float rnd = Random.Range(0.0f, 1.0f);
+            //
+            if (rnd < randomSpawnChance)
+            {
+                SpawnTrashOnPlayer();
+                Debug.Log("On Player");
+                randomSpawnChance -= 0.1f;
+            }
+            else
+            {
+                SpawnTreshAroundPlayer();
+                Debug.Log("Around Player");
+                randomSpawnChance += 0.1f;
+            }
+
+            //Debug.Log(randomSpawnChance);
         }
     }
 
-    private void SpawnTrash()
+
+    private void SpawnTreshAroundPlayer()
+    {
+        int randomIndex = Random.Range(0, prefabList.Count);
+        Vector3 trashPos = this.transform.position + new Vector3(Random.Range(-randomRangeAroundPlayer, randomRangeAroundPlayer), spawnHeight, Random.Range(-randomRangeAroundPlayer, randomRangeAroundPlayer));
+
+        Trash trash = Instantiate(prefabList[randomIndex], trashPos, Quaternion.identity, trashParent.transform);
+        trash.transform.localRotation = Quaternion.Euler(Random.Range(0.0f, 360.0f), Random.Range(0.0f, 360.0f), Random.Range(0.0f, 360.0f));
+        trash.RigiB.AddTorque(Random.Range(0.0f, 360.0f), Random.Range(0.0f, 360.0f), Random.Range(0.0f, 360.0f), ForceMode.VelocityChange);
+    }
+
+
+    private void SpawnTrashOnPlayer()
     {
         int randomIndex = Random.Range(0, prefabList.Count);
         Vector3 trashPos = new Vector3();
-        Vector3 randomAdditive = new Vector3(Random.Range(-randomRangeSize, randomRangeSize),0,Random.Range(-randomRangeSize, randomRangeSize));
+        Vector3 randomAdditive = new Vector3(Random.Range(-randomRangeSizeOnPlayer, randomRangeSizeOnPlayer),0,Random.Range(-randomRangeSizeOnPlayer, randomRangeSizeOnPlayer));
 
         if (playerManager.IsMoving && LeanTouch.Fingers.Count > 0)
         {
@@ -91,7 +133,7 @@ public class TrashSpawner : MonoBehaviour
             trashPos = transform.position + new Vector3(0, spawnHeight, 0);
         }
 
-        Trash trash = Instantiate(prefabList[randomIndex], trashPos+ randomAdditive, Quaternion.identity, null);
+        Trash trash = Instantiate(prefabList[randomIndex], trashPos+ randomAdditive, Quaternion.identity, trashParent.transform);
         trash.transform.localRotation = Quaternion.Euler(Random.Range(0.0f,360.0f), Random.Range(0.0f, 360.0f), Random.Range(0.0f, 360.0f));
         trash.RigiB.AddTorque(Random.Range(0.0f, 360.0f), Random.Range(0.0f, 360.0f), Random.Range(0.0f, 360.0f),ForceMode.VelocityChange);
     }
