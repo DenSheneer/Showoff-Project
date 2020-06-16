@@ -29,11 +29,11 @@ public class NextSceneColider : MonoBehaviour
                 PlayerInfo.Score = pm.Score;
             }
 
-            NextScene();
+            NextScene(nextSceneName);
         }
     }
 
-    private void NextScene()
+    public void NextScene(string nextSceneName)
     {
         if (Application.CanStreamedLevelBeLoaded(nextSceneName))
             SceneManager.LoadScene(nextSceneName);
