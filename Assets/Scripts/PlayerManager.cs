@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations;
 using static TongueController;
 
 [RequireComponent(typeof(FollowRaycastNavMesh))]
@@ -17,7 +18,7 @@ public class PlayerManager : MonoBehaviour
     public OnTapableChange onTapableChange;
     public OnFireflyChange onfireFlyChange;
 
-    private Animator animator;
+    private static Animator animator = null;
     private ParticleSystem particleEffect;
 
     [SerializeField]
@@ -196,14 +197,14 @@ public class PlayerManager : MonoBehaviour
                         movementComponent.reverseDirection = true;
                     }
                 }
-                else
-                {
-                    animator.SetBool("anim_isOpen", false);
-                    tongueController.DetacheDragAble(tapAble as DragAble);
-                    movementComponent.reverseDirection = false;
-                    return;
-                }
             }
+        }
+        else if (tapAble is DragAble)
+        {
+            animator.SetBool("anim_isOpen", false);
+            tongueController.DetacheDragAble(tapAble as DragAble);
+            movementComponent.reverseDirection = false;
+            return;
         }
     }
     void handleCollectable(CollectableByTongue collectable)
