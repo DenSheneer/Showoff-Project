@@ -33,6 +33,8 @@ public class Lantern : TapAble
         tapAbleType = InputType.TAP_LANTERN;
         GFX_Renderer = GetComponentInChildren<Renderer>();
         GFX_Light = GetComponentInChildren<Light>();
+
+        GFX_Renderer.materials[1].renderQueue = 2000;
     }
 
     public override void Tab()
