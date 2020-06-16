@@ -266,7 +266,9 @@ public class PlayerManager : MonoBehaviour
     IEnumerator takeDamageTimer(uint damage)
     {
         Camerashake cameraObject = Camera.main.GetComponent<Camerashake>();
-        cameraObject.CameraShake(200);
+        if (cameraObject != null)
+            cameraObject.CameraShake(200);
+
         movementComponent.ScaleSpeed(0.25f, 1.0f);
 
         if (score > damage)

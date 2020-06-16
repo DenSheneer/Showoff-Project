@@ -99,8 +99,6 @@ public abstract class CollectableByTongue : TapAble
         RaycastHit hitRay;
 
         Physics.Raycast(from, towards, out hitRay, distance, obstacleLayer);
-
-        //Debug.Log(hitRay.distance);
         Debug.DrawRay(from, towards * hitRay.distance, Color.red, 0.25f);
         return hitRay;
     }

@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Rendering.UI;
+using UnityEngine.UIElements;
 
 public class Lantern : TapAble
 {
     [SerializeField]
-    int spawnsLeft = 5;
+    int spawnsLeft = 2;
+
+    public readonly float LightRadius = 5.0f;
 
     public delegate void OnLitEvent(TapAble tapAble);
     public OnLitEvent onLitEvent;
@@ -66,10 +69,25 @@ public class Lantern : TapAble
         return;
     }
 
+    public bool InRadiusCheck(Vector3 target, int mask)                // Checks Line of sight with target.
+    {
+        RaycastHit hitRay;
+        Vector3 dir = Vector3.Normalize(target - transform.position);
+
+        Physics.Raycast(transform.position, dir, out hitRay, Mathf.Infinity, mask);
+
+        Debug.DrawLine(transform.position, target, Color.red);
+
+        if (hitRay.distance <= LightRadius)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
     private void Update()
     {
         beetleSpawner.UpdateSpawner();
     }
-
-
 }

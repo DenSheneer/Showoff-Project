@@ -10,14 +10,21 @@ public class PickupManager : MonoBehaviour
     [SerializeField]
     List<TapAble> tapAbles = null;
 
+    Lantern[] lanterns;
+
+    [SerializeField]
+    TrashSpawner ts;
+
     PlayerManager playerManager = null;
     DebugUI debugUI = null;
 
     int tapMask;
+    int playerMask;
 
     void OnEnable()
     {
         tapMask = LayerMask.GetMask("TapLayer");
+        playerMask = LayerMask.GetMask("Player");
 
         LeanTouch.OnFingerTap += HandleFingerTap;
 
@@ -33,6 +40,7 @@ public class PickupManager : MonoBehaviour
     private void Start()
     {
         GetAllTapables();
+        List<Lantern> tempLanternList = new List<Lantern>();
 
         foreach (TapAble tapAble in tapAbles)
         {
@@ -40,10 +48,12 @@ public class PickupManager : MonoBehaviour
 
             if (tapAble is Lantern)
             {
+                tempLanternList.Add(tapAble as Lantern);
                 (tapAble as Lantern).SubscribeToBeetleSpawnEvent(updateLevelItems);
                 (tapAble as Lantern).onLitEvent += updateLevelItems;
             }
         }
+        lanterns = tempLanternList.ToArray();
     }
 
 
@@ -97,6 +107,13 @@ public class PickupManager : MonoBehaviour
                 tapAble.OutOfRange();
             }
         }
+    }
+
+    private void Update()
+    {
+        foreach (Lantern lantern in lanterns)
+            if (lantern.IsLit)
+                ts.gameObject.SetActive(!lantern.InRadiusCheck(playerManager.Position, playerMask));
     }
 
     public void GetAllTapables()
