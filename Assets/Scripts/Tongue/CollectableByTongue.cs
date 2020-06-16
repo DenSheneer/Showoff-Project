@@ -7,7 +7,6 @@ public abstract class CollectableByTongue : TapAble
     [SerializeField]
     protected uint value = 1;
 
-    // InRange shrink-expand variables:
     protected float minScaleFactor = 1.0f, maxScaleFactor = 2.0f, scaleSpeed = 1.00f;
     protected Vector3 originalScale;
     FloatingBehaviour floatingBehaviour;
@@ -17,9 +16,12 @@ public abstract class CollectableByTongue : TapAble
 
     bool idle = true;
     [SerializeField]
-    protected float moveSpeed = 1.0f, minRoamDist = 1.1f, maxRoamDist = 2.0f;
+    protected float moveSpeed = 1.0f, minRoamDist = 1.1f, maxRoamDist = 2.0f, minIdleTime = 0f, maxIdleTime = 2.0f;
+
+    float oldDistanceTo = Mathf.Infinity;
 
     Vector3 currentTarget;
+    int obstacleLayer;
 
     public uint Value { get => value; }
     public Vector3 Position { get => transform.position; }
@@ -31,6 +33,13 @@ public abstract class CollectableByTongue : TapAble
         EnterEvent += collectable_OnInRange;
         EnterStayEvent += collectable_InRangeStay;
         ExitEvent += collectable_OnExit;
+
+        obstacleLayer = LayerMask.GetMask("Obstacles");
+    }
+
+    protected void Start()
+    {
+        StartCoroutine(idleUntilNextMove(0.5f));
     }
 
     protected void Update()
@@ -39,8 +48,7 @@ public abstract class CollectableByTongue : TapAble
         {
             if (moveTowardsDestination(currentTarget))
             {
-                idle = true;
-                float randomIdleTime = Random.Range(0, 2.5f);
+                float randomIdleTime = Random.Range(minIdleTime, maxIdleTime);
                 StartCoroutine(idleUntilNextMove(randomIdleTime));
             }
         }
@@ -56,43 +64,50 @@ public abstract class CollectableByTongue : TapAble
     public void SpawnAtTarget(Transform target, float minDist, float maxDist)               // Spawn Beetle in line of sight of the target.
     {
         float randomDistance = Random.Range(minDist, maxDist);
-        Vector3 newDir = randomDirection();
-        RaycastHit hitRay = checkLoS(target, newDir, randomDistance);
+        Vector3 randomDirection = CollectableByTongue.randomDirection();
+        Vector3 tempTarget = new Vector3(target.position.x, 0, target.position.z);
+
+        RaycastHit hitRay = rayLoS(tempTarget, randomDirection, randomDistance);
 
         if (hitRay.collider == null)
-            transform.position = target.position + randomDistance * newDir;
+        {
+            transform.position = tempTarget + randomDirection * randomDistance;
+        }
         else
+        {
             transform.position = hitRay.point;
+        }
     }
-    public void NewRandomDestination(float minDist, float maxDist)                          // Returns a random angle with unit length. (0-360 degrees)
+    public void NewRandomDestination(float minDist, float maxDist)                          // Returns a random angle with unit length. (1-360 degrees)
     {
-        idle = false;
+        Vector3 tempPosition = new Vector3(transform.position.x, 0.005f, transform.position.z);
         float randomDistance = Random.Range(minDist, maxDist);
         Vector3 newDir = randomDirection();
-        RaycastHit hitray = checkLoS(transform, newDir, randomDistance);
 
-        if (hitray.collider == null)
-            currentTarget = transform.position + randomDistance * newDir;
+        RaycastHit hitRay = rayLoS(tempPosition, newDir, randomDistance);
+
+        if (hitRay.collider == null)
+            currentTarget = tempPosition + newDir * randomDistance;
         else
-            currentTarget = hitray.point;
+            currentTarget = hitRay.point;
 
-        RotateTowardsTarget(currentTarget - transform.position);
+        RotateTowardsTarget(newDir);
     }
 
-    RaycastHit checkLoS(Transform target, Vector3 direction, float distance)                // Checks Line of sight with target.
+    RaycastHit rayLoS(Vector3 from, Vector3 towards, float distance)                // Checks Line of sight with target.
     {
         RaycastHit hitRay;
-        Vector3 startPoint = new Vector3(target.position.x, 0, target.position.z);
 
-        int obstacleLayer = LayerMask.GetMask("Obstacles");
-        Physics.Raycast(startPoint, direction, out hitRay, distance, obstacleLayer);
+        Physics.Raycast(from, towards, out hitRay, distance, obstacleLayer);
+        Debug.DrawRay(from, towards * hitRay.distance, Color.red, 0.25f);
         return hitRay;
     }
 
     static Vector3 randomDirection()
     {
-        Vector3 newDir = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
+        Vector3 newDir = new Vector3(Random.Range(-1.0f, 1.0f), 0, Random.Range(-1.0f, 1.0f));
         newDir.Normalize();
+
         return newDir;
     }
     bool moveTowardsDestination(Vector3 target)                                             // Move first --> target reached? return 'true' if yes, return 'false' if no.
@@ -100,7 +115,9 @@ public abstract class CollectableByTongue : TapAble
         transform.position += transform.forward * moveSpeed * Time.deltaTime;
 
         Vector3 delta = target - transform.position;
-        if (Vector3.SqrMagnitude(delta) < 1.0f)
+        float distanceTo = delta.magnitude;
+
+        if (distanceTo < 1.0f)                                                              //  WARNING: MIGHT OVERSHOOT AND CAUSE IT TO CLIP TROUGH WALLS
             return true;
         else
             return false;
@@ -112,8 +129,10 @@ public abstract class CollectableByTongue : TapAble
     }
     IEnumerator idleUntilNextMove(float time)
     {
+        idle = true;
         yield return new WaitForSeconds(time);
         NewRandomDestination(minRoamDist, maxRoamDist);
+        idle = false;
     }
 
 

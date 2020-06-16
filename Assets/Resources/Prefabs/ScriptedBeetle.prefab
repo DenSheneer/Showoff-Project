@@ -123,7 +123,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.25, y: 0.25, z: 0.25}
+  m_Size: {x: 0.33, y: 0.33, z: 0.33}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &2286792753161514793
 MonoBehaviour:
@@ -137,8 +137,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 675ab8b5b0d5e194fa6517dbcec1debf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collectingWeight: 1
+  value: 1
   GFXTransform: {fileID: 8026923843652262564}
-  speed: 1
-  minRoamDist: 1.1
-  maxRoamDist: 2
+  moveSpeed: 1
+  minRoamDist: 0.1
+  maxRoamDist: 3
+  minIdleTime: 0.5
+  maxIdleTime: 2

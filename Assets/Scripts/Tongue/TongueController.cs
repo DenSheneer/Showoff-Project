@@ -29,7 +29,7 @@ public class TongueController : MonoBehaviour
     private LinearMeshAlongSpline linearMesh = null;
 
     [SerializeField]
-    private float tongueSpeed = 1.0f, reachDistance = 9.0f, maxAngle = 85.0f,tongueDragLength = 2;
+    private float tongueSpeed = 1.0f, reachDistance = 9.0f, maxAngle = 85.0f, tongueDragLength = 2;
 
     public float Reach { get => reachDistance; }
 
@@ -178,17 +178,18 @@ public class TongueController : MonoBehaviour
             tongueTarget.transform.localPosition = linearMesh.GetIntervalPosition(correctProgress + 0.05f);
     }
 
-    public bool CheckReach(TapAble tabAble)
+    public bool CheckReach(TapAble tapAble)
     {
         RaycastHit hitRay;
         int obstacleLayer = LayerMask.GetMask("Obstacles");
-        Physics.Linecast(tongueStart.position, tabAble.transform.position, out hitRay, obstacleLayer);
+        Physics.Linecast(tongueStart.position, tapAble.transform.position, out hitRay, obstacleLayer);
 
 
         if (hitRay.collider == null)
         {
-            Vector3 delta = tongueStart.position - tabAble.transform.position;
-            float distance = Vector3.SqrMagnitude(delta);
+            Vector3 delta = tongueStart.position - tapAble.transform.position;
+            float distance = Vector3.Magnitude(delta);
+
 
             if (distance < reachDistance)
             {

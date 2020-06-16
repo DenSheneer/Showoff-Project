@@ -10,8 +10,9 @@ public class Fly : CollectableByTongue
 
     private void Start()
     {
+        base.Start();
+
         originalY = GFXTransform.position.y;
-        NewRandomDestination(minRoamDist, maxRoamDist);
 
         //  Base class values.
         tapAbleType = InputType.TAP_FIREFLY;
@@ -37,6 +38,6 @@ public class Fly : CollectableByTongue
 
     public override void Tab()
     {
-        Debug.Log("tapped a fly");
+        return;
     }
 }
