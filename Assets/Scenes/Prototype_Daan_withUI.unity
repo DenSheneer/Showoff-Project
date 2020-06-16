@@ -10417,6 +10417,26 @@ PrefabInstance:
       propertyPath: randomRangeSize
       value: 0.2
       objectReference: {fileID: 0}
+    - target: {fileID: 6668305790120004322, guid: 879c12f5a6c5b1941a18fbcb88af9fe0,
+        type: 3}
+      propertyPath: spawnIntervalMin
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6668305790120004322, guid: 879c12f5a6c5b1941a18fbcb88af9fe0,
+        type: 3}
+      propertyPath: spawnIntervalMax
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6668305790120004322, guid: 879c12f5a6c5b1941a18fbcb88af9fe0,
+        type: 3}
+      propertyPath: randomRangeSizeOnPlayer
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6668305790120004322, guid: 879c12f5a6c5b1941a18fbcb88af9fe0,
+        type: 3}
+      propertyPath: randomRangeAroundPlayer
+      value: 2.5
+      objectReference: {fileID: 0}
     - target: {fileID: 6668305790120004332, guid: 879c12f5a6c5b1941a18fbcb88af9fe0,
         type: 3}
       propertyPath: m_IsActive
