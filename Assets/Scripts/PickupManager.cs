@@ -31,8 +31,7 @@ public class PickupManager : MonoBehaviour
         playerManager = playerGO.GetComponent<PlayerManager>();
         playerManager.onTapableChange += updateLevelItems;
 
-        GameObject uiGO = GameObject.Find("DebugUI");
-        debugUI = uiGO.GetComponent<DebugUI>();
+        debugUI = FindObjectOfType<DebugUI>();
         playerManager.onfireFlyChange += debugUI.UpdateUI;
 
         ts = FindObjectOfType<TrashSpawner>();
