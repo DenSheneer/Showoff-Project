@@ -83,16 +83,6 @@ public class PickupManager : MonoBehaviour
             tapAbles.Add(tapAble);
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            foreach (TapAble tapAble in tapAbles)
-                if (tapAble is Lantern)
-                    (tapAble as Lantern).LightUp();
-        }
-    }
-
     private void FixedUpdate()
     {
         foreach (TapAble tapAble in tapAbles)

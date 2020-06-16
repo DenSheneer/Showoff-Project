@@ -12,7 +12,7 @@ public class PlayerManager : MonoBehaviour
     FollowRaycastNavMesh movementComponent = null;
 
     public delegate void OnTapableChange(TapAble changedTapable);
-    public delegate void OnFireflyChange(int newNrOfFireflies);
+    public delegate void OnFireflyChange(uint newNrOfFireflies);
 
     public OnTapableChange onTapableChange;
     public OnFireflyChange onfireFlyChange;
@@ -27,15 +27,16 @@ public class PlayerManager : MonoBehaviour
     private TempUpdateScore updateScore = null;
 
     [SerializeField]
-    private uint nrOfFlies = 10, nrOfBeetles = 0;
+    private uint nrOfFlies = 0, nrOfBeetles = 0;
     private uint score = 0;
+    public readonly uint MaxNrOfFlies = 3;
 
     private bool isGettingHurt = false;
 
     private Dictionary<InputType, bool> tutorials = new Dictionary<InputType, bool>();
     private TutorialIcon tutorialIcon;
     private TapAble nearbyTapAble = null;
-    private float hintIdleTime = 5.0f;
+    private readonly float hintIdleTime = 5.0f;
     private float hintTimer = 0.0f;     // --> Do not change
     private bool extraHintActive;
 
@@ -179,7 +180,7 @@ public class PlayerManager : MonoBehaviour
                         animator.SetTrigger("anim_tr_Lantern");
                         setTutorialCompletion(tapAble.TapAbleType, true);
                         nrOfFlies--;
-                        onfireFlyChange?.Invoke((int)nrOfFlies);
+                        onfireFlyChange?.Invoke(nrOfFlies);
                     }
                 }
             }
@@ -226,7 +227,7 @@ public class PlayerManager : MonoBehaviour
         if (collectable is Fly)
         {
             nrOfFlies += ((collectable as Fly).Value);
-            onfireFlyChange?.Invoke((int)nrOfFlies);
+            onfireFlyChange?.Invoke(nrOfFlies);
         }
         if (collectable is Beetle)
         {
