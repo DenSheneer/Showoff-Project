@@ -12,7 +12,6 @@ public class PickupManager : MonoBehaviour
 
     Lantern[] lanterns;
 
-    [SerializeField]
     TrashSpawner ts;
 
     PlayerManager playerManager = null;
@@ -35,6 +34,8 @@ public class PickupManager : MonoBehaviour
         GameObject uiGO = GameObject.Find("DebugUI");
         debugUI = uiGO.GetComponent<DebugUI>();
         playerManager.onfireFlyChange += debugUI.UpdateUI;
+
+        ts = FindObjectOfType<TrashSpawner>();
     }
 
     private void Start()
