@@ -71,13 +71,11 @@ public class TrashSpawner : MonoBehaviour
             if (rnd < randomSpawnChance)
             {
                 SpawnTrashOnPlayer();
-                Debug.Log("On Player");
                 randomSpawnChance -= 0.1f;
             }
             else
             {
                 SpawnTreshAroundPlayer();
-                Debug.Log("Around Player");
                 randomSpawnChance += 0.1f;
             }
 

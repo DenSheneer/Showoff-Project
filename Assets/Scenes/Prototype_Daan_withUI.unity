@@ -45400,9 +45400,11 @@ MonoBehaviour:
   spawnWay: 0
   playerManager: {fileID: 6668305790628533478}
   prefabList: []
-  spawnInterval: 3
+  spawnIntervalMin: 2
+  spawnIntervalMax: 4
   spawnHeight: 3
-  randomRangeSize: 0.2
+  randomRangeSizeOnPlayer: 0.2
+  randomRangeAroundPlayer: 2.5
 --- !u!4 &6674479404983586161
 Transform:
   m_ObjectHideFlags: 0
