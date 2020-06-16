@@ -115,7 +115,7 @@ GameObject:
   - component: {fileID: 2630822851846950010}
   m_Layer: 13
   m_Name: ScriptedFirefly
-  m_TagString: Untagged
+  m_TagString: TapAble
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -160,9 +160,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f4e01e11e55eb144aab601927d408e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collectingWeight: 1
+  value: 1
   GFXTransform: {fileID: 7239079246509647283}
-  speed: 1
+  moveSpeed: 1
   minRoamDist: 1.1
   maxRoamDist: 2
 --- !u!1 &5921452721487665056
