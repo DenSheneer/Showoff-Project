@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Video;
 using UnityEngine.SceneManagement;
+using Lean.Touch;
 
 public class CutSceneManager : MonoBehaviour
 {
@@ -23,6 +24,13 @@ public class CutSceneManager : MonoBehaviour
             SceneManager.LoadScene(nextSceneName);
         else
             Debug.Log("scene does not exist or is not in build");
+    }
+
+    private void Update()
+    {
+        if (LeanTouch.Fingers.Count > 0)
+            NextScene(videoPlayer);
+
     }
 
 }

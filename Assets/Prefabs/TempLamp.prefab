@@ -121,7 +121,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6977051872875097302}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4.95, y: 2.19, z: 0.57}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 2.3, y: 2.3, z: 2.3}
   m_Children:
   - {fileID: 919668124045251441}
@@ -189,7 +189,7 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.542568
-  m_Center: {x: 0.0048782825, y: 0.008259237, z: -0.001567021}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &2228331147508315801
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -202,7 +202,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 042beebc9baffcb4ebf22e8dcd6b5e5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fliesLeft: 5
+  spawnsLeft: 5
   spawnCooldown: 3
   minSpawnDistance: 0.01
   maxSpawnDistance: 3

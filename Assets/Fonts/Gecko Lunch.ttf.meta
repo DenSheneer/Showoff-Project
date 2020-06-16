@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 610f9e9a9dc70b84f8f87f62ec085481
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Gecko Lunch
+  fontNames:
+  - Gecko Lunch
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 2367b6e03388152438e112bb3714746e, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

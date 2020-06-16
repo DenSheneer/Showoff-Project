@@ -30,9 +30,9 @@ public class StartMenuUI : MonoBehaviour
     {
         SwitchMenuState(0);
 
-        dutchBtn.onClick.AddListener(() => { PlayerInfo.Language = Language.DUTCH; });
-        englishBtn.onClick.AddListener(() => { PlayerInfo.Language = Language.ENGLISH; });
-        germanBtn.onClick.AddListener(() => { PlayerInfo.Language = Language.GERMAN; });
+        dutchBtn.onClick.AddListener(() => { PlayerInfo.Language = Language.DUTCH; EnableParent(difficultyBtnParent); });
+        englishBtn.onClick.AddListener(() => { PlayerInfo.Language = Language.ENGLISH; EnableParent(difficultyBtnParent); });
+        germanBtn.onClick.AddListener(() => { PlayerInfo.Language = Language.GERMAN; EnableParent(difficultyBtnParent); });
 
         easyBtn.onClick.AddListener(() => { PlayerInfo.Difficulty = Difficulty.EASY; });
         mediumBtn.onClick.AddListener(() => { PlayerInfo.Difficulty = Difficulty.MEDIUM; });
@@ -83,6 +83,12 @@ public class StartMenuUI : MonoBehaviour
         langBtnParent.SetActive(false);
         difficultyBtnParent.SetActive(false);
         TapToStartParent.SetActive(false);
+    }
+
+    private void EnableParent(GameObject parent)
+    {
+        DisableAll();
+        parent.SetActive(true);
     }
 
 }

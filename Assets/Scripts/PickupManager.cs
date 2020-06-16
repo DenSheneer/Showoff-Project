@@ -10,14 +10,20 @@ public class PickupManager : MonoBehaviour
     [SerializeField]
     List<TapAble> tapAbles = null;
 
+    Lantern[] lanterns;
+
+    TrashSpawner ts;
+
     PlayerManager playerManager = null;
     DebugUI debugUI = null;
 
     int tapMask;
+    int playerMask;
 
     void OnEnable()
     {
         tapMask = LayerMask.GetMask("TapLayer");
+        playerMask = LayerMask.GetMask("Player");
 
         LeanTouch.OnFingerTap += HandleFingerTap;
 
@@ -25,14 +31,16 @@ public class PickupManager : MonoBehaviour
         playerManager = playerGO.GetComponent<PlayerManager>();
         playerManager.onTapableChange += updateLevelItems;
 
-        GameObject uiGO = GameObject.Find("DebugUI");
-        debugUI = uiGO.GetComponent<DebugUI>();
+        debugUI = FindObjectOfType<DebugUI>();
         playerManager.onfireFlyChange += debugUI.UpdateUI;
+
+        ts = FindObjectOfType<TrashSpawner>();
     }
 
     private void Start()
     {
         GetAllTapables();
+        List<Lantern> tempLanternList = new List<Lantern>();
 
         foreach (TapAble tapAble in tapAbles)
         {
@@ -40,10 +48,12 @@ public class PickupManager : MonoBehaviour
 
             if (tapAble is Lantern)
             {
+                tempLanternList.Add(tapAble as Lantern);
                 (tapAble as Lantern).SubscribeToBeetleSpawnEvent(updateLevelItems);
                 (tapAble as Lantern).onLitEvent += updateLevelItems;
             }
         }
+        lanterns = tempLanternList.ToArray();
     }
 
 
@@ -83,7 +93,7 @@ public class PickupManager : MonoBehaviour
             tapAbles.Add(tapAble);
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         foreach (TapAble tapAble in tapAbles)
         {
@@ -97,6 +107,13 @@ public class PickupManager : MonoBehaviour
                 tapAble.OutOfRange();
             }
         }
+    }
+
+    private void Update()
+    {
+        foreach (Lantern lantern in lanterns)
+            if (lantern.IsLit)
+                ts.gameObject.SetActive(!lantern.InRadiusCheck(playerManager.Position, playerMask));
     }
 
     public void GetAllTapables()

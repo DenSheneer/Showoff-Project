@@ -115,6 +115,21 @@ public class FollowRaycastNavMesh : MonoBehaviour
             distanceWalked += (transform.forward * Time.deltaTime * agent.speed).magnitude;
         }
     }
+
+    public void ScaleSpeed(float scalar, float time)
+    {
+        float orinalSpeed = agent.speed;
+
+        agent.speed = orinalSpeed * scalar;
+        StartCoroutine(scaleSpeedTimer(time, orinalSpeed));
+    }
+
+    IEnumerator scaleSpeedTimer(float time, float originalSpeed)
+    {
+        yield return new WaitForSeconds(time);
+        agent.speed = originalSpeed;
+    }
+
     private void stop()
     {
         isMoving = false;

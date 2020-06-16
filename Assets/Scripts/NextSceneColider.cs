@@ -20,6 +20,7 @@ public class NextSceneColider : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+
         if (other.tag == "Player")
         {
             PlayerManager pm = other.GetComponent<PlayerManager>();
@@ -28,11 +29,11 @@ public class NextSceneColider : MonoBehaviour
                 PlayerInfo.Score = pm.Score;
             }
 
-            NextScene();
+            NextScene(nextSceneName);
         }
     }
 
-    private void NextScene()
+    public void NextScene(string nextSceneName)
     {
         if (Application.CanStreamedLevelBeLoaded(nextSceneName))
             SceneManager.LoadScene(nextSceneName);

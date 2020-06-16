@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BeetleSpawner
 {
-    int fliesLeft = 5;
+    int spawnsLeft = 5;
 
     [SerializeField]
     float spawnCooldown = 3.0f, minSpawnDistance = 0.01f, maxSpawnDistance = 3.0f;
@@ -22,7 +22,7 @@ public class BeetleSpawner
     public BeetleSpawner(Transform target, int nrOfFlies, float spawnCooldown, float minSpawnDistance = 0.01f, float maxSpawnDistance = 3.0f)
     {
         this.target = target;
-        this.fliesLeft = nrOfFlies;
+        this.spawnsLeft = nrOfFlies;
         this.spawnCooldown = spawnCooldown;
         this.minSpawnDistance = minSpawnDistance;
         this.maxSpawnDistance = maxSpawnDistance;
@@ -31,8 +31,8 @@ public class BeetleSpawner
 
     public int FliesLeft
     {
-        get => fliesLeft;
-        set => fliesLeft = value;
+        get => spawnsLeft;
+        set => spawnsLeft = value;
     }
 
     public void SetSpawnerActivity(bool activity)
@@ -50,7 +50,7 @@ public class BeetleSpawner
     {
         if (isActive)
         {
-            if (fliesLeft > 0)
+            if (spawnsLeft > 0)
             {
                 timer += Time.deltaTime;
                 if (timer >= spawnCooldown)
@@ -66,9 +66,9 @@ public class BeetleSpawner
     {
         Beetle newBeetle = GameObject.Instantiate(Resources.Load<Beetle>(prefabPath));
         newBeetle.SpawnAtTarget(target, minSpawnDistance, maxSpawnDistance);
-        newBeetle.transform.position += new Vector3(0, -target.position.y+0.1f, 0);     // Might change, this forces the new beetle's y position to be a given number.
+        //newBeetle.transform.position = VectorConverter.V2ToV3(newBeetle.transform.position, 0);     // Might change, this forces the new beetle's y position to be a given number.
 
         beetleSpawnEvent?.Invoke(newBeetle);
-        fliesLeft--;
+        spawnsLeft--;
     }
 }
