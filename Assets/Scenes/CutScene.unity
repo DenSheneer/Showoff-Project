@@ -236,7 +236,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   videoPlayer: {fileID: 1700215743}
-  nextSceneName: Prototype_Daan_withUI
+  nextSceneName: Prototype_Daan_NewLVLDesign
 --- !u!1 &595888062
 GameObject:
   m_ObjectHideFlags: 0
@@ -494,7 +494,7 @@ VideoPlayer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1328114681}
   m_Enabled: 1
-  m_VideoClip: {fileID: 32900000, guid: 98fad1438de7abc46a24de1796129a33, type: 3}
+  m_VideoClip: {fileID: 32900000, guid: 841d58ea7b5c9dd48a1ebc7e3542d244, type: 3}
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 1430858789}
@@ -750,7 +750,7 @@ VideoPlayer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1700215741}
   m_Enabled: 1
-  m_VideoClip: {fileID: 32900000, guid: 98fad1438de7abc46a24de1796129a33, type: 3}
+  m_VideoClip: {fileID: 32900000, guid: 841d58ea7b5c9dd48a1ebc7e3542d244, type: 3}
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 0}
