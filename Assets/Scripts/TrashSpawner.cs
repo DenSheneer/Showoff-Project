@@ -72,6 +72,7 @@ public class TrashSpawner : MonoBehaviour
             {
                 SpawnTrashOnPlayer();
                 randomSpawnChance -= 0.1f;
+                Debug.Log("aimed for player");
             }
             else
             {
