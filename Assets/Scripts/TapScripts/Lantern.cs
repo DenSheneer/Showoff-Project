@@ -10,7 +10,8 @@ public class Lantern : TapAble
     [SerializeField]
     int spawnsLeft = 2;
 
-    public readonly float LightRadius = 4.0f;
+    [SerializeField]
+    private float lightRadius = 4.0f;
 
     public delegate void OnLitEvent(TapAble tapAble);
     public OnLitEvent onLitEvent;
@@ -38,12 +39,6 @@ public class Lantern : TapAble
         GFX_Light = GetComponentInChildren<Light>();
 
         GFX_Renderer.materials[1].renderQueue = 2900;
-    }
-
-    private void Start()
-    {
-        if (litOnSpawn)
-            LightUp();
     }
 
     public override void Tab()
@@ -84,7 +79,7 @@ public class Lantern : TapAble
     {
         RaycastHit hitRay;
         Vector3 dir = Vector3.Normalize(target - transform.position);
-        Physics.Raycast(transform.position, dir, out hitRay, LightRadius, mask);
+        Physics.Raycast(transform.position, dir, out hitRay, lightRadius, mask);
 
         if (hitRay.collider != null)
             return true;
@@ -94,6 +89,8 @@ public class Lantern : TapAble
 
     private void Update()
     {
+        if (litOnSpawn)
+            LightUp();
         beetleSpawner.UpdateSpawner();
     }
 }

@@ -22,6 +22,8 @@ public class PickupManager : MonoBehaviour
 
     void OnEnable()
     {
+        GetAllTapables();
+
         tapMask = LayerMask.GetMask("TapLayer");
         playerMask = LayerMask.GetMask("Player");
 
@@ -39,7 +41,6 @@ public class PickupManager : MonoBehaviour
 
     private void Start()
     {
-        GetAllTapables();
         List<Lantern> tempLanternList = new List<Lantern>();
 
         foreach (TapAble tapAble in tapAbles)
@@ -87,10 +88,16 @@ public class PickupManager : MonoBehaviour
     void updateLevelItems(TapAble tapAble)
     {
         if (tapAbles.Contains(tapAble))
+        {
+            Debug.Log("removing: " + tapAble.name);
             tapAbles.Remove(tapAble);
-
+        }
         else if (!tapAbles.Contains(tapAble))
+        {
+            Debug.Log("adding: " + tapAble.name);
             tapAbles.Add(tapAble);
+        }
+            
     }
 
     private void FixedUpdate()
