@@ -1235,6 +1235,11 @@ PrefabInstance:
       propertyPath: litOnSpawn
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5924828711356628372, guid: 0007395eadb91544da9688f5b9045ec3,
+        type: 3}
+      propertyPath: spawnsLeft
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0007395eadb91544da9688f5b9045ec3, type: 3}
 --- !u!4 &175926481 stripped
@@ -6938,6 +6943,16 @@ PrefabInstance:
       propertyPath: m_LocalRotation.w
       value: -0.59795797
       objectReference: {fileID: 0}
+    - target: {fileID: 5924828711356628372, guid: 0007395eadb91544da9688f5b9045ec3,
+        type: 3}
+      propertyPath: litOnSpawn
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924828711356628372, guid: 0007395eadb91544da9688f5b9045ec3,
+        type: 3}
+      propertyPath: spawnsLeft
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0007395eadb91544da9688f5b9045ec3, type: 3}
 --- !u!4 &997454566 stripped
@@ -12471,7 +12486,7 @@ PrefabInstance:
     - target: {fileID: 6668305791139104370, guid: 879c12f5a6c5b1941a18fbcb88af9fe0,
         type: 3}
       propertyPath: reachDistance
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6668305791139104370, guid: 879c12f5a6c5b1941a18fbcb88af9fe0,
         type: 3}

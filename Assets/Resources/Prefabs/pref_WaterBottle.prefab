@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8077945219144878302}
   - component: {fileID: 915029880866357807}
   - component: {fileID: 5676966098283567900}
+  - component: {fileID: 6350655991375606956}
   m_Layer: 0
   m_Name: pref_WaterBottle
   m_TagString: Untagged
@@ -128,3 +129,15 @@ MonoBehaviour:
   despawnTime: 120
   trashBouncStrenght: 3
   speed: 0
+--- !u!114 &6350655991375606956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4741155541664942612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc764b67ae451174e84e1d1deada2525, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

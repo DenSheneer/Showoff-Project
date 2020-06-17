@@ -10,7 +10,7 @@ public class Lantern : TapAble
     [SerializeField]
     int spawnsLeft = 2;
 
-    public readonly float LightRadius = 4.0f;
+    public readonly float LightRadius = 3.0f;
 
     public delegate void OnLitEvent(TapAble tapAble);
     public OnLitEvent onLitEvent;
