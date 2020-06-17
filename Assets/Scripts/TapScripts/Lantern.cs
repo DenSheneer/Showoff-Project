@@ -10,7 +10,7 @@ public class Lantern : TapAble
     [SerializeField]
     int spawnsLeft = 2;
 
-    public readonly float LightRadius = 5.0f;
+    public readonly float LightRadius = 4.0f;
 
     public delegate void OnLitEvent(TapAble tapAble);
     public OnLitEvent onLitEvent;
@@ -84,15 +84,10 @@ public class Lantern : TapAble
     {
         RaycastHit hitRay;
         Vector3 dir = Vector3.Normalize(target - transform.position);
+        Physics.Raycast(transform.position, dir, out hitRay, LightRadius, mask);
 
-        Physics.Raycast(transform.position, dir, out hitRay, Mathf.Infinity, mask);
-
-        Debug.DrawLine(transform.position, target, Color.red);
-
-        if (hitRay.distance <= LightRadius)
-        {
+        if (hitRay.collider != null)
             return true;
-        }
 
         return false;
     }
