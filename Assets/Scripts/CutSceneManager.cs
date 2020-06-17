@@ -9,8 +9,6 @@ public class CutSceneManager : MonoBehaviour
 {
     private static VideoPlayer videoPlayer = null;
 
-    private static readonly string nextSceneName = "Prototype_Daan_NewLVLDesign";
-
     private void OnEnable()
     {
         videoPlayer = FindObjectOfType<VideoPlayer>();
@@ -19,10 +17,7 @@ public class CutSceneManager : MonoBehaviour
 
     private void NextScene(VideoPlayer vp)
     {
-        if (Application.CanStreamedLevelBeLoaded(nextSceneName))
-            SceneManager.LoadScene(nextSceneName);
-        else
-            Debug.Log("scene does not exist or is not in build");
+        SceneLoader.LoadScene(SceneLoader.LevelSceneName);
     }
 
     private void Update()

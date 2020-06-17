@@ -19,6 +19,7 @@ public class PickupManager : MonoBehaviour
 
     int tapMask;
     int playerMask;
+    float idleTime = 0.0f;
 
     void OnEnable()
     {
@@ -89,12 +90,10 @@ public class PickupManager : MonoBehaviour
     {
         if (tapAbles.Contains(tapAble))
         {
-            Debug.Log("removing: " + tapAble.name);
             tapAbles.Remove(tapAble);
         }
         else if (!tapAbles.Contains(tapAble))
         {
-            Debug.Log("adding: " + tapAble.name);
             tapAbles.Add(tapAble);
         }
             
@@ -118,6 +117,14 @@ public class PickupManager : MonoBehaviour
 
     private void Update()
     {
+        if (LeanTouch.Fingers.Count < 1)
+        {
+            if (timerUntilReset(30.0f))
+                SceneLoader.LoadScene(SceneLoader.StartScreenSceneName);
+        }
+        else
+            idleTime = 0.0f;
+
         foreach (Lantern lantern in lanterns)
             if (lantern.IsLit)
                 ts.gameObject.SetActive(!lantern.InRadiusCheck(playerManager.Position, playerMask));
@@ -134,5 +141,14 @@ public class PickupManager : MonoBehaviour
             if (tapAble != null)
                 AddTapble(tapAble);
         }
+    }
+
+    bool timerUntilReset(float time)
+    {
+        idleTime += Time.deltaTime;
+        if (idleTime >= time)
+            return true;
+
+        return false;
     }
 }
