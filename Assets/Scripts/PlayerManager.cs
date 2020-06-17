@@ -19,7 +19,8 @@ public class PlayerManager : MonoBehaviour
     public OnFireflyChange onfireFlyChange;
 
     private static Animator animator = null;
-    private ParticleSystem particleEffect;
+    private static ParticleSystem particles_beetle = null;
+    private static ParticleSystem particles_fly = null;
 
     [SerializeField]
     TongueController tongueController = null;
@@ -58,7 +59,8 @@ public class PlayerManager : MonoBehaviour
     {
         animator = GetComponentInChildren<Animator>();
 
-        particleEffect = GetComponentInChildren<ParticleSystem>();
+        particles_beetle = GameObject.Find("PickupEffect").GetComponent<ParticleSystem>();
+        particles_fly = GameObject.Find("PickupFirefly").GetComponent<ParticleSystem>();
 
         movementComponent = GetComponent<FollowRaycastNavMesh>();
 
@@ -222,17 +224,20 @@ public class PlayerManager : MonoBehaviour
     {
         animator.SetBool("anim_isOpen", false);
 
-        if (particleEffect != null)
-            particleEffect.Play();
-
         if (collectable is Fly)
         {
             nrOfFlies += ((collectable as Fly).Value);
             onfireFlyChange?.Invoke(nrOfFlies);
+
+            if (particles_fly != null)
+                particles_fly.Play();
         }
         if (collectable is Beetle)
         {
             score += (collectable as Beetle).Value;
+
+            if (particles_beetle != null)
+                particles_beetle.Play();
         }
         if (updateScore != null)
             updateScore.UpdateScore(score.ToString());
