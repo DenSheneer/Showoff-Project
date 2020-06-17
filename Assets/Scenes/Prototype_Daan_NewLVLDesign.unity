@@ -8133,6 +8133,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2605565703288023875, guid: 3d3339f41a62fa84aac9633aae9fdcda,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1574889910}
+    - target: {fileID: 2605565703288023875, guid: 3d3339f41a62fa84aac9633aae9fdcda,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: NextScene
+      objectReference: {fileID: 0}
+    - target: {fileID: 2605565703288023875, guid: 3d3339f41a62fa84aac9633aae9fdcda,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2605565703288023875, guid: 3d3339f41a62fa84aac9633aae9fdcda,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: StartScreen_NoName
+      objectReference: {fileID: 0}
     - target: {fileID: 4446681536658371053, guid: 3d3339f41a62fa84aac9633aae9fdcda,
         type: 3}
       propertyPath: m_TagString
@@ -12363,6 +12383,16 @@ PrefabInstance:
       propertyPath: randomRangeSize
       value: 0.2
       objectReference: {fileID: 0}
+    - target: {fileID: 6668305790120004322, guid: 879c12f5a6c5b1941a18fbcb88af9fe0,
+        type: 3}
+      propertyPath: spawnIntervalMax
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6668305790120004322, guid: 879c12f5a6c5b1941a18fbcb88af9fe0,
+        type: 3}
+      propertyPath: spawnIntervalMin
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6668305790120004332, guid: 879c12f5a6c5b1941a18fbcb88af9fe0,
         type: 3}
       propertyPath: m_IsActive
@@ -15020,7 +15050,7 @@ PrefabInstance:
     - target: {fileID: 8335545824607863300, guid: 6fbd4182beccb374eaa07a9993e885e0,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8335545824607863301, guid: 6fbd4182beccb374eaa07a9993e885e0,
         type: 3}
