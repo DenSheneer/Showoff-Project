@@ -4,10 +4,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Collider),typeof(Rigidbody))]
-public class NextSceneColider : MonoBehaviour
+public class NextSceneCollider : MonoBehaviour
 {
-    [SerializeField]
-    private string nextSceneName = "Highscore_Scene";
+    private static readonly string nextSceneName = "EndScreen";
 
     private void Start()
     {

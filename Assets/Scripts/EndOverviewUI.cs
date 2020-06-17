@@ -13,7 +13,7 @@ public class EndOverviewUI : MonoBehaviour
     private float counter;
 
     [SerializeField]
-    private string beginSceneName = "StartScreen";
+    private readonly static string beginSceneName = "StartScreen_NoName";
 
     [SerializeField]
     private Button backToMenu = null;

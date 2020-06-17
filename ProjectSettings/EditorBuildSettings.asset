@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/Scenes/CutScene.unity
     guid: 9d8e25a1c1ba9774aa82c953d4f1e64a
   - enabled: 1
-    path: Assets/Scenes/Highscore_Scene.unity
-    guid: 5ad8aabb6b3d77445885586db5034e8d
+    path: Assets/Scenes/Prototype_Daan_NewLVLDesign.unity
+    guid: 2ff57427f94b0c4428ab5dfb368715da
+  - enabled: 1
+    path: Assets/Scenes/EndScreen.unity
+    guid: 7dc2cbe8ddfc29e428fbb27b44e5659d
   m_configObjects: {}

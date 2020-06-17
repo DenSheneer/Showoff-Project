@@ -14,7 +14,7 @@ OcclusionCullingSettings:
 RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 9
-  m_Fog: 0
+  m_Fog: 1
   m_FogColor: {r: 0.06666667, g: 0.09411766, b: 0.227451, a: 1}
   m_FogMode: 2
   m_FogDensity: 0.15
@@ -3600,6 +3600,25 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 467445074}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &481484042 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5301375585865297000, guid: 9de4a39e4c5e3c3469564a58a7297f4b,
+    type: 3}
+  m_PrefabInstance: {fileID: 4229909295427489018}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &481484043
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 481484042}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.0899429, y: 1.3367996, z: 2.2339249}
+  m_Center: {x: -0.003604889, y: 0.6683922, z: 0.0041770935}
 --- !u!1001 &492742136
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8328,6 +8347,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2605565703288023875, guid: 3d3339f41a62fa84aac9633aae9fdcda,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1574889910}
+    - target: {fileID: 2605565703288023875, guid: 3d3339f41a62fa84aac9633aae9fdcda,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: NextScene
+      objectReference: {fileID: 0}
+    - target: {fileID: 2605565703288023875, guid: 3d3339f41a62fa84aac9633aae9fdcda,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2605565703288023875, guid: 3d3339f41a62fa84aac9633aae9fdcda,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: StartScreen_NoName
+      objectReference: {fileID: 0}
     - target: {fileID: 4446681536658371053, guid: 3d3339f41a62fa84aac9633aae9fdcda,
         type: 3}
       propertyPath: m_TagString
@@ -11506,7 +11545,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79f0df03a8a55ce44977c7e97eefa4cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextSceneName: Highscore_Scene
 --- !u!54 &1574889911
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -12582,6 +12620,26 @@ PrefabInstance:
         type: 3}
       propertyPath: randomRangeSize
       value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6668305790120004322, guid: 879c12f5a6c5b1941a18fbcb88af9fe0,
+        type: 3}
+      propertyPath: spawnIntervalMin
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6668305790120004322, guid: 879c12f5a6c5b1941a18fbcb88af9fe0,
+        type: 3}
+      propertyPath: spawnIntervalMax
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6668305790120004322, guid: 879c12f5a6c5b1941a18fbcb88af9fe0,
+        type: 3}
+      propertyPath: randomRangeAroundPlayer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6668305790120004322, guid: 879c12f5a6c5b1941a18fbcb88af9fe0,
+        type: 3}
+      propertyPath: randomRangeSizeOnPlayer
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6668305790120004332, guid: 879c12f5a6c5b1941a18fbcb88af9fe0,
         type: 3}
@@ -15320,7 +15378,7 @@ PrefabInstance:
     - target: {fileID: 8335545824607863300, guid: 6fbd4182beccb374eaa07a9993e885e0,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8335545824607863301, guid: 6fbd4182beccb374eaa07a9993e885e0,
         type: 3}
@@ -16343,6 +16401,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5301375585865297000, guid: 9de4a39e4c5e3c3469564a58a7297f4b,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 9207922631603068539, guid: 9de4a39e4c5e3c3469564a58a7297f4b,
         type: 3}

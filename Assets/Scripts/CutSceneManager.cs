@@ -7,14 +7,13 @@ using Lean.Touch;
 
 public class CutSceneManager : MonoBehaviour
 {
-    [SerializeField]
-    private VideoPlayer videoPlayer = null;
+    private static VideoPlayer videoPlayer = null;
 
-    [SerializeField]
-    private string nextSceneName = "Prototype_Daan";
+    private static readonly string nextSceneName = "Prototype_Daan_NewLVLDesign";
 
-    private void Start()
+    private void OnEnable()
     {
+        videoPlayer = FindObjectOfType<VideoPlayer>();
         videoPlayer.loopPointReached += NextScene;
     }
 
