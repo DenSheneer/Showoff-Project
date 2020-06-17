@@ -1230,6 +1230,11 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5924828711356628372, guid: 0007395eadb91544da9688f5b9045ec3,
+        type: 3}
+      propertyPath: litOnSpawn
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0007395eadb91544da9688f5b9045ec3, type: 3}
 --- !u!4 &175926481 stripped
@@ -11563,6 +11568,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 997454566}
   - {fileID: 175926481}
   - {fileID: 1756198173}
   - {fileID: 1802051743}
@@ -11572,7 +11578,6 @@ Transform:
   - {fileID: 550956558}
   - {fileID: 295396666}
   - {fileID: 1020404160}
-  - {fileID: 997454566}
   - {fileID: 1683715041}
   - {fileID: 590093873}
   m_Father: {fileID: 0}

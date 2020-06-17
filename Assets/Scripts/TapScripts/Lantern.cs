@@ -20,6 +20,9 @@ public class Lantern : TapAble
     [SerializeField]
     float spawnCooldown = 3.0f, minSpawnDistance = 0.01f, maxSpawnDistance = 3.0f;
 
+    [SerializeField]
+    private bool litOnSpawn = false;
+
     BeetleSpawner beetleSpawner;
 
     Renderer GFX_Renderer;
@@ -35,6 +38,12 @@ public class Lantern : TapAble
         GFX_Light = GetComponentInChildren<Light>();
 
         GFX_Renderer.materials[1].renderQueue = 2900;
+    }
+
+    private void Start()
+    {
+        if (litOnSpawn)
+            LightUp();
     }
 
     public override void Tab()
