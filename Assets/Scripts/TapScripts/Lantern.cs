@@ -34,7 +34,7 @@ public class Lantern : TapAble
         GFX_Renderer = GetComponentInChildren<Renderer>();
         GFX_Light = GetComponentInChildren<Light>();
 
-        GFX_Renderer.materials[1].renderQueue = 2000;
+        GFX_Renderer.materials[1].renderQueue = 2900;
     }
 
     public override void Tab()
