@@ -9,7 +9,7 @@ public class PlayerEmissionHandler : MonoBehaviour
 
     Material mat;
     Color baseColor = Color.white;
-    uint maxNrOfFlies;
+    int maxNrOfFlies;
 
     private void OnEnable()
     {
@@ -18,11 +18,11 @@ public class PlayerEmissionHandler : MonoBehaviour
         mat = renderer.material;
 
         PlayerManager temp = GetComponent<PlayerManager>();
-        temp.onfireFlyChange += UpdateFireFlies;
+        temp.OnFireflyChange += UpdateGFX;
         maxNrOfFlies = temp.MaxNrOfFlies;
     }
 
-    void UpdateFireFlies(uint nrOfFireflies)
+    void UpdateGFX(int nrOfFireflies)
     {
         float emission;
 

@@ -32,17 +32,17 @@ public class DebugUI : MonoBehaviour
         }
     }
 
-    public void UpdateUI(uint nrOfFireflies)
+    public void UpdateUI(int newNrOfFireflies)
     {
         foreach (Image image in fireflyImages)
             image.color = new Color(1, 1, 1, .25f);
 
-        uint toBeAdded = 0;
+        int toBeAdded = 0;
 
-        if (nrOfFireflies <= fireflyImages.Length)
-            toBeAdded = nrOfFireflies;
+        if (newNrOfFireflies <= fireflyImages.Length)
+            toBeAdded = newNrOfFireflies;
         else
-            toBeAdded = (uint)fireflyImages.Length;
+            toBeAdded = fireflyImages.Length;
 
         for (int i = 0; i < toBeAdded; i++)
             fireflyImages[i].color = new Color(1, 1, 1, 1);

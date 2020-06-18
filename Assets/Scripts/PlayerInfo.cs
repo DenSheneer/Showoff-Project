@@ -7,7 +7,7 @@ public static class PlayerInfo
     public static Language Language;
     public static Difficulty Difficulty;
     public static string PlayerName;
-    public static uint Score;
+    public static int Score;
 }
 
 public enum Difficulty { EASY = 0, MEDIUM = 1, HARD = 2 }

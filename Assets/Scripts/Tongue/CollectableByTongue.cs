@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class CollectableByTongue : TapAble
 {
     [SerializeField]
-    protected uint value = 1;
+    protected int value = 1;
 
     protected float minScaleFactor = 1.0f, maxScaleFactor = 2.0f, scaleSpeed = 1.00f;
     protected Vector3 originalScale;
@@ -23,7 +23,7 @@ public abstract class CollectableByTongue : TapAble
     Vector3 currentTarget;
     int obstacleLayer;
 
-    public uint Value { get => value; }
+    public int Value { get => value; }
     public Vector3 Position { get => transform.position; }
 
     protected void OnEnable()
