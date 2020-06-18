@@ -96,7 +96,7 @@ public class PickupManager : MonoBehaviour
         {
             tapAbles.Add(tapAble);
         }
-            
+
     }
 
     private void FixedUpdate()
@@ -125,9 +125,7 @@ public class PickupManager : MonoBehaviour
         else
             idleTime = 0.0f;
 
-        foreach (Lantern lantern in lanterns)
-            if (lantern.IsLit)
-                ts.gameObject.SetActive(!lantern.InRadiusCheck(playerManager.Position, playerMask));
+        ts.gameObject.SetActive(!checkAllLanternRadii());
     }
 
     public void GetAllTapables()
@@ -141,6 +139,16 @@ public class PickupManager : MonoBehaviour
             if (tapAble != null)
                 AddTapble(tapAble);
         }
+    }
+
+    bool checkAllLanternRadii()     //  If the player is inside the radius of ANY lantern, return true. Else, return false.
+    {
+        foreach (Lantern lantern in lanterns)
+            if (lantern.IsLit)
+                if (lantern.InRadiusCheck(playerManager.Position, playerMask))
+                    return true;
+
+        return false;
     }
 
     bool timerUntilReset(float time)
