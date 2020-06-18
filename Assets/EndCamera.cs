@@ -43,13 +43,12 @@ public class EndCamera : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("enteredTrigger");
             maincameraGO.SetActive(false);
             endcameraGO.SetActive(true);
 
             other.GetComponent<FollowRaycastNavMesh>().mainCamera = endcamera;
             dolly.transform.position = player.transform.position;
-            dolly.transform.position += new Vector3(-2.7f, 1.8f, 0);
+            dolly.transform.position += new Vector3(-2.7f, 1.95f, 0);
 
             DebugUI.GetComponent<Canvas>().worldCamera = endcamera;
             //DollyMove(other.gameObject, PicnicBench, VCcam);
@@ -77,7 +76,7 @@ public class EndCamera : MonoBehaviour
         if (inRange)
         {
             Distance = Vector3.Distance(PicnicBench.transform.position, player.transform.position);
-            VCdolly.m_Position = (-Distance + initialDistance)-1;
+            VCdolly.m_Position = (-Distance + initialDistance)*0.6f;
         }
     }
 }
