@@ -12,7 +12,7 @@ public class FollowRaycastNavMesh : MonoBehaviour
     [SerializeField]
     private float maxRotateSpeed = 50;
 
-    private Camera mainCamera;
+    public Camera mainCamera;
     private NavMeshAgent agent;
 
     private int layerMask;
