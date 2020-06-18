@@ -96,7 +96,7 @@ public class FollowRaycastNavMesh : MonoBehaviour
         transform.rotation = rotation;
     }
 
-    private void MoveTowardsTarget(Vector3 target)
+    public void MoveTowardsTarget(Vector3 target)
     {
         isMoving = true;
 
