@@ -21,29 +21,24 @@ public class PickupManager : MonoBehaviour
     int playerMask;
     float idleTime = 0.0f;
 
-    void OnEnable()
+    void Awake()
     {
         GetAllTapables();
+
+        LeanTouch.OnFingerTap += HandleFingerTap;
 
         tapMask = LayerMask.GetMask("TapLayer");
         playerMask = LayerMask.GetMask("Player");
 
-        LeanTouch.OnFingerTap += HandleFingerTap;
-
-        GameObject playerGO = GameObject.FindGameObjectWithTag("Player");
-        playerManager = playerGO.GetComponent<PlayerManager>();
+        playerManager = FindObjectOfType<PlayerManager>();
         playerManager.onTapableChange += updateLevelItems;
 
         debugUI = FindObjectOfType<DebugUI>();
         playerManager.onfireFlyChange += debugUI.UpdateUI;
 
         ts = FindObjectOfType<TrashSpawner>();
-    }
 
-    private void Start()
-    {
         List<Lantern> tempLanternList = new List<Lantern>();
-
         foreach (TapAble tapAble in tapAbles)
         {
             tapAble.ExitEvent += playerManager.TapAbleOutOfReach;
@@ -57,7 +52,6 @@ public class PickupManager : MonoBehaviour
         }
         lanterns = tempLanternList.ToArray();
     }
-
 
     public void AddTapble(TapAble pTapAble)
     {

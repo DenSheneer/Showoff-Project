@@ -26,7 +26,7 @@ public abstract class CollectableByTongue : TapAble
     public uint Value { get => value; }
     public Vector3 Position { get => transform.position; }
 
-    void OnEnable()
+    protected void OnEnable()
     {
         originalScale = GFXTransform.localScale;
 

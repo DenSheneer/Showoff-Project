@@ -31,7 +31,7 @@ public class Lantern : TapAble
 
     public bool IsLit { get => isLit; }
 
-    private void OnEnable()
+    private void Awake()
     {
         beetleSpawner = new BeetleSpawner(transform, spawnsLeft, spawnCooldown, minSpawnDistance, maxSpawnDistance);
         tapAbleType = InputType.TAP_LANTERN;
@@ -39,6 +39,12 @@ public class Lantern : TapAble
         GFX_Light = GetComponentInChildren<Light>();
 
         GFX_Renderer.materials[1].renderQueue = 2900;
+    }
+
+    private void Start()
+    {
+        if (litOnSpawn)
+            LightUp();
     }
 
     public override void Tab()
@@ -89,8 +95,6 @@ public class Lantern : TapAble
 
     private void Update()
     {
-        if (litOnSpawn)
-            LightUp();
         beetleSpawner.UpdateSpawner();
     }
 }

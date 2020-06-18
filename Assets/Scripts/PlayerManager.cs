@@ -28,6 +28,8 @@ public class PlayerManager : MonoBehaviour
     [SerializeField]
     private TempUpdateScore updateScore = null;
 
+    private Camerashake cameraObject;
+
     [SerializeField]
     private uint nrOfFlies = 0, nrOfBeetles = 0;
     private uint score = 0;
@@ -55,18 +57,16 @@ public class PlayerManager : MonoBehaviour
             return isGettingHurt;
     }
 
-    private void Start()
+    private void Awake()
     {
         animator = GetComponentInChildren<Animator>();
-
         particles_beetle = GameObject.Find("PickupEffect").GetComponent<ParticleSystem>();
         particles_fly = GameObject.Find("PickupFirefly").GetComponent<ParticleSystem>();
-
         movementComponent = GetComponent<FollowRaycastNavMesh>();
+        cameraObject  = Camera.main.GetComponent<Camerashake>();
 
         tongueController.tongueReachedTarget += HandleTargetReached;
         tongueController.targetEaten += HandleTargetEaten;
-
 
         tutorials.Add(InputType.SWIPE_TO_MOVE, false);
         tutorials.Add(InputType.TAP_FIREFLY, false);
@@ -271,7 +271,6 @@ public class PlayerManager : MonoBehaviour
 
     IEnumerator takeDamageTimer(uint damage)
     {
-        Camerashake cameraObject = Camera.main.GetComponent<Camerashake>();
         if (cameraObject != null)
             cameraObject.CameraShake(200);
 
