@@ -77,7 +77,7 @@ public class EndCamera : MonoBehaviour
         if (inRange)
         {
             Distance = Vector3.Distance(PicnicBench.transform.position, player.transform.position);
-            VCdolly.m_Position = (-Distance + initialDistance)*0.6f;
+            VCdolly.m_Position = (-Distance + initialDistance)*0.7f;
         }
     }
 }
