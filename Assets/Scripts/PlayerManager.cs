@@ -48,7 +48,7 @@ public class PlayerManager : MonoBehaviour
     private bool extraHintActive;
 
     public Vector3 Position { get => transform.position; }
-    public int NrOfFlies { get => nrOfFlies; set => nrOfFlies = value; }
+    public int NrOfFlies { get => nrOfFlies; }
     public int Score { get => score; }
     public bool IsMoving { get => movementComponent.IsMoving; }
 
@@ -192,7 +192,7 @@ public class PlayerManager : MonoBehaviour
                         lantern.LightUp();
                         animator.SetTrigger("anim_tr_Lantern");
                         setTutorialCompletion(tapAble.TapAbleType, true);
-                        updateIntValue(ref nrOfFlies, -1, default, OnFireflyChange);
+                        updateIntValue(ref nrOfFlies, -1, OnFireflyChange);
                     }
                 }
             }
@@ -226,7 +226,7 @@ public class PlayerManager : MonoBehaviour
 
     public void takeDamage(int damage)
     {
-        updateIntValue(ref score, -damage, default, OnScoreChange);
+        updateIntValue(ref score, -damage, OnScoreChange);
         StartCoroutine(takeDamageTimer(damage));
     }
 
@@ -240,7 +240,7 @@ public class PlayerManager : MonoBehaviour
             if (particles_fly != null)
                 particles_fly.Play();
 
-            updateIntValue(ref nrOfFlies, fly.Value, MaxNrOfFlies, OnFireflyChange);
+            updateIntValue(ref nrOfFlies, fly.Value, OnFireflyChange);
         }
         if (collectable is Beetle)
         {
@@ -248,7 +248,7 @@ public class PlayerManager : MonoBehaviour
             if (particles_beetle != null)
                 particles_beetle.Play();
 
-            updateIntValue(ref score, beetle.Value, default, OnScoreChange);
+            updateIntValue(ref score, beetle.Value, OnScoreChange);
             updateIntValue(ref nrOfBeetles, 1);
         }
 
@@ -299,21 +299,16 @@ public class PlayerManager : MonoBehaviour
         movementComponent.ScaleSpeed(0.25f, 1.0f);
     }
 
-    void updateIntValue(ref int targetVariable, int addedValue, int maxValue = int.MaxValue, Action<int> pEvent = null)
+    void updateIntValue(ref int targetVariable, int addedValue, Action<int> pEvent = null)
     {
         if (addedValue > 0)
             targetVariable += addedValue;
-        else if (targetVariable >= Math.Abs(addedValue))
-        {
-            Debug.Log("Firefly test yes");
-            targetVariable += addedValue;
-        }
-            
-        else
-            targetVariable = 0;
 
-        if (targetVariable > maxValue)
-            targetVariable = maxValue;
+        else if (targetVariable >= Math.Abs(addedValue))
+            targetVariable = targetVariable + addedValue;
+
+        else if (targetVariable < addedValue)
+            targetVariable = 0;
 
         pEvent?.Invoke(targetVariable);
     }
