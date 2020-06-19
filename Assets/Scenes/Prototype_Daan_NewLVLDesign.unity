@@ -16498,6 +16498,8 @@ GameObject:
   - component: {fileID: 5006512736644537993}
   - component: {fileID: 4044710142949041343}
   - component: {fileID: 7718390322277800006}
+  - component: {fileID: 8296172667350576283}
+  - component: {fileID: 8296172667350576284}
   m_Layer: 14
   m_Name: mesh_Maze
   m_TagString: Untagged
@@ -16505,6 +16507,32 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
+--- !u!64 &8296172667350576283
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8296172667350576282}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 9025853665021970580, guid: 8f81e17b530265b439b77708cd428f7b, type: 3}
+--- !u!114 &8296172667350576284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8296172667350576282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef1547116d712194695f50577ddbcaf2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8536765012493209492
 PrefabInstance:
   m_ObjectHideFlags: 0

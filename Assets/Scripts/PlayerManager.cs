@@ -221,7 +221,6 @@ public class PlayerManager : MonoBehaviour
     void handleCollectable(CollectableByTongue collectable)
     {
         tongueController.SetCollectTarget(collectable);
-        SubscribeToEatEvent(CollectableByTongue.Disable);
     }
 
     public void takeDamage(int damage)
@@ -237,10 +236,14 @@ public class PlayerManager : MonoBehaviour
         if (collectable is Fly)
         {
             Fly fly = collectable as Fly;
+
             if (particles_fly != null)
                 particles_fly.Play();
 
-            updateIntValue(ref nrOfFlies, fly.Value, OnFireflyChange);
+            if (nrOfFlies < 3)
+                updateIntValue(ref nrOfFlies, fly.Value, OnFireflyChange);
+            else
+                updateIntValue(ref score, 10, OnScoreChange);
         }
         if (collectable is Beetle)
         {
@@ -260,8 +263,6 @@ public class PlayerManager : MonoBehaviour
     {
         if (collectable is CollectableByTongue)
             (collectable as CollectableByTongue).Collect(tongueController);
-
-        if (collectable is DragAble) { }
     }
     void UpdateTutorialPopUps()
     {
@@ -317,14 +318,5 @@ public class PlayerManager : MonoBehaviour
     public void AutoMove(Vector3 destination)
     {
         movementComponent.SetDestination(destination);
-    }
-
-    public void SubscribeToEatEvent(TongueEvent eatEvent)
-    {
-        tongueController.targetEaten += eatEvent;
-    }
-    public void UnsubscribeFromEatEvent(TongueEvent eatEvent)
-    {
-        tongueController.targetEaten -= eatEvent;
     }
 }
