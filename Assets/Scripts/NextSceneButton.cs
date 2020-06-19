@@ -7,8 +7,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Button))]
 public class NextSceneButton : MonoBehaviour
 {
-    [SerializeField]
-    private string sceneName = "Main_menu";
+    private readonly static string sceneName = "StartScreen_NoName";
     
     private Button btn = null;
 

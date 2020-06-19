@@ -7,11 +7,11 @@ using UnityEngine;
 public class PlayerScore
 {
     public string name { get; private set; }
-    public uint score { get; private set; }
+    public int score { get; private set; }
     public string datePlayed { get; private set; }
 
 
-    public PlayerScore(string pPlayerName, string playDate, uint playerScore = 0)
+    public PlayerScore(string pPlayerName, string playDate, int playerScore = 0)
     {
         name = pPlayerName;
         datePlayed = playDate;

@@ -23,16 +23,13 @@ public class StartMenuUI : MonoBehaviour
     [SerializeField]
     private Button dutchBtn, englishBtn, germanBtn, easyBtn, mediumBtn, hardBtn, startBtn;
 
-    [SerializeField]
-    private string firstSceneName;
-
     private void Start()
     {
         SwitchMenuState(0);
 
-        dutchBtn.onClick.AddListener(() => { PlayerInfo.Language = Language.DUTCH; });
-        englishBtn.onClick.AddListener(() => { PlayerInfo.Language = Language.ENGLISH; });
-        germanBtn.onClick.AddListener(() => { PlayerInfo.Language = Language.GERMAN; });
+        dutchBtn.onClick.AddListener(() => { PlayerInfo.Language = Language.DUTCH; EnableParent(difficultyBtnParent); });
+        englishBtn.onClick.AddListener(() => { PlayerInfo.Language = Language.ENGLISH; EnableParent(difficultyBtnParent); });
+        germanBtn.onClick.AddListener(() => { PlayerInfo.Language = Language.GERMAN; EnableParent(difficultyBtnParent); });
 
         easyBtn.onClick.AddListener(() => { PlayerInfo.Difficulty = Difficulty.EASY; });
         mediumBtn.onClick.AddListener(() => { PlayerInfo.Difficulty = Difficulty.MEDIUM; });
@@ -73,8 +70,7 @@ public class StartMenuUI : MonoBehaviour
 
     private void StartGame()
     {
-        if (Application.CanStreamedLevelBeLoaded(firstSceneName))
-            SceneManager.LoadScene(firstSceneName);
+        SceneLoader.LoadScene(SceneLoader.CutsceneSceneName);
     }
 
     private void DisableAll()
@@ -83,6 +79,12 @@ public class StartMenuUI : MonoBehaviour
         langBtnParent.SetActive(false);
         difficultyBtnParent.SetActive(false);
         TapToStartParent.SetActive(false);
+    }
+
+    private void EnableParent(GameObject parent)
+    {
+        DisableAll();
+        parent.SetActive(true);
     }
 
 }

@@ -2,7 +2,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
+using UnityEngine.Animations;
+using UnityEngine.UIElements;
 using static TongueController;
 
 [RequireComponent(typeof(FollowRaycastNavMesh))]
@@ -10,42 +13,70 @@ using static TongueController;
 public class PlayerManager : MonoBehaviour
 {
     FollowRaycastNavMesh movementComponent = null;
+    private TongueController tongueController = null;
 
-    public delegate void UpdateFireflies(uint newNrOfFlies);
-    public UpdateFireflies updateFirefliesEvent;
-    private Animator animator;
+    public delegate void OnTapableChange(TapAble changedTapable);
+    public delegate void IsBeingDamaged();
+
+    public OnTapableChange onTapableChange;
+    public IsBeingDamaged isBeingDamaged;
+
+    public Action<int> OnFireflyChange;
+    public Action<int> OnScoreChange;
+
+    private static Animator animator = null;
+    private static ParticleSystem particles_beetle = null;
+    private static ParticleSystem particles_fly = null;
 
     [SerializeField]
-    TongueController tongueController = null;
+    private TempUpdateScore tempUpdateScore = null;
+
+    private Camerashake cameraObject;
 
     [SerializeField]
-    private TempUpdateScore updateScore = null;
+    private int nrOfFlies = 0, nrOfBeetles = 0;
+    private int score = 0;
+    public readonly int MaxNrOfFlies = 3;
 
-    [SerializeField]
-    uint nrOfFlies = 10, nrOfBeetles = 0, score = 0;
+    private bool isGettingHurt = false;
 
     private Dictionary<InputType, bool> tutorials = new Dictionary<InputType, bool>();
     private TutorialIcon tutorialIcon;
     private TapAble nearbyTapAble = null;
-    private float hintIdleTime = 5.0f;
+    private readonly float hintIdleTime = 5.0f;
     private float hintTimer = 0.0f;     // --> Do not change
     private bool extraHintActive;
 
     public Vector3 Position { get => transform.position; }
-    public bool IsBusy { get => tongueController.InProgress; }
-    public uint NrOfFlies { get => nrOfFlies; set => nrOfFlies = value; }
-    public uint Score { get => score; }
+    public int NrOfFlies { get => nrOfFlies; }
+    public int Score { get => score; }
     public bool IsMoving { get => movementComponent.IsMoving; }
 
-    private void Start()
+    public bool IsBusy()
+    {
+        if (!isGettingHurt)
+            return tongueController.InProgress;
+        else
+            return isGettingHurt;
+    }
+
+    private void Awake()
     {
         animator = GetComponentInChildren<Animator>();
-
+        particles_beetle = GameObject.Find("PickupEffect").GetComponent<ParticleSystem>();
+        particles_fly = GameObject.Find("PickupFirefly").GetComponent<ParticleSystem>();
         movementComponent = GetComponent<FollowRaycastNavMesh>();
+        tongueController = GetComponentInChildren<TongueController>();
+        cameraObject = Camera.main.GetComponent<Camerashake>();
+        tempUpdateScore = FindObjectOfType<TempUpdateScore>();
 
         tongueController.tongueReachedTarget += HandleTargetReached;
         tongueController.targetEaten += HandleTargetEaten;
 
+        isBeingDamaged += cameraShake;
+        isBeingDamaged += slowMovement;
+
+        OnScoreChange += tempUpdateScore.UpdateScore;   //  --> Please, move to pickup manager
 
         tutorials.Add(InputType.SWIPE_TO_MOVE, false);
         tutorials.Add(InputType.TAP_FIREFLY, false);
@@ -70,7 +101,7 @@ public class PlayerManager : MonoBehaviour
     public void HandleInReachTapAble(TapAble tapAble)
     {
         nearbyTapAble = tapAble;        // --> NOTE: will be overwritten
-        if (tutorialIcon == null && !IsBusy)
+        if (tutorialIcon == null && !IsBusy())
         {
             if (!checkTutorialCompletion(tapAble.TapAbleType))                              //  Check if this interactable's tutorial is completed.
             {
@@ -140,49 +171,51 @@ public class PlayerManager : MonoBehaviour
     }
     public void HandleTapAble(TapAble tapAble)
     {
-        if (tapAble is CollectableByTongue)
+        if (!IsBusy())
         {
-            if (tapAble.IsInReach)
-            {
-                animator.SetBool("anim_isOpen", true);
-                setTutorialCompletion(tapAble.TapAbleType, true);
-                handleCollectable(tapAble as CollectableByTongue);
-            }
-        }
-        else if (tapAble is Lantern)
-        {
-            if (tapAble.IsInReach)
-            {
-                Lantern lantern = tapAble as Lantern;
-                if (!lantern.IsLit && nrOfFlies > 0)
-                {
-                    lantern.LightUp();
-                    animator.SetTrigger("anim_tr_Lantern");
-                    setTutorialCompletion(tapAble.TapAbleType, true);
-                    nrOfFlies--;
-                    updateFirefliesEvent?.Invoke(nrOfFlies);
-                }
-            }
-        }
-        else if (tapAble is DragAble)
-        {
-            if (!tongueController.InProgress)
+            if (tapAble is CollectableByTongue)
             {
                 if (tapAble.IsInReach)
                 {
                     animator.SetBool("anim_isOpen", true);
                     setTutorialCompletion(tapAble.TapAbleType, true);
-                    tongueController.SetDragTarget(tapAble as DragAble);
-                    movementComponent.reverseDirection = true;
+                    handleCollectable(tapAble as CollectableByTongue);
                 }
             }
-            else
+            else if (tapAble is Lantern)
             {
-                animator.SetBool("anim_isOpen", false);
-                tongueController.DetacheDragAble(tapAble as DragAble);
-                movementComponent.reverseDirection = false;
-                return;
+                if (tapAble.IsInReach)
+                {
+                    Lantern lantern = tapAble as Lantern;
+                    if (!lantern.IsLit && nrOfFlies > 0)
+                    {
+                        lantern.LightUp();
+                        animator.SetTrigger("anim_tr_Lantern");
+                        setTutorialCompletion(tapAble.TapAbleType, true);
+                        updateIntValue(ref nrOfFlies, -1, OnFireflyChange);
+                    }
+                }
             }
+            else if (tapAble is DragAble)
+            {
+                if (!tongueController.InProgress)
+                {
+                    if (tapAble.IsInReach)
+                    {
+                        animator.SetBool("anim_isOpen", true);
+                        setTutorialCompletion(tapAble.TapAbleType, true);
+                        tongueController.SetDragTarget(tapAble as DragAble);
+                        movementComponent.reverseDirection = true;
+                    }
+                }
+            }
+        }
+        else if (tapAble is DragAble)
+        {
+            animator.SetBool("anim_isOpen", false);
+            tongueController.DetacheDragAble(tapAble as DragAble);
+            movementComponent.reverseDirection = false;
+            return;
         }
     }
     void handleCollectable(CollectableByTongue collectable)
@@ -191,36 +224,35 @@ public class PlayerManager : MonoBehaviour
         SubscribeToEatEvent(CollectableByTongue.Disable);
     }
 
-    public void takeDamage(uint damage)
+    public void takeDamage(int damage)
     {
-        Camerashake cameraObject = Camera.main.GetComponent<Camerashake>();
-        cameraObject.CameraShake(200);
-        animator.SetTrigger("anim_tr_Hit");
-
-        if (score > damage)
-            score -= damage;
-        else
-            score = 0;
-
-        if (updateScore != null)
-            updateScore.UpdateScore(score.ToString());
+        updateIntValue(ref score, -damage, OnScoreChange);
+        StartCoroutine(takeDamageTimer(damage));
     }
 
     private void HandleTargetEaten(TapAble collectable)
     {
         animator.SetBool("anim_isOpen", false);
+
         if (collectable is Fly)
         {
-            nrOfFlies += ((collectable as Fly).Value);
-            updateFirefliesEvent?.Invoke(nrOfFlies);
+            Fly fly = collectable as Fly;
+            if (particles_fly != null)
+                particles_fly.Play();
+
+            updateIntValue(ref nrOfFlies, fly.Value, OnFireflyChange);
         }
         if (collectable is Beetle)
         {
-            score += (collectable as Beetle).Value;
-        }
-        if (updateScore != null)
-            updateScore.UpdateScore(score.ToString());
+            Beetle beetle = collectable as Beetle;
+            if (particles_beetle != null)
+                particles_beetle.Play();
 
+            updateIntValue(ref score, beetle.Value, OnScoreChange);
+            updateIntValue(ref nrOfBeetles, 1);
+        }
+
+        onTapableChange?.Invoke(collectable);
         Destroy(collectable.gameObject);
     }
 
@@ -229,10 +261,7 @@ public class PlayerManager : MonoBehaviour
         if (collectable is CollectableByTongue)
             (collectable as CollectableByTongue).Collect(tongueController);
 
-        if (collectable is DragAble)
-        {
-
-        }
+        if (collectable is DragAble) { }
     }
     void UpdateTutorialPopUps()
     {
@@ -249,6 +278,40 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
+    IEnumerator takeDamageTimer(int damage)
+    {
+        isGettingHurt = true;
+        animator.SetTrigger("anim_tr_Hit");
+        isBeingDamaged?.Invoke();
+
+        while (!animator.IsInTransition(0))
+        {
+            yield return null;
+        }
+        isGettingHurt = false;
+    }
+    void cameraShake()
+    {
+        cameraObject.CameraShake(200);
+    }
+    void slowMovement()
+    {
+        movementComponent.ScaleSpeed(0.25f, 1.0f);
+    }
+
+    void updateIntValue(ref int targetVariable, int addedValue, Action<int> pEvent = null)
+    {
+        if (addedValue > 0)
+            targetVariable += addedValue;
+
+        else if (targetVariable >= Math.Abs(addedValue))
+            targetVariable = targetVariable + addedValue;
+
+        else if (targetVariable < addedValue)
+            targetVariable = 0;
+
+        pEvent?.Invoke(targetVariable);
+    }
 
     public void SubscribeToEatEvent(TongueEvent eatEvent)
     {

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6273891722523459644}
   - component: {fileID: 4081867598839204590}
   m_Layer: 0
-  m_Name: SodaCanTrash
+  m_Name: pref_SodaCanTrash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -93,8 +93,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.14426358, y: 0.23531853, z: 0.14426363}
-  m_Center: {x: 0, y: 0.10710671, z: -0.000000011175871}
+  m_Size: {x: 0.32194775, y: 0.5078299, z: 0.33548567}
+  m_Center: {x: 0.0025383458, y: 0.22643629, z: -0.00084613264}
 --- !u!54 &6273891722523459644
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -123,5 +123,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30f7418452a34e74794e2af8afcc0045, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  despawnTime: 10
+  despawnTime: 120
+  trashBouncStrenght: 3
   speed: 0

@@ -7,9 +7,13 @@ public class Trash : MonoBehaviour
 {
     [SerializeField]
     private float despawnTime = 2f;
+
+    [SerializeField]
+    private float trashBouncStrenght = 1f;
+
     public float speed;
 
-    uint damage = 1;
+    public readonly int damage = 1;
 
     private Rigidbody rb = null;
 
@@ -44,7 +48,13 @@ public class Trash : MonoBehaviour
             if (player != null)
             {
                 player.takeDamage(damage);
-                Despawn();
+
+                Vector3 awayDir = transform.position - player.transform.position;
+                awayDir.Normalize();
+                awayDir *= trashBouncStrenght;
+                rb.AddForce(awayDir, ForceMode.VelocityChange);
+
+                hitGround = true;
             }
         }
         

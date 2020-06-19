@@ -6,6 +6,9 @@ using TMPro;
 public class ScoreListElement : MonoBehaviour
 {
     [SerializeField]
+    private TextMeshProUGUI listNumber = null;
+
+    [SerializeField]
     private TextMeshProUGUI nameText = null;
 
     [SerializeField]
@@ -17,7 +20,7 @@ public class ScoreListElement : MonoBehaviour
     public TextMeshProUGUI NameText { get => nameText; }
     public TextMeshProUGUI ScoreText { get => scoreText; }
     public TextMeshProUGUI DatePlayedText { get => datePlayedText; }
-
+    public TextMeshProUGUI ListNumber { get => listNumber; }
 
 
 }
