@@ -28,6 +28,7 @@ public class Lantern : TapAble
 
     Renderer GFX_Renderer;
     Light GFX_Light;
+    ParticleSystem GFX_ParticleEffect;
 
     public bool IsLit { get => isLit; }
 
@@ -37,6 +38,10 @@ public class Lantern : TapAble
         tapAbleType = InputType.TAP_LANTERN;
         GFX_Renderer = GetComponentInChildren<Renderer>();
         GFX_Light = GetComponentInChildren<Light>();
+
+        //Daan zet de particle effect aan
+        GFX_ParticleEffect = GetComponentInChildren<ParticleSystem>();
+
 
         GFX_Renderer.materials[1].renderQueue = 2900;
     }
@@ -63,6 +68,7 @@ public class Lantern : TapAble
             Color finalColor = baseColor * Mathf.LinearToGammaSpace(emission);
             // en Daan zet licht aan
             GFX_Light.intensity = 20;
+            GFX_ParticleEffect.Play(true);
 
             mat.SetColor("_EmissionColor", finalColor);
 
