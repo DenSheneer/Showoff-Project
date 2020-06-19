@@ -67,6 +67,11 @@ public class Trash : MonoBehaviour
             hitGround = true;
         }
     }
+    private void OnCollisionStay(Collision collision)
+    {
+        if (collider.gameObject.name == "mesh_Maze")
+            Physics.IgnoreCollision(collider, collision.collider);
+    }
     void Despawn()
     {
         Destroy(gameObject);
