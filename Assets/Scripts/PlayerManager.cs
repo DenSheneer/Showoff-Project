@@ -292,7 +292,8 @@ public class PlayerManager : MonoBehaviour
     }
     void cameraShake()
     {
-        cameraObject.CameraShake(200);
+        if (cameraObject != null)
+            cameraObject.CameraShake(200);
     }
     void slowMovement()
     {
@@ -311,6 +312,11 @@ public class PlayerManager : MonoBehaviour
             targetVariable = 0;
 
         pEvent?.Invoke(targetVariable);
+    }
+
+    public void AutoMove(Vector3 destination)
+    {
+        movementComponent.SetDestination(destination);
     }
 
     public void SubscribeToEatEvent(TongueEvent eatEvent)
