@@ -19,30 +19,26 @@ public class PickupManager : MonoBehaviour
 
     int tapMask;
     int playerMask;
+    float idleTime = 0.0f;
 
-    void OnEnable()
+    void Awake()
     {
         GetAllTapables();
+
+        LeanTouch.OnFingerTap += HandleFingerTap;
 
         tapMask = LayerMask.GetMask("TapLayer");
         playerMask = LayerMask.GetMask("Player");
 
-        LeanTouch.OnFingerTap += HandleFingerTap;
-
-        GameObject playerGO = GameObject.FindGameObjectWithTag("Player");
-        playerManager = playerGO.GetComponent<PlayerManager>();
+        playerManager = FindObjectOfType<PlayerManager>();
         playerManager.onTapableChange += updateLevelItems;
 
         debugUI = FindObjectOfType<DebugUI>();
-        playerManager.onfireFlyChange += debugUI.UpdateUI;
+        playerManager.OnFireflyChange += debugUI.UpdateUI;
 
         ts = FindObjectOfType<TrashSpawner>();
-    }
 
-    private void Start()
-    {
         List<Lantern> tempLanternList = new List<Lantern>();
-
         foreach (TapAble tapAble in tapAbles)
         {
             tapAble.ExitEvent += playerManager.TapAbleOutOfReach;
@@ -56,7 +52,6 @@ public class PickupManager : MonoBehaviour
         }
         lanterns = tempLanternList.ToArray();
     }
-
 
     public void AddTapble(TapAble pTapAble)
     {
@@ -89,15 +84,13 @@ public class PickupManager : MonoBehaviour
     {
         if (tapAbles.Contains(tapAble))
         {
-            Debug.Log("removing: " + tapAble.name);
             tapAbles.Remove(tapAble);
         }
         else if (!tapAbles.Contains(tapAble))
         {
-            Debug.Log("adding: " + tapAble.name);
             tapAbles.Add(tapAble);
         }
-            
+
     }
 
     private void FixedUpdate()
@@ -118,9 +111,15 @@ public class PickupManager : MonoBehaviour
 
     private void Update()
     {
-        foreach (Lantern lantern in lanterns)
-            if (lantern.IsLit)
-                ts.gameObject.SetActive(!lantern.InRadiusCheck(playerManager.Position, playerMask));
+        if (LeanTouch.Fingers.Count < 1)
+        {
+            if (timerUntilReset(30.0f))
+                SceneLoader.LoadScene(SceneLoader.StartScreenSceneName);
+        }
+        else
+            idleTime = 0.0f;
+
+        ts.gameObject.SetActive(!checkAllLanternRadii());
     }
 
     public void GetAllTapables()
@@ -134,5 +133,24 @@ public class PickupManager : MonoBehaviour
             if (tapAble != null)
                 AddTapble(tapAble);
         }
+    }
+
+    bool checkAllLanternRadii()     //  If the player is inside the radius of ANY lantern, return true. Else, return false.
+    {
+        foreach (Lantern lantern in lanterns)
+            if (lantern.IsLit)
+                if (lantern.InRadiusCheck(playerManager.Position, playerMask))
+                    return true;
+
+        return false;
+    }
+
+    bool timerUntilReset(float time)
+    {
+        idleTime += Time.deltaTime;
+        if (idleTime >= time)
+            return true;
+
+        return false;
     }
 }
