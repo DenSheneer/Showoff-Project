@@ -304,7 +304,11 @@ public class PlayerManager : MonoBehaviour
         if (addedValue > 0)
             targetVariable += addedValue;
         else if (targetVariable >= Math.Abs(addedValue))
+        {
+            Debug.Log("Firefly test yes");
             targetVariable += addedValue;
+        }
+            
         else
             targetVariable = 0;
 

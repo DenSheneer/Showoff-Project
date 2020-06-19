@@ -67,6 +67,7 @@ public class EndCamera : MonoBehaviour
 
             other.GetComponent<FollowRaycastNavMesh>().mainCamera = maincamera;
             DebugUI.GetComponent<Canvas>().worldCamera = maincamera;
+
             inRange = false;
         }
     }
