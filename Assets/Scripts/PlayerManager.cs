@@ -292,7 +292,8 @@ public class PlayerManager : MonoBehaviour
     }
     void cameraShake()
     {
-        cameraObject.CameraShake(200);
+        if (cameraObject != null)
+            cameraObject.CameraShake(200);
     }
     void slowMovement()
     {
@@ -313,6 +314,11 @@ public class PlayerManager : MonoBehaviour
 
         pEvent?.Invoke(targetVariable);
     }
+    private void StopMouseInput()
+    {
+        movementComponent.StopMouseInput();
+    }
+
 
     public void SubscribeToEatEvent(TongueEvent eatEvent)
     {

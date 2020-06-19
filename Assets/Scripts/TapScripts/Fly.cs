@@ -8,9 +8,9 @@ public class Fly : CollectableByTongue
     FloatingBehaviour floater = new FloatingBehaviour(0.75f, 1, 1.25f);
     float originalY;
 
-    private void Start()
+    private void Awake()
     {
-        base.Start();
+        base.Awake();
 
         originalY = GFXTransform.position.y;
 
@@ -26,7 +26,6 @@ public class Fly : CollectableByTongue
 
     private void Update()
     {
-        base.Update();
         flyFloat();
     }
 

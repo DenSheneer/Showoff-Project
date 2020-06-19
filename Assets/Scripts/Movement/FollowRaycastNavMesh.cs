@@ -45,6 +45,15 @@ public class FollowRaycastNavMesh : MonoBehaviour
             stop();
     }
 
+    public void StopMouseInput()
+    {
+        OnDisable();
+    }
+    public void SetAutoDesintation(Vector3 destination)
+    {
+        agent.SetDestination(destination);
+    }
+
     public void handleFingerGesture(List<LeanFinger> fingers)
     {
         if (timer < tapDelay)

@@ -1,11 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
+[RequireComponent(typeof(NavMeshAgent))]
 public abstract class CollectableByTongue : TapAble
 {
     [SerializeField]
     protected int value = 1;
+    protected NavMeshAgent agent;
+
+    [SerializeField]
+    private float minRotateSpeed = 50;
+    [SerializeField]
+    private float maxRotateSpeed = 50;
 
     protected float minScaleFactor = 1.0f, maxScaleFactor = 2.0f, scaleSpeed = 1.00f;
     protected Vector3 originalScale;
@@ -14,20 +22,20 @@ public abstract class CollectableByTongue : TapAble
     [SerializeField]
     protected Transform GFXTransform;
 
-    bool idle = true;
     [SerializeField]
-    protected float moveSpeed = 1.0f, minRoamDist = 1.1f, maxRoamDist = 2.0f, minIdleTime = 0f, maxIdleTime = 2.0f;
+    protected float moveSpeed = 1.0f, minRoamDist = 1.1f, maxRoamDist = 2.0f;
 
-    float oldDistanceTo = Mathf.Infinity;
-
-    Vector3 currentTarget;
     int obstacleLayer;
 
     public int Value { get => value; }
     public Vector3 Position { get => transform.position; }
 
-    protected void OnEnable()
+    protected void Awake()
     {
+        agent = GetComponent<NavMeshAgent>();
+        agent.speed = moveSpeed;
+        agent.updateRotation = false;
+
         originalScale = GFXTransform.localScale;
 
         EnterEvent += collectable_OnInRange;
@@ -37,25 +45,29 @@ public abstract class CollectableByTongue : TapAble
         obstacleLayer = LayerMask.GetMask("Obstacles");
     }
 
-    protected void Start()
+    private void Start()
     {
-        StartCoroutine(idleUntilNextMove(0.5f));
+        NewRandomDestination(minRoamDist, maxRoamDist);
     }
 
-    protected void Update()
+    protected void LateUpdate()
     {
-        if (!idle)
+        if (!agent.isStopped)
         {
-            if (moveTowardsDestination(currentTarget))
+            if (agent.velocity != Vector3.zero)
+                transform.rotation = Quaternion.LookRotation(agent.velocity.normalized);
+
+            if (Vector3.Distance(transform.position, agent.destination) < 0.1f)
             {
-                float randomIdleTime = Random.Range(minIdleTime, maxIdleTime);
-                StartCoroutine(idleUntilNextMove(randomIdleTime));
+                NewRandomDestination(minRoamDist, maxRoamDist);
             }
         }
     }
 
     public void Collect(TongueController collector)
     {
+        agent.radius = 0.0f;
+        agent.height = 0.0f;
         transform.parent = collector.transform;
         floatingBehaviour = null;
     }
@@ -78,20 +90,12 @@ public abstract class CollectableByTongue : TapAble
             transform.position = hitRay.point;
         }
     }
-    public void NewRandomDestination(float minDist, float maxDist)                          // Returns a random angle with unit length. (1-360 degrees)
+
+    public void NewRandomDestination(float minDist, float maxDist)
     {
-        Vector3 tempPosition = new Vector3(transform.position.x, 0.005f, transform.position.z);
-        float randomDistance = Random.Range(minDist, maxDist);
-        Vector3 newDir = randomDirection();
 
-        RaycastHit hitRay = rayLoS(tempPosition, newDir, randomDistance);
-
-        if (hitRay.collider == null)
-            currentTarget = tempPosition + newDir * randomDistance;
-        else
-            currentTarget = hitRay.point;
-
-        RotateTowardsTarget(newDir);
+        Vector3 newDest = transform.position + Random.insideUnitSphere * Random.Range(minDist, maxDist);
+        agent.destination = newDest;
     }
 
     RaycastHit rayLoS(Vector3 from, Vector3 towards, float distance)                // Checks Line of sight with target.
@@ -103,39 +107,13 @@ public abstract class CollectableByTongue : TapAble
         return hitRay;
     }
 
-    static Vector3 randomDirection()
+    static Vector3 randomDirection() // Returns a random angle with unit length. (1-360 degrees)
     {
         Vector3 newDir = new Vector3(Random.Range(-1.0f, 1.0f), 0, Random.Range(-1.0f, 1.0f));
         newDir.Normalize();
 
         return newDir;
     }
-    bool moveTowardsDestination(Vector3 target)                                             // Move first --> target reached? return 'true' if yes, return 'false' if no.
-    {
-        transform.position += transform.forward * moveSpeed * Time.deltaTime;
-
-        Vector3 delta = target - transform.position;
-        float distanceTo = delta.magnitude;
-
-        if (distanceTo < 1.0f)                                                              //  WARNING: MIGHT OVERSHOOT AND CAUSE IT TO CLIP TROUGH WALLS
-            return true;
-        else
-            return false;
-    }
-    public void RotateTowardsTarget(Vector3 delta)                                          // Sets the transform.forward towards target
-    {
-        Quaternion rotation = Quaternion.LookRotation(delta);
-        transform.rotation = rotation;
-    }
-    IEnumerator idleUntilNextMove(float time)
-    {
-        idle = true;
-        yield return new WaitForSeconds(time);
-        NewRandomDestination(minRoamDist, maxRoamDist);
-        idle = false;
-    }
-
-
     void collectable_OnExit(TapAble tapAble)
     {
         GFXTransform.localScale = originalScale;

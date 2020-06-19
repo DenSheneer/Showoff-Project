@@ -5,9 +5,9 @@ using UnityEngine.AI;
 
 public class Beetle : CollectableByTongue
 {
-    private void Start()
+    private void Awake()
     {
-        base.Start();
+        base.Awake();
 
         //  base class values.
         tapAbleType = InputType.TAP_BEETLE;
