@@ -23,9 +23,6 @@ public class StartMenuUI : MonoBehaviour
     [SerializeField]
     private Button dutchBtn, englishBtn, germanBtn, easyBtn, mediumBtn, hardBtn, startBtn;
 
-    [SerializeField]
-    private string firstSceneName;
-
     private void Start()
     {
         SwitchMenuState(0);
@@ -73,8 +70,7 @@ public class StartMenuUI : MonoBehaviour
 
     private void StartGame()
     {
-        if (Application.CanStreamedLevelBeLoaded(firstSceneName))
-            SceneManager.LoadScene(firstSceneName);
+        SceneLoader.LoadScene(SceneLoader.CutsceneSceneName);
     }
 
     private void DisableAll()

@@ -13,7 +13,7 @@ public class Trash : MonoBehaviour
 
     public float speed;
 
-    uint damage = 1;
+    public readonly int damage = 1;
 
     private Rigidbody rb = null;
 

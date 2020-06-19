@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 [RequireComponent(typeof(Collider),typeof(Rigidbody))]
 public class NextSceneCollider : MonoBehaviour
 {
-    private static readonly string nextSceneName = "EndScreen";
 
     private void Start()
     {
@@ -28,15 +27,7 @@ public class NextSceneCollider : MonoBehaviour
                 PlayerInfo.Score = pm.Score;
             }
 
-            NextScene(nextSceneName);
+            SceneLoader.LoadScene(SceneLoader.EndScreenSceneName);
         }
-    }
-
-    public void NextScene(string nextSceneName)
-    {
-        if (Application.CanStreamedLevelBeLoaded(nextSceneName))
-            SceneManager.LoadScene(nextSceneName);
-        else
-            Debug.Log("scene does not exist or is not in build");
     }
 }

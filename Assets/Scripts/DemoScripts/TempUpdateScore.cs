@@ -13,8 +13,8 @@ public class TempUpdateScore : MonoBehaviour
         scoreText = GetComponent<TextMeshProUGUI>();
     }
 
-    public void UpdateScore(string pScore)
+    public void UpdateScore(int newScore)
     {
-        scoreText.text = pScore;
+        scoreText.text = newScore.ToString();
     }
 }

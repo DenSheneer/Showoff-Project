@@ -73,7 +73,7 @@ public static class Highscore
                 for (int i = 0; i < scoreArray.Count; i++)
                 {
                     string name = scoreArray[i]["name"].str;
-                    uint score = Convert.ToUInt32(scoreArray[i]["score"].i);
+                    int score = (int)Convert.ToUInt32(scoreArray[i]["score"].i);
                     string date = scoreArray[i]["datePlayed"].str;
 
                     loadCurrentDayScore(name, score, date);
@@ -90,7 +90,7 @@ public static class Highscore
             for (int i = 0; i < scoreArray.Count; i++)
             {
                 string name = scoreArray[i]["name"].str;
-                uint score = (uint)scoreArray[i]["score"].i;
+                int score = (int)scoreArray[i]["score"].i;
                 string date = scoreArray[i]["datePlayed"].str;
 
                 loadAllTimeScore(name, score, date);
@@ -101,7 +101,7 @@ public static class Highscore
     }
 
 
-    private static void loadCurrentDayScore(string pName, uint pScore, string pDate)
+    private static void loadCurrentDayScore(string pName, int pScore, string pDate)
     {
         PlayerScore newScore = new PlayerScore(pName, pDate, pScore);
 
@@ -113,7 +113,7 @@ public static class Highscore
         }
     }
 
-    private static void loadAllTimeScore(string pName, uint pScore, string pDate)
+    private static void loadAllTimeScore(string pName, int pScore, string pDate)
     {
         PlayerScore newScore = new PlayerScore(pName, pDate, pScore);
         int newAllTimeScoreIndex = NewScoreIndexAllTime(pScore);
@@ -182,7 +182,7 @@ public static class Highscore
         File.WriteAllText(loadPath + "/" + overallFileName, jFileOverall.ToString());
     }
 
-    public static void NewScore(string pName,uint pScore,string pDate)
+    public static void NewScore(string pName, int pScore,string pDate)
     {
         // Checks if name is avaliable
         //if (!IsNameAvailable(pName))
@@ -212,7 +212,7 @@ public static class Highscore
     }
 
     // These functions return where the new score is should be in the list
-    public static int NewScoreIndexCurrentDay(uint pScore)
+    public static int NewScoreIndexCurrentDay(int pScore)
     {
         if (scoreIsLoading == false)
             LoadHighscores();
@@ -236,7 +236,7 @@ public static class Highscore
         return -1;
     }
     
-    public static int NewScoreIndexAllTime(uint pScore)
+    public static int NewScoreIndexAllTime(int pScore)
     {
         if (scoreIsLoading == false)
             LoadHighscores();
@@ -294,7 +294,7 @@ public static class Highscore
         return true;
     }
 
-    public static HighscoreType checkHighscoreType(uint pScore)
+    public static HighscoreType checkHighscoreType(int pScore)
     {
         if (scoreIsLoading == false)
             LoadHighscores();
