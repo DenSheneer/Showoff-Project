@@ -20,11 +20,9 @@ public class CutSceneManager : MonoBehaviour
         SceneLoader.LoadScene(SceneLoader.LevelSceneName);
     }
 
-    private void Update()
+    public void Skipbutton()
     {
-        if (LeanTouch.Fingers.Count > 0)
             NextScene(videoPlayer);
-
     }
 
 }
