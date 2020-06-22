@@ -19,7 +19,7 @@ public class Lantern : TapAble
     bool isLit = false;
 
     [SerializeField]
-    float spawnCooldown = 3.0f, minSpawnDistance = 0.01f, maxSpawnDistance = 3.0f;
+    float spawnCooldown = 3.0f, minSpawnDistance = 0.01f, maxSpawnDistance = 2.5f;
 
     [SerializeField]
     private bool litOnSpawn = false;
