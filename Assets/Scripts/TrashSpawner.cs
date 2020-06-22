@@ -18,7 +18,7 @@ public class TrashSpawner : MonoBehaviour
     private SpawnWay spawnWay = SpawnWay.FORWARDVECTOR;
 
     private PlayerManager playerManager = null;
-    private static Trash[] staticPrefabArray;
+    private static Trash[][] staticPrefabArray;
 
     private float timer;
 
@@ -41,22 +41,23 @@ public class TrashSpawner : MonoBehaviour
     {
         groundMask = LayerMask.GetMask("RaycastGround");
 
+        Trash[] bottleVariants = new Trash[] { Resources.Load<Trash>(prefabPath + "pref_WaterBottle") };
+        Trash[] appleVariants = new Trash[] { Resources.Load<Trash>(prefabPath + "pref_AppleTrash") };
+        Trash[] canVariants = new Trash[]
+        {
+            Resources.Load<Trash>(prefabPath + "pref_SodaCanTrashYellow"),
+            Resources.Load<Trash>(prefabPath + "pref_SodaCanTrashBlue"),
+            Resources.Load<Trash>(prefabPath + "pref_SodaCanTrashRed")
+        };
 
-        List<Trash> prefabLoadList = new List<Trash>();
-        prefabLoadList.Add(Resources.Load<Trash>(prefabPath + "pref_WaterBottle"));
-        prefabLoadList.Add(Resources.Load<Trash>(prefabPath + "pref_WaterBottle"));
-        prefabLoadList.Add(Resources.Load<Trash>(prefabPath + "pref_WaterBottle"));
-        prefabLoadList.Add(Resources.Load<Trash>(prefabPath + "pref_SodaCanTrashYellow"));
-        prefabLoadList.Add(Resources.Load<Trash>(prefabPath + "pref_SodaCanTrashBlue"));
-        prefabLoadList.Add(Resources.Load<Trash>(prefabPath + "pref_SodaCanTrashRed"));
-        prefabLoadList.Add(Resources.Load<Trash>(prefabPath + "pref_AppleTrash"));
-        prefabLoadList.Add(Resources.Load<Trash>(prefabPath + "pref_AppleTrash"));
-        prefabLoadList.Add(Resources.Load<Trash>(prefabPath + "pref_AppleTrash"));
+        staticPrefabArray = new Trash[][]
+        {
+            canVariants,
+            bottleVariants,
+            appleVariants
+        };
 
-        staticPrefabArray = prefabLoadList.ToArray();
-        prefabLoadList.Clear();
-
-        timer = UnityEngine.Random.Range(spawnIntervalMin, spawnIntervalMax);
+        timer = Random.Range(spawnIntervalMin, spawnIntervalMax);
 
         trashParent = new GameObject("Trash Parent");
     }
@@ -67,7 +68,7 @@ public class TrashSpawner : MonoBehaviour
 
         if (timer <= 0)
         {
-            timer = UnityEngine.Random.Range(spawnIntervalMin, spawnIntervalMax);
+            timer = Random.Range(spawnIntervalMin, spawnIntervalMax);
 
             float rnd = Random.Range(0.0f, 1.0f);
 
@@ -75,7 +76,7 @@ public class TrashSpawner : MonoBehaviour
             {
                 SpawnTrashOnPlayer();
                 randomSpawnChance -= 0.1f;
-                Debug.Log("aimed for player");
+                //Debug.Log("aimed for player");
             }
             else
             {
@@ -87,13 +88,20 @@ public class TrashSpawner : MonoBehaviour
         }
     }
 
+    int randomIndex(int arrayLength)
+    {
+        int randomNr = Random.Range(0, arrayLength);
+        return randomNr;
+    }
 
     private void SpawnTreshAroundPlayer()
     {
-        int randomIndex = Random.Range(0, staticPrefabArray.Length);
         Vector3 trashPos = this.transform.position + new Vector3(Random.Range(-randomRangeAroundPlayer, randomRangeAroundPlayer), spawnHeight, Random.Range(-randomRangeAroundPlayer, randomRangeAroundPlayer));
 
-        Trash trash = Instantiate(staticPrefabArray[randomIndex], trashPos, Quaternion.identity, trashParent.transform);
+        Trash[] randomTrash = staticPrefabArray[randomIndex(staticPrefabArray.Length)];
+        Trash randomTrashVariant = randomTrash[randomIndex(randomTrash.Length)];
+
+        Trash trash = Instantiate(randomTrashVariant, trashPos, Quaternion.identity, trashParent.transform);
         trash.transform.localRotation = Quaternion.Euler(Random.Range(0.0f, 360.0f), Random.Range(0.0f, 360.0f), Random.Range(0.0f, 360.0f));
         trash.RigiB.AddTorque(Random.Range(0.0f, 360.0f), Random.Range(0.0f, 360.0f), Random.Range(0.0f, 360.0f), ForceMode.VelocityChange);
     }
@@ -101,7 +109,6 @@ public class TrashSpawner : MonoBehaviour
 
     private void SpawnTrashOnPlayer()
     {
-        int randomIndex = Random.Range(0, staticPrefabArray.Length);
         Vector3 trashPos = new Vector3();
         Vector3 randomAdditive = new Vector3(Random.Range(-randomRangeSizeOnPlayer, randomRangeSizeOnPlayer), 0, Random.Range(-randomRangeSizeOnPlayer, randomRangeSizeOnPlayer));
 
@@ -136,7 +143,10 @@ public class TrashSpawner : MonoBehaviour
             trashPos = transform.position + new Vector3(0, spawnHeight, 0);
         }
 
-        Trash trash = Instantiate(staticPrefabArray[randomIndex], trashPos + randomAdditive, Quaternion.identity, trashParent.transform);
+        Trash[] randomTrash = staticPrefabArray[randomIndex(staticPrefabArray.Length)];
+        Trash randomTrashVariant = randomTrash[randomIndex(randomTrash.Length)];
+
+        Trash trash = Instantiate(randomTrashVariant, trashPos + randomAdditive, Quaternion.identity, trashParent.transform);
         trash.transform.localRotation = Quaternion.Euler(Random.Range(0.0f, 360.0f), Random.Range(0.0f, 360.0f), Random.Range(0.0f, 360.0f));
         trash.RigiB.AddTorque(Random.Range(0.0f, 360.0f), Random.Range(0.0f, 360.0f), Random.Range(0.0f, 360.0f), ForceMode.VelocityChange);
     }
