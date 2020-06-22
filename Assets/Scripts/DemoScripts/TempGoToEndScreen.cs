@@ -19,7 +19,7 @@ public class TempGoToEndScreen : MonoBehaviour
 
     private void OnClickButton()
     {
-        PlayerInfo.Score = 333;
+        PlayerInfo.Score = 6969;
         PlayerInfo.Language = Language.GERMAN;
 
         SceneManager.LoadScene(sceneName);
