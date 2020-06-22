@@ -1606,6 +1606,11 @@ PrefabInstance:
       propertyPath: lightRadius
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 5924828711356628372, guid: 0007395eadb91544da9688f5b9045ec3,
+        type: 3}
+      propertyPath: maxSpawnDistance
+      value: 2.5
+      objectReference: {fileID: 0}
     - target: {fileID: 9037392993370315663, guid: 0007395eadb91544da9688f5b9045ec3,
         type: 3}
       propertyPath: InitialModule.startLifetime.scalar
@@ -3003,6 +3008,11 @@ PrefabInstance:
         type: 3}
       propertyPath: lightRadius
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924828711356628372, guid: 0007395eadb91544da9688f5b9045ec3,
+        type: 3}
+      propertyPath: maxSpawnDistance
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 9079549099147935930, guid: 0007395eadb91544da9688f5b9045ec3,
         type: 3}
@@ -5155,6 +5165,11 @@ PrefabInstance:
       propertyPath: lightRadius
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 5924828711356628372, guid: 0007395eadb91544da9688f5b9045ec3,
+        type: 3}
+      propertyPath: maxSpawnDistance
+      value: 2.5
+      objectReference: {fileID: 0}
     - target: {fileID: 9079549099147935930, guid: 0007395eadb91544da9688f5b9045ec3,
         type: 3}
       propertyPath: m_StaticEditorFlags
@@ -5564,6 +5579,11 @@ PrefabInstance:
         type: 3}
       propertyPath: lightRadius
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924828711356628372, guid: 0007395eadb91544da9688f5b9045ec3,
+        type: 3}
+      propertyPath: maxSpawnDistance
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 9037392993370315660, guid: 0007395eadb91544da9688f5b9045ec3,
         type: 3}
@@ -9283,6 +9303,11 @@ PrefabInstance:
       propertyPath: lightRadius
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 5924828711356628372, guid: 0007395eadb91544da9688f5b9045ec3,
+        type: 3}
+      propertyPath: maxSpawnDistance
+      value: 2.5
+      objectReference: {fileID: 0}
     - target: {fileID: 9037392993370315663, guid: 0007395eadb91544da9688f5b9045ec3,
         type: 3}
       propertyPath: InitialModule.startLifetime.scalar
@@ -9502,6 +9527,11 @@ PrefabInstance:
         type: 3}
       propertyPath: lightRadius
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924828711356628372, guid: 0007395eadb91544da9688f5b9045ec3,
+        type: 3}
+      propertyPath: maxSpawnDistance
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 9079549099147935930, guid: 0007395eadb91544da9688f5b9045ec3,
         type: 3}
@@ -11004,6 +11034,11 @@ PrefabInstance:
         type: 3}
       propertyPath: lightRadius
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924828711356628372, guid: 0007395eadb91544da9688f5b9045ec3,
+        type: 3}
+      propertyPath: maxSpawnDistance
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 9079549099147935930, guid: 0007395eadb91544da9688f5b9045ec3,
         type: 3}
@@ -15528,6 +15563,11 @@ PrefabInstance:
       propertyPath: lightRadius
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 5924828711356628372, guid: 0007395eadb91544da9688f5b9045ec3,
+        type: 3}
+      propertyPath: maxSpawnDistance
+      value: 2.5
+      objectReference: {fileID: 0}
     - target: {fileID: 9079549099147935930, guid: 0007395eadb91544da9688f5b9045ec3,
         type: 3}
       propertyPath: m_StaticEditorFlags
@@ -16482,6 +16522,11 @@ PrefabInstance:
       propertyPath: lightRadius
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 5924828711356628372, guid: 0007395eadb91544da9688f5b9045ec3,
+        type: 3}
+      propertyPath: maxSpawnDistance
+      value: 2.5
+      objectReference: {fileID: 0}
     - target: {fileID: 9079549099147935930, guid: 0007395eadb91544da9688f5b9045ec3,
         type: 3}
       propertyPath: m_StaticEditorFlags
@@ -16811,6 +16856,11 @@ PrefabInstance:
         type: 3}
       propertyPath: lightRadius
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924828711356628372, guid: 0007395eadb91544da9688f5b9045ec3,
+        type: 3}
+      propertyPath: maxSpawnDistance
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 9079549099147935930, guid: 0007395eadb91544da9688f5b9045ec3,
         type: 3}
@@ -17357,6 +17407,11 @@ PrefabInstance:
         type: 3}
       propertyPath: lightRadius
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924828711356628372, guid: 0007395eadb91544da9688f5b9045ec3,
+        type: 3}
+      propertyPath: maxSpawnDistance
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 9079549099147935930, guid: 0007395eadb91544da9688f5b9045ec3,
         type: 3}
@@ -18944,6 +18999,11 @@ PrefabInstance:
       propertyPath: lightRadius
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 5924828711356628372, guid: 0007395eadb91544da9688f5b9045ec3,
+        type: 3}
+      propertyPath: maxSpawnDistance
+      value: 2.5
+      objectReference: {fileID: 0}
     - target: {fileID: 9079549099147935930, guid: 0007395eadb91544da9688f5b9045ec3,
         type: 3}
       propertyPath: m_StaticEditorFlags
@@ -20139,6 +20199,11 @@ PrefabInstance:
         type: 3}
       propertyPath: lightRadius
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924828711356628372, guid: 0007395eadb91544da9688f5b9045ec3,
+        type: 3}
+      propertyPath: maxSpawnDistance
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 9079549099147935930, guid: 0007395eadb91544da9688f5b9045ec3,
         type: 3}

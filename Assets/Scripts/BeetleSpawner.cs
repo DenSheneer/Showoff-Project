@@ -37,7 +37,7 @@ public class BeetleSpawner
 
     public void SetSpawnerActivity(bool activity)
     {
-        timer = 0.0f;
+        timer = spawnCooldown;
         isActive = activity;
     }
 
