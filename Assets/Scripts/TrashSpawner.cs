@@ -60,7 +60,7 @@ public class TrashSpawner : MonoBehaviour
         int randomIndex = Random.Range(0, prefabList.Count);
         Vector3 trashPos = new Vector3();
         Vector3 randomAdditive = new Vector3(Random.Range(-randomRangeSize, randomRangeSize),0,Random.Range(-randomRangeSize, randomRangeSize));
-
+        /*
         if (playerManager.IsMoving && LeanTouch.Fingers.Count > 0)
         {
             if (spawnWay == SpawnWay.MOUSEVECTOR)
@@ -82,15 +82,16 @@ public class TrashSpawner : MonoBehaviour
                 }
             } else if (spawnWay == SpawnWay.FORWARDVECTOR)
             {
-                trashPos = transform.position + (transform.forward * playerManager.GetPlayerSpeed()) + new Vector3(0, spawnHeight, 0);
+               
             }
 
         }
         else
         {
             trashPos = transform.position + new Vector3(0, spawnHeight, 0);
-        }
-
+        }*/
+        Debug.Log(transform.forward); 
+        trashPos = transform.position + (transform.forward * 5) + new Vector3(0, spawnHeight, 0);
         Trash trash = Instantiate(prefabList[randomIndex], trashPos+ randomAdditive, Quaternion.identity, null);
         trash.transform.localRotation = Quaternion.Euler(Random.Range(0.0f,360.0f), Random.Range(0.0f, 360.0f), Random.Range(0.0f, 360.0f));
         trash.RigiB.AddTorque(Random.Range(0.0f, 360.0f), Random.Range(0.0f, 360.0f), Random.Range(0.0f, 360.0f),ForceMode.VelocityChange);
