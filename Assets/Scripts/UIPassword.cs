@@ -8,6 +8,9 @@ public class UIPassword : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI pinCodeText = null;
 
+    [SerializeField]
+    private TextMeshProUGUI responseText = null;
+
     private string currentCode = "";
 
     [SerializeField]
@@ -45,13 +48,15 @@ public class UIPassword : MonoBehaviour
 
     public void TryPin()
     {
+        Debug.Log(currentCode);
+
         if (currentCode == passpin)
         {
-            Debug.Log("correct pass");
+            SceneLoader.LoadScene(SceneLoader.AdminPanelScene);
         }
         else
         {
-            Debug.Log("wrong pass");
+            responseText.gameObject.SetActive(true);
         }
     }
 }

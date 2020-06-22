@@ -21,11 +21,13 @@ public class StartMenuUI : MonoBehaviour
     private GameObject tapToPlayParent, langBtnParent, difficultyBtnParent;
 
     [SerializeField]
-    private Button dutchBtn, englishBtn, germanBtn, easyBtn, mediumBtn, hardBtn;
+    private Button dutchBtn, englishBtn, germanBtn, easyBtn, mediumBtn, hardBtn,toStartBtn;
 
     private void Start()
     {
         SwitchMenuState(0);
+
+        toStartBtn.onClick.AddListener(() => { EnableParent(langBtnParent); });
 
         dutchBtn.onClick.AddListener(() => { PlayerInfo.Language = Language.DUTCH; EnableParent(difficultyBtnParent); });
         englishBtn.onClick.AddListener(() => { PlayerInfo.Language = Language.ENGLISH; EnableParent(difficultyBtnParent); });
@@ -66,8 +68,7 @@ public class StartMenuUI : MonoBehaviour
 
     private void Update()
     {
-        if (currentMenuState == StartMenuState.TAPTOPLAY && LeanTouch.Fingers.Count > 0)
-            SwitchMenuState(1);
+
     }
 
     private void StartGame()

@@ -9,6 +9,7 @@ public static class SceneLoader
     public static readonly string CutsceneSceneName = "CutScene";
     public static readonly string LevelSceneName = "Prototype_Daan_NewLVLDesign";
     public static readonly string EndScreenSceneName = "EndScreen";
+    public static readonly string AdminPanelScene = "AdminPanel";
 
     public static void LoadScene(string sceneName)
     {
