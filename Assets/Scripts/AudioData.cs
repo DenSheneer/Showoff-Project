@@ -18,5 +18,5 @@ public static class AudioData
     ScoringPoints = "Scoring_points",
     ScoringPointsAlt = "Scoring_points2",
     Lantern = "Lantern_ignite",
-    Hurt = "";
+    Hurt = "GetHit";
 }
