@@ -24,6 +24,9 @@ public class FeedbackList : MonoBehaviour
     private void OnDisable()
     {
         SaveFeedBack();
+
+        foreach (FeedbackQuestion question in questions)
+            question.ResetButton();
     }
 
     private void SaveFeedBack()

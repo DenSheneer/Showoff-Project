@@ -30,4 +30,10 @@ public class FeedbackQuestion : MonoBehaviour
         else
             return FeedbackButtons.FeedBackEmotion.NORESPONSE;
     }
+
+    public void ResetButton()
+    {
+        if (feedbackButtons != null)
+            feedbackButtons.ResetButtons();
+    }
 }

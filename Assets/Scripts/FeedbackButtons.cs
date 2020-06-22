@@ -48,4 +48,9 @@ public class FeedbackButtons : MonoBehaviour
         buttonClicked.transform.localScale = new Vector3(selectedButtonScaleDown, selectedButtonScaleDown, 1);
         selectedCircle.transform.localPosition = buttonClicked.transform.localPosition;
     }
+
+    public void ResetButtons()
+    {
+        feedBackEmotion = FeedBackEmotion.NORESPONSE;
+    }
 }
