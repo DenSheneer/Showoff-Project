@@ -91,7 +91,7 @@ public class TrashSpawner : MonoBehaviour
             trashPos = transform.position + new Vector3(0, spawnHeight, 0);
         }*/
         Debug.Log(transform.forward); 
-        trashPos = transform.position + (transform.forward * 5) + new Vector3(0, spawnHeight, 0);
+        trashPos = transform.position + (transform.forward * 7) + new Vector3(0, spawnHeight, 0);
         Trash trash = Instantiate(prefabList[randomIndex], trashPos+ randomAdditive, Quaternion.identity, null);
         trash.transform.localRotation = Quaternion.Euler(Random.Range(0.0f,360.0f), Random.Range(0.0f, 360.0f), Random.Range(0.0f, 360.0f));
         trash.RigiB.AddTorque(Random.Range(0.0f, 360.0f), Random.Range(0.0f, 360.0f), Random.Range(0.0f, 360.0f),ForceMode.VelocityChange);
