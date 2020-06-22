@@ -111,13 +111,13 @@ public class PickupManager : MonoBehaviour
 
     private void Update()
     {
-        if (LeanTouch.Fingers.Count < 1)
+        /*if (LeanTouch.Fingers.Count < 1)
         {
             if (timerUntilReset(30.0f))
                 SceneLoader.LoadScene(SceneLoader.StartScreenSceneName);
         }
         else
-            idleTime = 0.0f;
+            idleTime = 0.0f;*/
 
         ts.gameObject.SetActive(!checkAllLanternRadii());
     }
