@@ -29,7 +29,8 @@ public class TogglePannel : MonoBehaviour
 
         toggleBtn.onClick.AddListener(TogglePanel);
 
-        originalAnchorPos = new Vector2(panelContainer.anchoredPosition.x - offSet, panelContainer.anchoredPosition.y);
+        originalAnchorPos = new Vector2(panelContainer.anchoredPosition.x, panelContainer.anchoredPosition.y - offSet);
+        TogglePanel();
     }
 
 
@@ -37,13 +38,13 @@ public class TogglePannel : MonoBehaviour
     {
         iTween.ValueTo(panelContainer.gameObject, iTween.Hash(
             "from", panelContainer.anchoredPosition,
-            "to", new Vector2(-originalAnchorPos.x + offSet, originalAnchorPos.y),
+            "to", new Vector2(originalAnchorPos.x, -originalAnchorPos.y + offSet),
             "time", AnimationTime,
             "easeType", easeType,
             "onupdatetarget", this.gameObject,
             "onupdate", "MovePannel"));
 
-        originalAnchorPos = new Vector2(-originalAnchorPos.x, originalAnchorPos.y);
+        originalAnchorPos = new Vector2(originalAnchorPos.x, -originalAnchorPos.y);
     }
 
     public void MovePannel(Vector2 position)
