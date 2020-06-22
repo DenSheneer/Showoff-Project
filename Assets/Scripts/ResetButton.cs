@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Button))]
@@ -10,10 +12,10 @@ public class ResetButton : MonoBehaviour
     private void OnEnable()
     {
         button = GetComponent<Button>();
-        button.onClick.AddListener(resetGame);
     }
-    void resetGame()
+
+    public void AddButtonFunction(UnityAction action)
     {
-        SceneLoader.LoadScene(SceneLoader.StartScreenSceneName);
+        button.onClick.AddListener(action);
     }
 }
