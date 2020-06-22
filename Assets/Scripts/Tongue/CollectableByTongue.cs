@@ -18,8 +18,6 @@ public abstract class CollectableByTongue : TapAble
     [SerializeField]
     protected float moveSpeed = 1.0f, minRoamDist = 1.1f, maxRoamDist = 2.0f, minIdleTime = 0f, maxIdleTime = 2.0f;
 
-    float oldDistanceTo = Mathf.Infinity;
-
     Vector3 currentTarget;
     int obstacleLayer;
 
@@ -48,18 +46,32 @@ public abstract class CollectableByTongue : TapAble
         {
             if (moveTowardsDestination(currentTarget))
             {
-                float randomIdleTime = Random.Range(minIdleTime, maxIdleTime);
-                StartCoroutine(idleUntilNextMove(randomIdleTime));
+                IdleAndMove();
             }
         }
     }
 
     public void Collect(TongueController collector)
     {
+        idle = true;
         transform.parent = collector.transform;
-        floatingBehaviour = null;
+    }
+    public void CancelCollect(TongueController collector)
+    {
+        currentTarget = default;
+        transform.parent = null;
+        transform.position = collector.transform.position;
+        transform.position += new Vector3(0, 1, 0);
+        GFXTransform.localPosition = Vector3.zero;
+
+        IdleAndMove();
     }
 
+    void IdleAndMove()
+    {
+        float randomIdleTime = Random.Range(minIdleTime, maxIdleTime);
+        StartCoroutine(idleUntilNextMove(randomIdleTime));
+    }
 
     public void SpawnAtTarget(Transform target, float minDist, float maxDist)               // Spawn Beetle in line of sight of the target.
     {
@@ -91,6 +103,8 @@ public abstract class CollectableByTongue : TapAble
         else
             currentTarget = hitRay.point;
 
+        currentTarget += new Vector3(0, transform.position.y, 0);
+
         RotateTowardsTarget(newDir);
     }
 
@@ -117,7 +131,7 @@ public abstract class CollectableByTongue : TapAble
         Vector3 delta = target - transform.position;
         float distanceTo = delta.magnitude;
 
-        if (distanceTo < 1.0f)                                                              //  WARNING: MIGHT OVERSHOOT AND CAUSE IT TO CLIP TROUGH WALLS
+        if (distanceTo < moveSpeed)                                                              //  WARNING: MIGHT OVERSHOOT AND CAUSE IT TO CLIP TROUGH WALLS
             return true;
         else
             return false;

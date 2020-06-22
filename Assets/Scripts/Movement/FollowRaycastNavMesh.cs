@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using Lean.Touch;
 using UnityEngine;
 using UnityEngine.AI;
@@ -12,7 +13,7 @@ public class FollowRaycastNavMesh : MonoBehaviour
     [SerializeField]
     private float maxRotateSpeed = 50;
 
-    private Camera mainCamera;
+    public Camera mainCamera;
     private NavMeshAgent agent;
 
     private int layerMask;
@@ -21,11 +22,14 @@ public class FollowRaycastNavMesh : MonoBehaviour
 
     float distanceWalked = 0.0f;
 
+    Vector3 autoMoveTarget;
+
 
     float timer = 0;
     float tapDelay = 1.00f;     // Default delay for registering a tap as a gesture is 1/10 of a second .
 
     public bool reverseDirection = false;
+    private bool controls = true;
     public float DistanceWalked { get => distanceWalked; }
     public bool IsMoving { get => isMoving; }
 
@@ -39,10 +43,28 @@ public class FollowRaycastNavMesh : MonoBehaviour
         groundMask = LayerMask.GetMask("RaycastGround");
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        if ((LeanTouch.Fingers.Count == 0))
-            stop();
+        if (controls)
+        {
+            if ((LeanTouch.Fingers.Count == 0))
+                stop();
+        }
+        else if (Vector3.Distance(autoMoveTarget, transform.position) < 1.0f)
+            isMoving = false;
+    }
+
+    public void DisableInput()
+    {
+        OnDisable();
+        controls = false;
+    }
+    public void SetDestination(Vector3 destination)
+    {
+        autoMoveTarget = destination;
+        DisableInput();
+        isMoving = true;
+        agent.SetDestination(destination);
     }
 
     public void handleFingerGesture(List<LeanFinger> fingers)
@@ -96,7 +118,7 @@ public class FollowRaycastNavMesh : MonoBehaviour
         transform.rotation = rotation;
     }
 
-    private void MoveTowardsTarget(Vector3 target)
+    public void MoveTowardsTarget(Vector3 target)
     {
         isMoving = true;
 

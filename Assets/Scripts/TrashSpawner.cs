@@ -50,7 +50,13 @@ public class TrashSpawner : MonoBehaviour
     {
         groundMask = LayerMask.GetMask("RaycastGround");
         prefabList.Add(Resources.Load<Trash>(prefabPath + "pref_WaterBottle"));
-        prefabList.Add(Resources.Load<Trash>(prefabPath + "pref_SodaCanTrash"));
+        prefabList.Add(Resources.Load<Trash>(prefabPath + "pref_WaterBottle"));
+        prefabList.Add(Resources.Load<Trash>(prefabPath + "pref_WaterBottle"));
+        prefabList.Add(Resources.Load<Trash>(prefabPath + "pref_SodaCanTrashYellow"));
+        prefabList.Add(Resources.Load<Trash>(prefabPath + "pref_SodaCanTrashBlue"));
+        prefabList.Add(Resources.Load<Trash>(prefabPath + "pref_SodaCanTrashRed"));
+        prefabList.Add(Resources.Load<Trash>(prefabPath + "pref_AppleTrash"));
+        prefabList.Add(Resources.Load<Trash>(prefabPath + "pref_AppleTrash"));
         prefabList.Add(Resources.Load<Trash>(prefabPath + "pref_AppleTrash"));
 
         timer = UnityEngine.Random.Range(spawnIntervalMin, spawnIntervalMax);
@@ -72,6 +78,7 @@ public class TrashSpawner : MonoBehaviour
             {
                 SpawnTrashOnPlayer();
                 randomSpawnChance -= 0.1f;
+                Debug.Log("aimed for player");
             }
             else
             {

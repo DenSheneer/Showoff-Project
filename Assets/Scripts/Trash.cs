@@ -12,10 +12,10 @@ public class Trash : MonoBehaviour
     private float trashBouncStrenght = 1f;
 
     public float speed;
-
     public readonly int damage = 1;
-
     private Rigidbody rb = null;
+
+    Collider collider;
 
     public Rigidbody RigiB { get => rb; }
 
@@ -24,6 +24,7 @@ public class Trash : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        collider = GetComponent<Collider>();
     }
 
     void Update()
@@ -41,6 +42,9 @@ public class Trash : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
+        if (collider.gameObject.name == "mesh_Maze")
+            Physics.IgnoreCollision(collider, collision.collider);
+
         if (collision.collider.tag == "Player" && hitGround == false)
         {
             PlayerManager player = collision.collider.GetComponent<PlayerManager>();
@@ -57,11 +61,16 @@ public class Trash : MonoBehaviour
                 hitGround = true;
             }
         }
-        
+
         if (collision.collider.tag == "Ground")
         {
             hitGround = true;
         }
+    }
+    private void OnCollisionStay(Collision collision)
+    {
+        if (collider.gameObject.name == "mesh_Maze")
+            Physics.IgnoreCollision(collider, collision.collider);
     }
     void Despawn()
     {

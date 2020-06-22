@@ -12,16 +12,16 @@ public class StartMenuUI : MonoBehaviour
         TAPTOPLAY = 0,
         LANGUAGE = 1,
         DIFFICULTY = 2,
-        TAPTOSTART = 3
+        //TAPTOSTART = 3
     }
 
     private StartMenuState currentMenuState = StartMenuState.TAPTOPLAY;
 
     [SerializeField]
-    private GameObject tapToPlayParent, langBtnParent, difficultyBtnParent, TapToStartParent;
+    private GameObject tapToPlayParent, langBtnParent, difficultyBtnParent;
 
     [SerializeField]
-    private Button dutchBtn, englishBtn, germanBtn, easyBtn, mediumBtn, hardBtn, startBtn;
+    private Button dutchBtn, englishBtn, germanBtn, easyBtn, mediumBtn, hardBtn;
 
     private void Start()
     {
@@ -36,7 +36,9 @@ public class StartMenuUI : MonoBehaviour
         hardBtn.onClick.AddListener(() => { PlayerInfo.Difficulty = Difficulty.HARD; });
 
 
-        startBtn.onClick.AddListener(StartGame);
+        easyBtn.onClick.AddListener(StartGame);
+        mediumBtn.onClick.AddListener(StartGame);
+        hardBtn.onClick.AddListener(StartGame);
     }
 
     public void SwitchMenuState(int pState)
@@ -55,10 +57,10 @@ public class StartMenuUI : MonoBehaviour
             case StartMenuState.DIFFICULTY:
                 difficultyBtnParent.SetActive(true);
                 break;
-            case StartMenuState.TAPTOSTART:
-                TapToStartParent.SetActive(true);
+            //case StartMenuState.TAPTOSTART:
+            //    TapToStartParent.SetActive(true);
 
-                break;
+            //    break;
         }
     }
 
@@ -78,7 +80,7 @@ public class StartMenuUI : MonoBehaviour
         tapToPlayParent.SetActive(false);
         langBtnParent.SetActive(false);
         difficultyBtnParent.SetActive(false);
-        TapToStartParent.SetActive(false);
+        //TapToStartParent.SetActive(false);
     }
 
     private void EnableParent(GameObject parent)

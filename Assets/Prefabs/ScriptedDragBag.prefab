@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 588283866737959223}
-  - component: {fileID: 588283866737959220}
   - component: {fileID: 588283866737959221}
   - component: {fileID: 588283866737959218}
+  - component: {fileID: 1742840230887921569}
   m_Layer: 13
   m_Name: ScriptedDragBag
   m_TagString: Untagged
@@ -34,19 +34,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &588283866737959220
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 588283866737959219}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.5, y: 1.2, z: 1.5}
-  m_Center: {x: -0.1, y: 0.6, z: 0}
 --- !u!195 &588283866737959221
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -81,6 +68,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e53e61417b4bcfe45a9e94051d746aca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!136 &1742840230887921569
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 588283866737959219}
+  m_Material: {fileID: 13400000, guid: 432080eddf3bc2449a2c54573812900e, type: 2}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.8
+  m_Height: 2.25
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.47, z: 0}
 --- !u!1 &3291393916463218178
 GameObject:
   m_ObjectHideFlags: 0
