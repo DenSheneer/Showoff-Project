@@ -14729,6 +14729,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 997454566}
   - {fileID: 175926481}
   - {fileID: 997454566}
   - {fileID: 1756198173}
@@ -15737,6 +15738,59 @@ PrefabInstance:
       value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 6668305790120004322, guid: 879c12f5a6c5b1941a18fbcb88af9fe0,
+<<<<<<< HEAD
+=======
+        type: 3}
+      propertyPath: randomRangeSizeOnPlayer
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6668305790120004322, guid: 879c12f5a6c5b1941a18fbcb88af9fe0,
+        type: 3}
+      propertyPath: randomRangeAroundPlayer
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6668305790120004322, guid: 879c12f5a6c5b1941a18fbcb88af9fe0,
+        type: 3}
+      propertyPath: spawnIntervalMin
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6668305790120004322, guid: 879c12f5a6c5b1941a18fbcb88af9fe0,
+        type: 3}
+      propertyPath: spawnIntervalMax
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6668305790120004332, guid: 879c12f5a6c5b1941a18fbcb88af9fe0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6668305790120004333, guid: 879c12f5a6c5b1941a18fbcb88af9fe0,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6668305790120004333, guid: 879c12f5a6c5b1941a18fbcb88af9fe0,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6668305790120004333, guid: 879c12f5a6c5b1941a18fbcb88af9fe0,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6668305790120004333, guid: 879c12f5a6c5b1941a18fbcb88af9fe0,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6668305790120004333, guid: 879c12f5a6c5b1941a18fbcb88af9fe0,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6668305790120004333, guid: 879c12f5a6c5b1941a18fbcb88af9fe0,
+>>>>>>> feedback-functionality
         type: 3}
       propertyPath: spawnIntervalMin
       value: 2
