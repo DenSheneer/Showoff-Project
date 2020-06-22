@@ -15,7 +15,7 @@ public class PickupManager : MonoBehaviour
     TrashSpawner ts;
 
     PlayerManager playerManager = null;
-    DebugUI debugUI = null;
+    UI_Manager debugUI = null;
 
     int tapMask;
     int playerMask;
@@ -33,8 +33,8 @@ public class PickupManager : MonoBehaviour
         playerManager = FindObjectOfType<PlayerManager>();
         playerManager.onTapableChange += updateLevelItems;
 
-        debugUI = FindObjectOfType<DebugUI>();
-        playerManager.OnFireflyChange += debugUI.UpdateUI;
+        debugUI = FindObjectOfType<UI_Manager>();
+        playerManager.OnFireflyChange += debugUI.UpdateFireflyComponent;
 
         ts = FindObjectOfType<TrashSpawner>();
 
