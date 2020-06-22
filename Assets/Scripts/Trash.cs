@@ -16,6 +16,7 @@ public class Trash : MonoBehaviour
     private Rigidbody rb = null;
 
     Collider collider;
+    AudioSource audioSource;
 
     public Rigidbody RigiB { get => rb; }
 
@@ -25,6 +26,7 @@ public class Trash : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         collider = GetComponent<Collider>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -51,6 +53,11 @@ public class Trash : MonoBehaviour
 
             if (player != null)
             {
+                if (name.Contains("Soda"))
+                    playSound(AudioData.ImpactCan);
+                else
+                    playSound(AudioData.ImpactPlastic);
+
                 player.takeDamage(damage);
 
                 Vector3 awayDir = transform.position - player.transform.position;
@@ -75,5 +82,13 @@ public class Trash : MonoBehaviour
     void Despawn()
     {
         Destroy(gameObject);
+    }
+    void playSound(string name)
+    {
+        if (audioSource != null)
+        {
+            AudioClip clip = Resources.Load<AudioClip>(AudioData.path + name);
+            audioSource.PlayOneShot(clip);
+        }
     }
 }

@@ -7,6 +7,8 @@ using UnityEngine.UIElements;
 
 public class Lantern : TapAble
 {
+    AudioSource audioSource;
+
     [SerializeField]
     int spawnsLeft = 2;
 
@@ -34,6 +36,7 @@ public class Lantern : TapAble
 
     private void Awake()
     {
+        audioSource = GetComponent<AudioSource>();
         beetleSpawner = new BeetleSpawner(transform, spawnsLeft, spawnCooldown, minSpawnDistance, maxSpawnDistance);
         tapAbleType = InputType.TAP_LANTERN;
         GFX_Renderer = GetComponentInChildren<Renderer>();
@@ -65,6 +68,9 @@ public class Lantern : TapAble
     {
         if (!isLit)
         {
+            if (!litOnSpawn)
+                playSound(AudioData.Lantern);
+
             // Daan zet emission aan
             Material mat = GFX_Renderer.materials[0];
 
@@ -78,13 +84,20 @@ public class Lantern : TapAble
 
             mat.SetColor("_EmissionColor", finalColor);
 
-
             gameObject.layer = LayerMask.NameToLayer("Default");
             isLit = true;
             beetleSpawner.SetSpawnerActivity(true);
             onLitEvent?.Invoke(this);
         }
         return;
+    }
+    void playSound(string name)
+    {
+        if (audioSource != null)
+        {
+            AudioClip clip = Resources.Load<AudioClip>(AudioData.path + name);
+            audioSource.PlayOneShot(clip);
+        }
     }
 
     public bool InRadiusCheck(Vector3 target, int mask)                // Checks Line of sight with target.

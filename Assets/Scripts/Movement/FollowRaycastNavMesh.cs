@@ -31,6 +31,7 @@ public class FollowRaycastNavMesh : MonoBehaviour
     public bool reverseDirection = false;
     private bool controls = true;
     public float DistanceWalked { get => distanceWalked; }
+    float orinalSpeed;
     public bool IsMoving { get => isMoving; }
 
     void OnEnable() { LeanTouch.OnGesture += handleFingerGesture; }
@@ -41,6 +42,8 @@ public class FollowRaycastNavMesh : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         layerMask = LayerMask.GetMask("Obstacles");
         groundMask = LayerMask.GetMask("RaycastGround");
+
+        orinalSpeed = agent.speed;
     }
 
     void FixedUpdate()
@@ -140,7 +143,6 @@ public class FollowRaycastNavMesh : MonoBehaviour
 
     public void ScaleSpeed(float scalar, float time)
     {
-        float orinalSpeed = agent.speed;
 
         agent.speed = orinalSpeed * scalar;
         StartCoroutine(scaleSpeedTimer(time, orinalSpeed));

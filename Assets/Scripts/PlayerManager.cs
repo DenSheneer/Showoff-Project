@@ -12,7 +12,7 @@ using static TongueController;
 [RequireComponent(typeof(BeetleSpawner))]
 public class PlayerManager : MonoBehaviour
 {
-    AudioSource audioSource;
+    private static AudioSource audioSource;
 
     FollowRaycastNavMesh movementComponent = null;
     private TongueController tongueController = null;
@@ -230,6 +230,7 @@ public class PlayerManager : MonoBehaviour
 
     public void takeDamage(int damage)
     {
+        playSound(AudioData.Hurt);
         updateIntValue(ref score, -damage, OnScoreChange);
         StartCoroutine(takeDamageTimer(damage));
     }
@@ -237,7 +238,6 @@ public class PlayerManager : MonoBehaviour
     private void HandleTargetEaten(TapAble collectable)
     {
         animator.SetBool("anim_isOpen", false);
-        playSound(AudioData.ParticleEffect);
 
         if (collectable is Fly)
         {
@@ -300,8 +300,11 @@ public class PlayerManager : MonoBehaviour
 
     void playSound(string name)
     {
-        AudioClip clip = Resources.Load<AudioClip>(AudioData.path + name);
-        audioSource.PlayOneShot(clip);
+        if (audioSource != null)
+        {
+            AudioClip clip = Resources.Load<AudioClip>(AudioData.path + name);
+            audioSource.PlayOneShot(clip);
+        }
     }
     void cameraShake()
     {
