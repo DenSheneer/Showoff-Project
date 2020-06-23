@@ -6,7 +6,7 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Button))]
-public class ResetButton : MonoBehaviour
+public class UI_ResetButton : MonoBehaviour
 {
     Button button;
     private void OnEnable()

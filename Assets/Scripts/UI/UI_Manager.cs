@@ -6,9 +6,10 @@ using UnityEngine.UI;
 
 public class UI_Manager : MonoBehaviour
 {
-    ConfirmationPanel confirmationPanel;
-    ResetButton resetButton;
-    UIFirefly uiFirefly;
+    UI_ConfirmationPanel uiConfirmationPanel = null;
+    UI_ResetButton uiResetButton = null;
+    UI_Firefly uiFirefly = null;
+    UI_UpdateScore uiUpdateScore = null;
 
     [SerializeField]
     TextMeshProUGUI tmp = null;
@@ -19,34 +20,26 @@ public class UI_Manager : MonoBehaviour
     {
         tmp.color = new Color(0, 1, 0);
         GetComponent<Canvas>().worldCamera = Camera.main;
-        resetButton = GetComponentInChildren<ResetButton>();
-        confirmationPanel = GetComponentInChildren<ConfirmationPanel>();
-        uiFirefly = GetComponentInChildren<UIFirefly>();
+        uiResetButton = GetComponentInChildren<UI_ResetButton>();
+        uiConfirmationPanel = GetComponentInChildren<UI_ConfirmationPanel>();
+        uiFirefly = GetComponentInChildren<UI_Firefly>();
+        uiUpdateScore = GetComponentInChildren<UI_UpdateScore>();
 
-        confirmationPanel.ClosePanel();
+        uiConfirmationPanel.ClosePanel();
 
         if (Debug.isDebugBuild == false)
             Destroy(tmp);
     }
     private void OnEnable()
     {
-        resetButton.AddButtonFunction(Pause);
-        resetButton.AddButtonFunction(confirmationPanel.OpenPanel);
+        uiResetButton.AddButtonFunction(Pause);
+        uiResetButton.AddButtonFunction(uiConfirmationPanel.OpenPanel);
     }
 
-    public static void Pause()
-    {
-        Time.timeScale = 0;
-    }
-    public static void Unpause()
-    {
-        Time.timeScale = 1;
-    }
-
-    public void UpdateFireflyComponent(int newNrOfFlies)
-    {
-        uiFirefly.UpdateUI(newNrOfFlies);
-    }
+    public static void Pause() { Time.timeScale = 0; }
+    public static void Unpause() { Time.timeScale = 1; }
+    public void UpdateFireflyComponent(int newNrOfFlies) { uiFirefly.UpdateUI(newNrOfFlies); }
+    public void UpdatePlayerScore(int newScore) { uiUpdateScore.UpdateScore(newScore); }
 
     private void Update()
     {

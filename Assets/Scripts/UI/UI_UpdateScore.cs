@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-[RequireComponent(typeof(TextMeshProUGUI))]
-public class TempUpdateScore : MonoBehaviour
+public class UI_UpdateScore : MonoBehaviour
 {
     private TextMeshProUGUI scoreText = null;
 
     private void Start()
     {
-        scoreText = GetComponent<TextMeshProUGUI>();
+        scoreText = GetComponentInChildren<TextMeshProUGUI>();
     }
 
     public void UpdateScore(int newScore)

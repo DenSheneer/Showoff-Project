@@ -42,6 +42,7 @@ public class PickupManager : MonoBehaviour
 
         debugUI = FindObjectOfType<UI_Manager>();
         playerManager.OnFireflyChange += debugUI.UpdateFireflyComponent;
+        playerManager.OnScoreChange += debugUI.UpdatePlayerScore;
 
         ts = FindObjectOfType<TrashSpawner>();
 

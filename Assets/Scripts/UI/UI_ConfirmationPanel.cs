@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ConfirmationPanel : MonoBehaviour
+public class UI_ConfirmationPanel : MonoBehaviour
 {
     Button buttonYES;
     Button buttonNO;

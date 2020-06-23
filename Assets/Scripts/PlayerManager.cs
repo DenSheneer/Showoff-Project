@@ -30,9 +30,6 @@ public class PlayerManager : MonoBehaviour
     private static ParticleSystem particles_beetle = null;
     private static ParticleSystem particles_fly = null;
 
-    [SerializeField]
-    private TempUpdateScore tempUpdateScore = null;
-
     private Camerashake cameraObject;
 
     [SerializeField]
@@ -70,7 +67,6 @@ public class PlayerManager : MonoBehaviour
         movementComponent = GetComponent<FollowRaycastNavMesh>();
         tongueController = GetComponentInChildren<TongueController>();
         cameraObject = Camera.main.GetComponent<Camerashake>();
-        tempUpdateScore = FindObjectOfType<TempUpdateScore>();
 
         tongueController.tongueReachedTarget += HandleTargetReached;
         tongueController.targetEaten += HandleTargetEaten;
@@ -79,8 +75,6 @@ public class PlayerManager : MonoBehaviour
 
         isBeingDamaged += cameraShake;
         isBeingDamaged += slowMovement;
-
-        OnScoreChange += tempUpdateScore.UpdateScore;   //  --> Please, move to pickup manager
 
         tutorials.Add(InputType.SWIPE_TO_MOVE, false);
         tutorials.Add(InputType.TAP_FIREFLY, false);
