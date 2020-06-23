@@ -35,6 +35,7 @@ public class TrashSpawner : MonoBehaviour
     private void Awake()
     {
         playerManager = transform.parent.GetComponent<PlayerManager>();
+        SwitchDifficulty(PlayerInfo.Difficulty);
     }
 
     void Start()
@@ -85,6 +86,25 @@ public class TrashSpawner : MonoBehaviour
             }
 
             //Debug.Log(randomSpawnChance);
+        }
+    }
+
+    public void SwitchDifficulty(Difficulty difficulty)
+    {
+        switch (difficulty)
+        {
+            case Difficulty.EASY:
+                spawnIntervalMin = 2.0f;
+                spawnIntervalMax = 4.0f;
+                break;
+            case Difficulty.MEDIUM:
+                spawnIntervalMin = 1.0f;
+                spawnIntervalMax = 4.0f;
+                break;
+            case Difficulty.HARD:
+                spawnIntervalMin = 1.0f;
+                spawnIntervalMax = 3.0f;
+                break;
         }
     }
 

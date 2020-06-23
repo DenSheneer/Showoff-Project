@@ -12,7 +12,7 @@ public class Trash : MonoBehaviour
     private float trashBouncStrenght = 1f;
 
     public float speed;
-    public readonly int damage = 1;
+    public int damage = 1;
     private Rigidbody rb = null;
 
     Collider collider;
@@ -24,6 +24,7 @@ public class Trash : MonoBehaviour
 
     private void Awake()
     {
+        SwitchDifficulty(PlayerInfo.Difficulty);
         rb = GetComponent<Rigidbody>();
         collider = GetComponent<Collider>();
         audioSource = GetComponent<AudioSource>();
@@ -89,6 +90,21 @@ public class Trash : MonoBehaviour
         {
             AudioClip clip = Resources.Load<AudioClip>(AudioData.path + name);
             audioSource.PlayOneShot(clip);
+        }
+    }
+    public void SwitchDifficulty(Difficulty difficulty)
+    {
+        switch (difficulty)
+        {
+            case Difficulty.EASY:
+                damage = 1;
+                break;
+            case Difficulty.MEDIUM:
+                damage = 2;
+                break;
+            case Difficulty.HARD:
+                damage = 3;
+                break;
         }
     }
 }

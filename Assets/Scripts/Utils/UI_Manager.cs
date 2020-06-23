@@ -24,6 +24,9 @@ public class UI_Manager : MonoBehaviour
         uiFirefly = GetComponentInChildren<UIFirefly>();
 
         confirmationPanel.ClosePanel();
+
+        if (Debug.isDebugBuild == false)
+            Destroy(tmp);
     }
     private void OnEnable()
     {
@@ -47,11 +50,14 @@ public class UI_Manager : MonoBehaviour
 
     private void Update()
     {
-        deltaTime += (Time.unscaledDeltaTime - deltaTime) * 0.1f;
-        float msec = deltaTime * 1000.0f;
-        float fps = 1.0f / deltaTime;
-        string text = string.Format("{0:0.0} ms ({1:0.} fps)", msec, fps);
+        if (tmp != null)
+        {
+            deltaTime += (Time.unscaledDeltaTime - deltaTime) * 0.1f;
+            float msec = deltaTime * 1000.0f;
+            float fps = 1.0f / deltaTime;
+            string text = string.Format("{0:0.0} ms ({1:0.} fps)", msec, fps);
 
-        tmp.text = text;
+            tmp.text = text;
+        }
     }
 }

@@ -23,6 +23,8 @@ public class PickupManager : MonoBehaviour
 
     void Awake()
     {
+        Debug.Log(Debug.isDebugBuild);
+
         GetAllTapables();
 
         LeanTouch.OnFingerTap += HandleFingerTap;
@@ -111,13 +113,16 @@ public class PickupManager : MonoBehaviour
 
     private void Update()
     {
-        if (LeanTouch.Fingers.Count < 1)
+        if (Debug.isDebugBuild == false)
         {
-            if (timerUntilReset(30.0f))
-                SceneLoader.LoadScene(SceneLoader.StartScreenSceneName);
+            if (LeanTouch.Fingers.Count < 1)
+            {
+                if (timerUntilReset(30.0f))
+                    SceneLoader.LoadScene(SceneLoader.StartScreenSceneName);
+            }
+            else
+                idleTime = 0.0f;
         }
-        else
-            idleTime = 0.0f;
 
         ts.gameObject.SetActive(!checkAllLanternRadii());
     }
