@@ -12,6 +12,8 @@ using static TongueController;
 [RequireComponent(typeof(BeetleSpawner))]
 public class PlayerManager : MonoBehaviour
 {
+    private static AudioSource audioSource;
+
     FollowRaycastNavMesh movementComponent = null;
     private TongueController tongueController = null;
 
@@ -72,6 +74,8 @@ public class PlayerManager : MonoBehaviour
 
         tongueController.tongueReachedTarget += HandleTargetReached;
         tongueController.targetEaten += HandleTargetEaten;
+
+        audioSource = GetComponent<AudioSource>();
 
         isBeingDamaged += cameraShake;
         isBeingDamaged += slowMovement;
@@ -177,6 +181,7 @@ public class PlayerManager : MonoBehaviour
             {
                 if (tapAble.IsInReach)
                 {
+                    playSound(AudioData.TongueSound);
                     animator.SetBool("anim_isOpen", true);
                     setTutorialCompletion(tapAble.TapAbleType, true);
                     handleCollectable(tapAble as CollectableByTongue);
@@ -225,6 +230,7 @@ public class PlayerManager : MonoBehaviour
 
     public void takeDamage(int damage)
     {
+        playSound(AudioData.Hurt);
         updateIntValue(ref score, -damage, OnScoreChange);
         StartCoroutine(takeDamageTimer(damage));
     }
@@ -290,6 +296,15 @@ public class PlayerManager : MonoBehaviour
             yield return null;
         }
         isGettingHurt = false;
+    }
+
+    void playSound(string name)
+    {
+        if (audioSource != null)
+        {
+            AudioClip clip = Resources.Load<AudioClip>(AudioData.path + name);
+            audioSource.PlayOneShot(clip);
+        }
     }
     void cameraShake()
     {

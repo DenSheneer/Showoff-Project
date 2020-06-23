@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 118065084353903381}
   - component: {fileID: 118065084353903371}
   - component: {fileID: 118065084353903370}
+  - component: {fileID: 7317765803018430708}
   m_Layer: 5
   m_Name: PopUpReturnStart
   m_TagString: Untagged
@@ -75,6 +76,18 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
+--- !u!114 &7317765803018430708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 118065084353903380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 485daa385896bd049b770a81643e55e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &118065084677372996
 GameObject:
   m_ObjectHideFlags: 0
@@ -1101,6 +1114,7 @@ GameObject:
   - component: {fileID: 2315144924309247209}
   - component: {fileID: 4253798297367599357}
   - component: {fileID: 2605565703288023875}
+  - component: {fileID: 6404731262007143735}
   m_Layer: 5
   m_Name: Reset
   m_TagString: Untagged
@@ -1218,6 +1232,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &6404731262007143735
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2228935604455240907}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 986f1317cad57b9488d827a4b7ff39ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2888143283611069371
 GameObject:
   m_ObjectHideFlags: 0
@@ -1726,6 +1752,7 @@ GameObject:
   - component: {fileID: 1913154654405562029}
   - component: {fileID: 5616621812805725975}
   - component: {fileID: 2931726127974857023}
+  - component: {fileID: 9194979402376722076}
   m_Layer: 5
   m_Name: Fireflies_Background
   m_TagString: Untagged
@@ -1792,6 +1819,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &9194979402376722076
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7559203269813814707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82fd3a30357a5124380954a7e93d783b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8419536360376861606
 GameObject:
   m_ObjectHideFlags: 0
