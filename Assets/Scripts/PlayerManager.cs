@@ -87,6 +87,10 @@ public class PlayerManager : MonoBehaviour
     private void Update()
     {
         UpdateTutorialPopUps();
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            OnScoreChange?.Invoke(score);
+        }
 
         animator.SetBool("anim_isWalking", movementComponent.IsMoving);
     }

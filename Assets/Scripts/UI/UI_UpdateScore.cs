@@ -14,6 +14,14 @@ public class UI_UpdateScore : MonoBehaviour
 
     public void UpdateScore(int newScore)
     {
+        Debug.Log("reached");
         scoreText.text = newScore.ToString();
+        
+        GameObject go = Instantiate(Resources.Load<GameObject>("Prefabs/ScoreUp"));
+        go.transform.SetParent(transform);
+        go.transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, 0);
+        go.transform.localScale = new Vector3(2, 2, 2);
+        go.transform.localRotation = Quaternion.identity;
+        Debug.Log(go.name);
     }
 }
