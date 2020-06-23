@@ -12,7 +12,7 @@ EditorBuildSettings:
     path: Assets/Scenes/CutScene.unity
     guid: 9d8e25a1c1ba9774aa82c953d4f1e64a
   - enabled: 1
-    path: Assets/Scenes/Prototype_Daan_NewLVLDesign.unity
+    path: Assets/Scenes/Prototype_Daan_NewLVLDesignEasy.unity
     guid: e1185eacc9347c340ba2867368d3944c
   - enabled: 1
     path: Assets/Scenes/EndScreen.unity
