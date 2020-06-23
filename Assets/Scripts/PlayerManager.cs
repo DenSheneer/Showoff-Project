@@ -11,7 +11,7 @@ public class PlayerManager : MonoBehaviour
     private static AudioSource audioSource;
 
     private FollowRaycastNavMesh movementComponent = null;
-    private TongueController tongueController = null;
+    private TongueController tongueController;
 
     public delegate void OnTapableChange(TapAble changedTapable);
     public delegate void IsBeingDamaged();
@@ -207,6 +207,7 @@ public class PlayerManager : MonoBehaviour
         }
         else if (tapAble is DragAble)
         {
+            Debug.Log(tongueController.tongueReachedTarget.GetInvocationList().Length);
             animator.SetBool("anim_isOpen", false);
             tongueController.DetacheDragAble(tapAble as DragAble);
             movementComponent.reverseDirection = false;
