@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4377568438465573499}
   - component: {fileID: 8069524908385259138}
   m_Layer: 0
-  m_Name: Mesh_LanternStick_01
+  m_Name: pref_LanternStick_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
