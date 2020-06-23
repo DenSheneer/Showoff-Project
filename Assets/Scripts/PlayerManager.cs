@@ -2,19 +2,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
 using UnityEngine;
-using UnityEngine.Animations;
-using UnityEngine.UIElements;
-using static TongueController;
 
+[RequireComponent(typeof(TongueController))]
 [RequireComponent(typeof(FollowRaycastNavMesh))]
-[RequireComponent(typeof(BeetleSpawner))]
 public class PlayerManager : MonoBehaviour
 {
     private static AudioSource audioSource;
 
-    FollowRaycastNavMesh movementComponent = null;
+    private FollowRaycastNavMesh movementComponent = null;
     private TongueController tongueController = null;
 
     public delegate void OnTapableChange(TapAble changedTapable);
@@ -59,7 +55,7 @@ public class PlayerManager : MonoBehaviour
             return isGettingHurt;
     }
 
-    private void Awake()
+    private void OnEnable()
     {
         animator = GetComponentInChildren<Animator>();
         particles_beetle = GameObject.Find("PickupEffect").GetComponent<ParticleSystem>();
