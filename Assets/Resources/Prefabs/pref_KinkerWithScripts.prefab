@@ -3489,7 +3489,7 @@ GameObject:
   - component: {fileID: 6668305790170180489}
   - component: {fileID: 6668305790170180494}
   - component: {fileID: 6668305790170180495}
-  - component: {fileID: -5613264583129726434}
+  - component: {fileID: 2204396690638891457}
   m_Layer: 15
   m_Name: pref_KinkerWithScripts
   m_TagString: Player
@@ -3582,7 +3582,7 @@ MonoBehaviour:
   maxRotateSpeed: 8
   mainCamera: {fileID: 0}
   reverseDirection: 0
---- !u!82 &-5613264583129726434
+--- !u!82 &2204396690638891457
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3592,15 +3592,15 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 9d7bad90094dcd54683c66b4337a3d4b, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.25
+  m_Volume: 1
   m_Pitch: 1
-  Loop: 1
+  Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 100
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
