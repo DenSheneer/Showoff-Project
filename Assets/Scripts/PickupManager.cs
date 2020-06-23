@@ -7,6 +7,8 @@ using UnityEditor;
 
 public class PickupManager : MonoBehaviour
 {
+    private readonly static string collectablePath = "CollectablePrefabs/Collectables_";
+
     [SerializeField]
     List<TapAble> tapAbles = null;
 
@@ -17,13 +19,16 @@ public class PickupManager : MonoBehaviour
     PlayerManager playerManager = null;
     UI_Manager debugUI = null;
 
+
+
     int tapMask;
     int playerMask;
     float idleTime = 0.0f;
 
     void Awake()
     {
-        Debug.Log(Debug.isDebugBuild);
+        GameObject collectablesTab;
+        collectablesTab = Instantiate(Resources.Load<GameObject>(collectablePath + PlayerInfo.Difficulty));
 
         GetAllTapables();
 
@@ -129,6 +134,8 @@ public class PickupManager : MonoBehaviour
 
     public void GetAllTapables()
     {
+        tapAbles.Clear();
+
         GameObject[] allGameObjects = FindObjectsOfType<GameObject>();
 
         foreach (GameObject gameObject in allGameObjects)
