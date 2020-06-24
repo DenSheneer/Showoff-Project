@@ -27,7 +27,7 @@ public class NextSceneCollider : MonoBehaviour
                 PlayerInfo.Score = pm.Score;
             }
 
-            SceneLoader.LoadScene(SceneLoader.EndScreenSceneName);
+            SceneLoader.LoadScene(SceneLoader.CutsceneEndSceneName);
         }
     }
 }

@@ -17,12 +17,23 @@ public class CutSceneManager : MonoBehaviour
 
     private void NextScene(VideoPlayer vp)
     {
-        SceneLoader.LoadScene(SceneLoader.LevelSceneName);
+        string sceneName = SceneManager.GetActiveScene().name;
+
+        switch (sceneName)
+        {
+            case SceneLoader.CutsceneStartSceneName:
+                SceneLoader.LoadScene(SceneLoader.LevelSceneName);
+                break;
+            case SceneLoader.CutsceneEndSceneName:
+                SceneLoader.LoadScene(SceneLoader.EndScreenSceneName);
+                break;
+        }
+
     }
 
     public void Skipbutton()
     {
-            NextScene(videoPlayer);
+        NextScene(videoPlayer);
     }
 
 }
