@@ -1,5 +1,4 @@
-﻿using Lean.Touch;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -207,7 +206,6 @@ public class PlayerManager : MonoBehaviour
         }
         else if (tapAble is DragAble)
         {
-            Debug.Log(tongueController.tongueReachedTarget.GetInvocationList().Length);
             animator.SetBool("anim_isOpen", false);
             tongueController.DetacheDragAble(tapAble as DragAble);
             movementComponent.reverseDirection = false;

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Lean.Touch;
 using UnityEditor;
+using System.Reflection;
 
 public class PickupManager : MonoBehaviour
 {
@@ -165,5 +166,9 @@ public class PickupManager : MonoBehaviour
             return true;
 
         return false;
+    }
+    private void OnDestroy()
+    {
+        LeanTouch.OnFingerTap -= HandleFingerTap;
     }
 }
