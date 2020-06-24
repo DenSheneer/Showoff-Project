@@ -8,6 +8,8 @@ public class UI_UpdateScore : MonoBehaviour
     private TextMeshProUGUI scoreText = null;
     private int currentScore = 0;
 
+    private Animator BackgroundAnimation;
+
     private void Start()
     {
         scoreText = GetComponentInChildren<TextMeshProUGUI>();
@@ -18,7 +20,13 @@ public class UI_UpdateScore : MonoBehaviour
         int difference = newScore - currentScore;
         if (difference < 0)
         {
-            // animation with MINUS score
+            GameObject go = Instantiate(Resources.Load<GameObject>("Prefabs/ScoreDown"));
+            go.transform.SetParent(transform);
+            go.transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, 0);
+            go.transform.localScale = new Vector3(2, 2, 2);
+            go.transform.localRotation = Quaternion.identity;
+
+            BackgroundAnimation.SetTrigger("Damage");
         }else
         {
             //  animation with PLUS score
