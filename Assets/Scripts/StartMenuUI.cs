@@ -21,7 +21,7 @@ public class StartMenuUI : MonoBehaviour
     private GameObject tapToPlayParent, langBtnParent, difficultyBtnParent;
 
     [SerializeField]
-    private Button dutchBtn, englishBtn, germanBtn, easyBtn, mediumBtn, hardBtn,toStartBtn;
+    private Button dutchBtn, englishBtn, germanBtn, easyBtn, mediumBtn, hardBtn, toStartBtn;
 
     private void Start()
     {
@@ -73,7 +73,7 @@ public class StartMenuUI : MonoBehaviour
 
     private void StartGame()
     {
-        SceneLoader.LoadScene(SceneLoader.CutsceneSceneName);
+        SceneLoader.LoadScene(SceneLoader.CutsceneStartSceneName);
     }
 
     private void DisableAll()
