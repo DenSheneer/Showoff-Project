@@ -60,7 +60,7 @@ public class NewHighScoreUI : MonoBehaviour
             return;
 
         PlayerInfo.PlayerName = playerInputName.text;
-        Highscore.NewScore(PlayerInfo.PlayerName, PlayerInfo.Score,DateTime.Now.ToString("yyyy-MM-dd"),PlayerInfo.Difficulty);
+        Highscore.NewScore(PlayerInfo.PlayerName, PlayerInfo.Score,DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),PlayerInfo.Difficulty);
 
         endScreen.SwitchToOverview();
     }

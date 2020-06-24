@@ -84,7 +84,7 @@ public static class Highscore
 
         // Add empty entries to the score to fill it up
         for (int i = 0; i < scoreLimit; i++)
-            playerScores.Add(new PlayerScore("empty", DateTime.Now.ToString("yyyy-MM-dd"), 0));
+            playerScores.Add(new PlayerScore("empty", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), 0));
 
         string JsonString = File.ReadAllText(pFilePath);
         JSONObject jObject = JSONObject.Create(JsonString);
