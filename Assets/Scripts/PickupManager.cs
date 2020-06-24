@@ -20,11 +20,8 @@ public class PickupManager : MonoBehaviour
     PlayerManager playerManager = null;
     UI_Manager debugUI = null;
 
-
-
     int tapMask;
     int playerMask;
-    float idleTime = 0.0f;
 
     void Awake()
     {
@@ -120,17 +117,6 @@ public class PickupManager : MonoBehaviour
 
     private void Update()
     {
-        if (Debug.isDebugBuild == false)
-        {
-            if (LeanTouch.Fingers.Count < 1)
-            {
-                if (timerUntilReset(30.0f))
-                    SceneLoader.LoadScene(SceneLoader.StartScreenSceneName);
-            }
-            else
-                idleTime = 0.0f;
-        }
-
         ts.gameObject.SetActive(!checkAllLanternRadii());
     }
 
@@ -159,14 +145,6 @@ public class PickupManager : MonoBehaviour
         return false;
     }
 
-    bool timerUntilReset(float time)
-    {
-        idleTime += Time.deltaTime;
-        if (idleTime >= time)
-            return true;
-
-        return false;
-    }
     private void OnDestroy()
     {
         LeanTouch.OnFingerTap -= HandleFingerTap;
