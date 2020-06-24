@@ -23,6 +23,14 @@ public class StartMenuUI : MonoBehaviour
     [SerializeField]
     private Button dutchBtn, englishBtn, germanBtn, easyBtn, mediumBtn, hardBtn, toStartBtn;
 
+    FloatingBehaviour fb = new FloatingBehaviour(0.25f, 1, 1.10f);
+    Vector3 originalScale;
+
+    private void Awake()
+    {
+        originalScale = tapToPlayParent.transform.localScale;
+    }
+
     private void Start()
     {
         SwitchMenuState(0);
@@ -36,7 +44,6 @@ public class StartMenuUI : MonoBehaviour
         easyBtn.onClick.AddListener(() => { PlayerInfo.Difficulty = Difficulty.EASY; });
         mediumBtn.onClick.AddListener(() => { PlayerInfo.Difficulty = Difficulty.MEDIUM; });
         hardBtn.onClick.AddListener(() => { PlayerInfo.Difficulty = Difficulty.HARD; });
-
 
         easyBtn.onClick.AddListener(StartGame);
         mediumBtn.onClick.AddListener(StartGame);
@@ -66,9 +73,9 @@ public class StartMenuUI : MonoBehaviour
         }
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-
+        tapToPlayParent.transform.localScale = originalScale * fb.GetScaleFactor();
     }
 
     private void StartGame()
