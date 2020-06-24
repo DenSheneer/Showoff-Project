@@ -2,20 +2,16 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
 using UnityEngine;
-using UnityEngine.Animations;
-using UnityEngine.UIElements;
-using static TongueController;
 
+[RequireComponent(typeof(TongueController))]
 [RequireComponent(typeof(FollowRaycastNavMesh))]
-[RequireComponent(typeof(BeetleSpawner))]
 public class PlayerManager : MonoBehaviour
 {
     private static AudioSource audioSource;
 
-    FollowRaycastNavMesh movementComponent = null;
-    private TongueController tongueController = null;
+    private FollowRaycastNavMesh movementComponent = null;
+    private TongueController tongueController;
 
     public delegate void OnTapableChange(TapAble changedTapable);
     public delegate void IsBeingDamaged();
@@ -59,7 +55,7 @@ public class PlayerManager : MonoBehaviour
             return isGettingHurt;
     }
 
-    private void Awake()
+    private void OnEnable()
     {
         animator = GetComponentInChildren<Animator>();
         particles_beetle = GameObject.Find("PickupEffect").GetComponent<ParticleSystem>();
@@ -215,6 +211,7 @@ public class PlayerManager : MonoBehaviour
         }
         else if (tapAble is DragAble)
         {
+            Debug.Log(tongueController.tongueReachedTarget.GetInvocationList().Length);
             animator.SetBool("anim_isOpen", false);
             tongueController.DetacheDragAble(tapAble as DragAble);
             movementComponent.reverseDirection = false;

@@ -6,7 +6,8 @@ using UnityEngine.SceneManagement;
 public static class SceneLoader
 {
     public static readonly string StartScreenSceneName = "StartScreen_NoName";
-    public static readonly string CutsceneSceneName = "CutScene";
+    public static readonly string CutsceneStartSceneName = "CutScene_Start";
+    public static readonly string CutsceneEndSceneName = "CutScene_End";
     public static readonly string LevelSceneName = "Prototype_Daan_NewLVLDesign";
     public static readonly string EndScreenSceneName = "EndScreen";
     public static readonly string AdminPanelScene = "AdminPanel";

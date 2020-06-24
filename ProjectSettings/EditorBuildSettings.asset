@@ -9,9 +9,6 @@ EditorBuildSettings:
     path: Assets/Scenes/StartScreen_NoName.unity
     guid: 4a731f2a131236d4f8eb03136c874984
   - enabled: 1
-    path: Assets/Scenes/CutScene.unity
-    guid: 9d8e25a1c1ba9774aa82c953d4f1e64a
-  - enabled: 1
     path: Assets/Scenes/Prototype_Daan_NewLVLDesign.unity
     guid: e1185eacc9347c340ba2867368d3944c
   - enabled: 1
@@ -20,4 +17,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/AdminPanel.unity
     guid: d75f179cae6310b40a3fb3aee3b18218
+  - enabled: 1
+    path: Assets/Scenes/CutScene_Start.unity
+    guid: 9d8e25a1c1ba9774aa82c953d4f1e64a
+  - enabled: 1
+    path: Assets/Scenes/CutScene_End.unity
+    guid: 497e53f849cc37b4bb8ad31f252c5060
   m_configObjects: {}

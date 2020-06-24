@@ -24,6 +24,14 @@ public class Trash : MonoBehaviour
 
     private void Awake()
     {
+        if (name.Contains("WaterBottle"))
+        {
+            MeshRenderer mr = GetComponent<MeshRenderer>();
+            if (mr != null)
+                mr.materials[0].renderQueue = 4000;
+        }
+
+
         SwitchDifficulty(PlayerInfo.Difficulty);
         rb = GetComponent<Rigidbody>();
         collider = GetComponent<Collider>();
