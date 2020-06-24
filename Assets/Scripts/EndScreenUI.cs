@@ -21,7 +21,9 @@ public class EndScreenUI : MonoBehaviour
         newHighscoreUI.gameObject.SetActive(false);
         endOverviewUI.gameObject.SetActive(false);
 
-        if (Highscore.checkHighscoreType(PlayerInfo.Score) == Highscore.HighscoreType.ALLTIME || Highscore.checkHighscoreType(PlayerInfo.Score) == Highscore.HighscoreType.DAILY)
+        Highscore.LoadHighscores();
+
+        if (Highscore.getHighscoreType(PlayerInfo.Score,PlayerInfo.Difficulty) == Highscore.ScoreType.ALLTIME || Highscore.getHighscoreType(PlayerInfo.Score,PlayerInfo.Difficulty) == Highscore.ScoreType.DAILY)
         {
             newHighscoreUI.gameObject.SetActive(true);
         }
@@ -29,6 +31,7 @@ public class EndScreenUI : MonoBehaviour
         {
             SwitchToOverview();
         }
+
     }
 
     public void SwitchToOverview()
