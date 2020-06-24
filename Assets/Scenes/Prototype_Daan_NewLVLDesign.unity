@@ -10646,6 +10646,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1207839348}
   m_PrefabAsset: {fileID: 0}
+--- !u!95 &1219638204 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 325384395934379956, guid: 311f99c7ef859974a810f160209ab313,
+    type: 3}
+  m_PrefabInstance: {fileID: 3076228619737929522}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1228476356
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19100,6 +19106,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5048914146978139367, guid: 311f99c7ef859974a810f160209ab313,
+        type: 3}
+      propertyPath: ScoreBackground
+      value: 
+      objectReference: {fileID: 1219638204}
     - target: {fileID: 7443457097460168272, guid: 311f99c7ef859974a810f160209ab313,
         type: 3}
       propertyPath: m_Camera

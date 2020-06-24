@@ -26,6 +26,7 @@ public class TutorialIcon
         targetObject.color = new Color(1, 1, 1, 0.25f);
         type = tutorialType;
         animator.SetInteger("tutorialType", (int)tutorialType);
+        Debug.Log(tutorialType);
     }
 
     public void DisableTutorial()

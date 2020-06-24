@@ -83,10 +83,6 @@ public class PlayerManager : MonoBehaviour
     private void Update()
     {
         UpdateTutorialPopUps();
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            OnScoreChange?.Invoke(score);
-        }
 
         animator.SetBool("anim_isWalking", movementComponent.IsMoving);
     }
@@ -267,10 +263,15 @@ public class PlayerManager : MonoBehaviour
     }
     void UpdateTutorialPopUps()
     {
+        Debug.Log(movementComponent.DistanceWalked);
         if (tutorialIcon != null)
         {
             if (movementComponent.DistanceWalked > 1.0f)
+            {
                 setTutorialCompletion(InputType.SWIPE_TO_MOVE, true);
+                
+            }
+                
 
             if (checkTutorialCompletion(tutorialIcon.Type))
             {

@@ -1591,6 +1591,7 @@ GameObject:
   - component: {fileID: 1802488145687399523}
   - component: {fileID: 8759332008332017717}
   - component: {fileID: 5048914146978139367}
+  - component: {fileID: 325384395934379956}
   m_Layer: 5
   m_Name: Score_Background
   m_TagString: Untagged
@@ -1667,6 +1668,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6014f7b41b115f847b5f6bfbf01f0203, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ScoreBackground: {fileID: 0}
+--- !u!95 &325384395934379956
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5048914146978139366}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: ae16aa33af8a2d14798cb577d3d90e72, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &5730466280245981691
 GameObject:
   m_ObjectHideFlags: 0
@@ -1926,6 +1947,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6014f7b41b115f847b5f6bfbf01f0203, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ScoreBackground: {fileID: 0}
 --- !u!1 &7443457097460168276
 GameObject:
   m_ObjectHideFlags: 0
