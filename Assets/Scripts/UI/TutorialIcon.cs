@@ -14,9 +14,9 @@ public class TutorialIcon
 
     public TutorialIcon(InputType pTutorialType)
     {
-        GameObject canvas = GameObject.FindGameObjectWithTag("UI");
-        targetObject = canvas.GetComponentInChildren<SpriteRenderer>();
-        animator = canvas.GetComponentInChildren<Animator>();
+        GameObject canvas = GameObject.Find("TutorialImageCanvas");
+        targetObject = canvas.GetComponent<SpriteRenderer>();
+        animator = canvas.GetComponent<Animator>();
 
         SetTutorialType(pTutorialType);
     }
