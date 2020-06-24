@@ -7,6 +7,8 @@ using UnityEditor;
 
 public class PickupManager : MonoBehaviour
 {
+    private readonly static string collectablePath = "CollectablePrefabs/Collectables_";
+
     [SerializeField]
     List<TapAble> tapAbles = null;
 
@@ -15,7 +17,9 @@ public class PickupManager : MonoBehaviour
     TrashSpawner ts;
 
     PlayerManager playerManager = null;
-    DebugUI debugUI = null;
+    UI_Manager debugUI = null;
+
+
 
     int tapMask;
     int playerMask;
@@ -23,6 +27,9 @@ public class PickupManager : MonoBehaviour
 
     void Awake()
     {
+        GameObject collectablesTab;
+        collectablesTab = Instantiate(Resources.Load<GameObject>(collectablePath + PlayerInfo.Difficulty));
+
         GetAllTapables();
 
         LeanTouch.OnFingerTap += HandleFingerTap;
@@ -33,8 +40,9 @@ public class PickupManager : MonoBehaviour
         playerManager = FindObjectOfType<PlayerManager>();
         playerManager.onTapableChange += updateLevelItems;
 
-        debugUI = FindObjectOfType<DebugUI>();
-        playerManager.OnFireflyChange += debugUI.UpdateUI;
+        debugUI = FindObjectOfType<UI_Manager>();
+        playerManager.OnFireflyChange += debugUI.UpdateFireflyComponent;
+        playerManager.OnScoreChange += debugUI.UpdatePlayerScore;
 
         ts = FindObjectOfType<TrashSpawner>();
 
@@ -111,19 +119,24 @@ public class PickupManager : MonoBehaviour
 
     private void Update()
     {
-        if (LeanTouch.Fingers.Count < 1)
+        if (Debug.isDebugBuild == false)
         {
-            if (timerUntilReset(30.0f))
-                SceneLoader.LoadScene(SceneLoader.StartScreenSceneName);
+            if (LeanTouch.Fingers.Count < 1)
+            {
+                if (timerUntilReset(30.0f))
+                    SceneLoader.LoadScene(SceneLoader.StartScreenSceneName);
+            }
+            else
+                idleTime = 0.0f;
         }
-        else
-            idleTime = 0.0f;
 
         ts.gameObject.SetActive(!checkAllLanternRadii());
     }
 
     public void GetAllTapables()
     {
+        tapAbles.Clear();
+
         GameObject[] allGameObjects = FindObjectsOfType<GameObject>();
 
         foreach (GameObject gameObject in allGameObjects)

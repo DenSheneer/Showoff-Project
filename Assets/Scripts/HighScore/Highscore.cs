@@ -8,8 +8,9 @@ public static class Highscore
     public static List<PlayerScore> currentDayScores;
     public static List<PlayerScore> allAroundScores;
 
-    private static int currentDayScoreLimit = 25;
-    private static int allAroundScoreLimit = 10;
+    // The score limit is 10 and 25 but because of array indexing we need to add one to both values. This way its easier than adding 1 everywhere and that might add bugs aswell
+    private static int currentDayScoreLimit = 11;
+    private static int allAroundScoreLimit = 26;
 
     private static bool scoreIsLoading = false;
 

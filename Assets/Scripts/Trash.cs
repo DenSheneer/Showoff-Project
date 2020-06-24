@@ -12,10 +12,11 @@ public class Trash : MonoBehaviour
     private float trashBouncStrenght = 1f;
 
     public float speed;
-    public readonly int damage = 1;
+    public int damage = 1;
     private Rigidbody rb = null;
 
     Collider collider;
+    AudioSource audioSource;
 
     public Rigidbody RigiB { get => rb; }
 
@@ -23,8 +24,18 @@ public class Trash : MonoBehaviour
 
     private void Awake()
     {
+        if (name.Contains("WaterBottle"))
+        {
+            MeshRenderer mr = GetComponent<MeshRenderer>();
+            if (mr != null)
+                mr.materials[0].renderQueue = 4000;
+        }
+
+
+        SwitchDifficulty(PlayerInfo.Difficulty);
         rb = GetComponent<Rigidbody>();
         collider = GetComponent<Collider>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -51,6 +62,11 @@ public class Trash : MonoBehaviour
 
             if (player != null)
             {
+                if (name.Contains("Soda"))
+                    playSound(AudioData.ImpactCan);
+                else
+                    playSound(AudioData.ImpactPlastic);
+
                 player.takeDamage(damage);
 
                 Vector3 awayDir = transform.position - player.transform.position;
@@ -75,5 +91,28 @@ public class Trash : MonoBehaviour
     void Despawn()
     {
         Destroy(gameObject);
+    }
+    void playSound(string name)
+    {
+        if (audioSource != null)
+        {
+            AudioClip clip = Resources.Load<AudioClip>(AudioData.path + name);
+            audioSource.PlayOneShot(clip);
+        }
+    }
+    public void SwitchDifficulty(Difficulty difficulty)
+    {
+        switch (difficulty)
+        {
+            case Difficulty.EASY:
+                damage = 1;
+                break;
+            case Difficulty.MEDIUM:
+                damage = 2;
+                break;
+            case Difficulty.HARD:
+                damage = 3;
+                break;
+        }
     }
 }

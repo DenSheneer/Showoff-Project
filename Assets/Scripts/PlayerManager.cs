@@ -2,18 +2,16 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
 using UnityEngine;
-using UnityEngine.Animations;
-using UnityEngine.UIElements;
-using static TongueController;
 
+[RequireComponent(typeof(TongueController))]
 [RequireComponent(typeof(FollowRaycastNavMesh))]
-[RequireComponent(typeof(BeetleSpawner))]
 public class PlayerManager : MonoBehaviour
 {
-    FollowRaycastNavMesh movementComponent = null;
-    private TongueController tongueController = null;
+    private static AudioSource audioSource;
+
+    private FollowRaycastNavMesh movementComponent = null;
+    private TongueController tongueController;
 
     public delegate void OnTapableChange(TapAble changedTapable);
     public delegate void IsBeingDamaged();
@@ -27,9 +25,6 @@ public class PlayerManager : MonoBehaviour
     private static Animator animator = null;
     private static ParticleSystem particles_beetle = null;
     private static ParticleSystem particles_fly = null;
-
-    [SerializeField]
-    private TempUpdateScore tempUpdateScore = null;
 
     private Camerashake cameraObject;
 
@@ -60,7 +55,7 @@ public class PlayerManager : MonoBehaviour
             return isGettingHurt;
     }
 
-    private void Awake()
+    private void OnEnable()
     {
         animator = GetComponentInChildren<Animator>();
         particles_beetle = GameObject.Find("PickupEffect").GetComponent<ParticleSystem>();
@@ -68,15 +63,14 @@ public class PlayerManager : MonoBehaviour
         movementComponent = GetComponent<FollowRaycastNavMesh>();
         tongueController = GetComponentInChildren<TongueController>();
         cameraObject = Camera.main.GetComponent<Camerashake>();
-        tempUpdateScore = FindObjectOfType<TempUpdateScore>();
 
         tongueController.tongueReachedTarget += HandleTargetReached;
         tongueController.targetEaten += HandleTargetEaten;
 
+        audioSource = GetComponent<AudioSource>();
+
         isBeingDamaged += cameraShake;
         isBeingDamaged += slowMovement;
-
-        OnScoreChange += tempUpdateScore.UpdateScore;   //  --> Please, move to pickup manager
 
         tutorials.Add(InputType.SWIPE_TO_MOVE, false);
         tutorials.Add(InputType.TAP_FIREFLY, false);
@@ -177,6 +171,7 @@ public class PlayerManager : MonoBehaviour
             {
                 if (tapAble.IsInReach)
                 {
+                    playSound(AudioData.TongueSound);
                     animator.SetBool("anim_isOpen", true);
                     setTutorialCompletion(tapAble.TapAbleType, true);
                     handleCollectable(tapAble as CollectableByTongue);
@@ -212,6 +207,7 @@ public class PlayerManager : MonoBehaviour
         }
         else if (tapAble is DragAble)
         {
+            Debug.Log(tongueController.tongueReachedTarget.GetInvocationList().Length);
             animator.SetBool("anim_isOpen", false);
             tongueController.DetacheDragAble(tapAble as DragAble);
             movementComponent.reverseDirection = false;
@@ -225,6 +221,7 @@ public class PlayerManager : MonoBehaviour
 
     public void takeDamage(int damage)
     {
+        playSound(AudioData.Hurt);
         updateIntValue(ref score, -damage, OnScoreChange);
         StartCoroutine(takeDamageTimer(damage));
     }
@@ -290,6 +287,15 @@ public class PlayerManager : MonoBehaviour
             yield return null;
         }
         isGettingHurt = false;
+    }
+
+    void playSound(string name)
+    {
+        if (audioSource != null)
+        {
+            AudioClip clip = Resources.Load<AudioClip>(AudioData.path + name);
+            audioSource.PlayOneShot(clip);
+        }
     }
     void cameraShake()
     {
