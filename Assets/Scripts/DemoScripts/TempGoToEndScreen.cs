@@ -12,6 +12,15 @@ public class TempGoToEndScreen : MonoBehaviour
     [SerializeField]
     private string sceneName = "EndScreen";
 
+    [SerializeField]
+    private int inputScore = 0;
+
+    [SerializeField]
+    private Language inputLanguage = Language.DUTCH;
+
+    [SerializeField]
+    private Difficulty inputDifficulty = Difficulty.EASY;
+
     private void Start()
     {
         button.onClick.AddListener(OnClickButton);
@@ -19,8 +28,9 @@ public class TempGoToEndScreen : MonoBehaviour
 
     private void OnClickButton()
     {
-        PlayerInfo.Score = 6969;
-        PlayerInfo.Language = Language.GERMAN;
+        PlayerInfo.Score = inputScore;
+        PlayerInfo.Language = inputLanguage;
+        PlayerInfo.Difficulty = inputDifficulty;
 
         SceneManager.LoadScene(sceneName);
     }

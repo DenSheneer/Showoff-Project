@@ -1,24 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net.Sockets;
+using UnityEditor;
+using UnityEditorInternal;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 public static class Highscore
 {
-    public static List<PlayerScore> currentDayScores;
-    public static List<PlayerScore> allAroundScores;
+    // <FileName,ListOfPlayerScores> 
+    public static Dictionary<Difficulty, List<PlayerScore>> dailyScoreLists;
+    public static Dictionary<Difficulty, List<PlayerScore>> allTimeScoreLists;
 
     // The score limit is 10 and 25 but because of array indexing we need to add one to both values. This way its easier than adding 1 everywhere and that might add bugs aswell
-    private static int currentDayScoreLimit = 11;
-    private static int allAroundScoreLimit = 26;
+    private static int currentDayScoreLimit = 10;
+    private static int allAroundScoreLimit = 25;
 
     private static bool scoreIsLoading = false;
 
-    public enum HighscoreType
+    public enum ScoreType
     {
-        NONE,
         DAILY,
-        ALLTIME
+        ALLTIME,
+        NONE
     }
 
     public static void LoadHighscores()
@@ -28,44 +33,61 @@ public static class Highscore
 
         scoreIsLoading = true;
 
-        currentDayScores = new List<PlayerScore>();
-        allAroundScores = new List<PlayerScore>(); 
+        dailyScoreLists = new Dictionary<Difficulty, List<PlayerScore>>();
+        allTimeScoreLists = new Dictionary<Difficulty, List<PlayerScore>>();
 
-        string loadPath = Application.persistentDataPath + "/Highscores";
+        string loadPath = Application.persistentDataPath + "/Highscores/";
         if (!Directory.Exists(loadPath))
         {
-            Directory.CreateDirectory(Application.persistentDataPath + "/Highscores");
+            Directory.CreateDirectory(Application.persistentDataPath + "/Highscores/");
         }
 
-        string todayFileName = DateTime.Now.ToString("yyyy-MM-dd") + "-highscore.json";
-
-        if (!File.Exists(loadPath + "/" + todayFileName))
+        // Make/Load daily lists
+        foreach (Difficulty diff in (Difficulty[]) Enum.GetValues(typeof(Difficulty)))
         {
-            File.Create(loadPath + "/" + todayFileName).Dispose();
+            string difString = diff.ToString();
+            string type = DateTime.Now.ToString("yyyy-MM-dd");
+            string filePath = loadPath + type + "-" + difString + "-highscore.json";
+
+            if (!File.Exists(filePath))
+            {
+                File.Create(filePath).Dispose();
+            }
+
+            makeHighscoreList(filePath, currentDayScoreLimit, diff, ScoreType.DAILY);
         }
 
-        string allAroundFileName = "all-around-highscore.json";
-
-        if (!File.Exists(loadPath + "/" + allAroundFileName))
+        // Make/Load all time lists
+        foreach (Difficulty diff in (Difficulty[])Enum.GetValues(typeof(Difficulty)))
         {
-            File.Create(loadPath + "/" + allAroundFileName).Dispose();
+            string difString = diff.ToString();
+            string type = "all-around";
+            string filePath = loadPath + type + "-" + difString + "-highscore.json";
+
+            if (!File.Exists(filePath))
+            {
+                File.Create(filePath).Dispose();
+            }
+
+            makeHighscoreList(filePath, allAroundScoreLimit, diff, ScoreType.ALLTIME);
         }
 
-        // Add empty scores
-        for (int i = 0; i < currentDayScoreLimit; i++)
-        {
-            currentDayScores.Add(new PlayerScore("empty", DateTime.Now.ToString("yyyy-MM-dd"), 0));
-        }
-        for (int i = 0; i < allAroundScoreLimit; i++)
-        {
-            allAroundScores.Add(new PlayerScore("empty", DateTime.Now.ToString("yyyy-MM-dd"), 0));
-        }
+        //foreach(PlayerScore playerScore in dailyScoreLists[Difficulty.EASY])
+        //{
+        //    Debug.Log(playerScore.name);
+        //}
+    }
 
-        // ############ LOADING ALL SCORES FROM THE JSON FILES ###########
-        // LOADING CURRENT DAY FIRST
-        string jsonString = File.ReadAllText(loadPath + "/" + todayFileName);
+    private static void makeHighscoreList(string pFilePath,int scoreLimit, Difficulty pDifficulty, ScoreType pScoreType)
+    {
+        List<PlayerScore> playerScores = new List<PlayerScore>();
 
-        JSONObject jObject = JSONObject.Create(jsonString);
+        // Add empty entries to the score to fill it up
+        for (int i = 0; i < scoreLimit; i++)
+            playerScores.Add(new PlayerScore("empty", DateTime.Now.ToString("yyyy-MM-dd"), 0));
+
+        string JsonString = File.ReadAllText(pFilePath);
+        JSONObject jObject = JSONObject.Create(JsonString);
         if (jObject != null && jObject.type == JSONObject.Type.OBJECT)
         {
             JSONObject scoreArray = jObject[0];
@@ -77,52 +99,83 @@ public static class Highscore
                     int score = (int)Convert.ToUInt32(scoreArray[i]["score"].i);
                     string date = scoreArray[i]["datePlayed"].str;
 
-                    loadCurrentDayScore(name, score, date);
+                    addListEntry(playerScores, scoreLimit, new PlayerScore(name,date,score), pDifficulty, pScoreType);
                 }
             }
         }
 
-        // AND HERE WE LOAD IN THE ALL TIMES
-        jsonString = File.ReadAllText(loadPath + "/" + allAroundFileName);
-        jObject = JSONObject.Create(jsonString);
-        if (jObject != null && jObject.type == JSONObject.Type.OBJECT)
+        RemoveListExcess(playerScores, scoreLimit);
+
+        switch (pScoreType)
         {
-            JSONObject scoreArray = jObject[0];
-            for (int i = 0; i < scoreArray.Count; i++)
-            {
-                string name = scoreArray[i]["name"].str;
-                int score = (int)scoreArray[i]["score"].i;
-                string date = scoreArray[i]["datePlayed"].str;
-
-                loadAllTimeScore(name, score, date);
-            }
+            case ScoreType.DAILY:
+                dailyScoreLists[pDifficulty] = playerScores;
+                break;
+            case ScoreType.ALLTIME:
+                allTimeScoreLists[pDifficulty] = playerScores;
+                break;
         }
-        RemoveListExcess();
-
     }
 
-
-    private static void loadCurrentDayScore(string pName, int pScore, string pDate)
+    private static void addListEntry(List<PlayerScore>pList,int pScoreLimit, PlayerScore pPlayerScore, Difficulty pDifficulty, ScoreType pScoreType)
     {
+        int listIndex = NewScoreIndex(pPlayerScore.score, pList, pScoreLimit);
+        
+        if (listIndex != -1)
+        {
+            pList.Insert(listIndex, pPlayerScore);
+        }
+    }
+
+    public static void NewScore(string pName, int pScore,string pDate,Difficulty pDifficulty)
+    {
+        if (scoreIsLoading == false)
+            LoadHighscores();
+
         PlayerScore newScore = new PlayerScore(pName, pDate, pScore);
 
-        // Check for the current day
-        int newTodayScoreIndex = NewScoreIndexCurrentDay(pScore);
+
+        int newTodayScoreIndex = NewScoreIndex(newScore.score, dailyScoreLists[pDifficulty], currentDayScoreLimit);
+
         if (newTodayScoreIndex != -1)
         {
-            currentDayScores.Insert(newTodayScoreIndex, newScore);
+            dailyScoreLists[pDifficulty].Insert(newTodayScoreIndex, newScore);
+            RemoveListExcess(dailyScoreLists[pDifficulty],currentDayScoreLimit);
         }
-    }
 
-    private static void loadAllTimeScore(string pName, int pScore, string pDate)
-    {
-        PlayerScore newScore = new PlayerScore(pName, pDate, pScore);
-        int newAllTimeScoreIndex = NewScoreIndexAllTime(pScore);
-        // Check for the all time
+        int newAllTimeScoreIndex = NewScoreIndex(newScore.score, allTimeScoreLists[pDifficulty], allAroundScoreLimit);
         if (newAllTimeScoreIndex != -1)
         {
-            allAroundScores.Insert(newAllTimeScoreIndex, newScore);
+            allTimeScoreLists[pDifficulty].Insert(newAllTimeScoreIndex, newScore);
+            RemoveListExcess(allTimeScoreLists[pDifficulty], allAroundScoreLimit);
         }
+
+        SaveHighscores();
+    }
+
+    public static int NewScoreIndex(int pPlayerScore, List<PlayerScore> pList, int pScoreLimit)
+    {
+        if (pList.Count == 0)
+            return 0;
+
+        int loopCount = 0;
+
+        if (pList.Count >= pScoreLimit)
+            loopCount = pScoreLimit;
+        else
+            loopCount = pList.Count;
+
+        for (int i = 0; i < loopCount; i++)
+        {
+            if (pPlayerScore >= pList[i].score)
+            {
+
+                return i;
+            }
+        }
+
+        // No new index was given
+        return -1;
     }
 
     public static void SaveHighscores()
@@ -130,182 +183,62 @@ public static class Highscore
         if (scoreIsLoading == false)
             LoadHighscores();
 
-        // #### saving current day ####
-        JSONObject jFileToday = new JSONObject(JSONObject.Type.OBJECT);
-        JSONObject jScoresToday = new JSONObject(JSONObject.Type.ARRAY);
-        jFileToday.AddField("scores", jScoresToday);
-        for (int i = 0; i < currentDayScores.Count; i++)
+        string loadPath = Application.persistentDataPath + "/Highscores/";
+
+        // Make/Load daily lists
+        foreach (Difficulty diff in (Difficulty[])Enum.GetValues(typeof(Difficulty)))
+        {
+            string difString = diff.ToString();
+            string type = DateTime.Now.ToString("yyyy-MM-dd");
+            string filePath = loadPath + type + "-" + difString + "-highscore.json";
+
+            SaveListToFile(filePath, dailyScoreLists[diff]);
+        }
+
+        // Make/Load all time lists
+        foreach (Difficulty diff in (Difficulty[])Enum.GetValues(typeof(Difficulty)))
+        {
+            string difString = diff.ToString();
+            string type = "all-around";
+            string filePath = loadPath + type + "-" + difString + "-highscore.json";
+
+            SaveListToFile(filePath, allTimeScoreLists[diff]);
+        }
+
+    }
+
+    private static void SaveListToFile(string pFilePath,List<PlayerScore> pList)
+    {
+        JSONObject jFile = new JSONObject(JSONObject.Type.OBJECT);
+        JSONObject jScores = new JSONObject(JSONObject.Type.ARRAY);
+        jFile.AddField("scores", jScores);
+
+        for (int i = 0; i < pList.Count; i++)
         {
             JSONObject scoreObj = new JSONObject(JSONObject.Type.OBJECT);
-            scoreObj.AddField("name",currentDayScores[i].name);
-            scoreObj.AddField("score",currentDayScores[i].score);
-            scoreObj.AddField("datePlayed",currentDayScores[i].datePlayed);
-            jScoresToday.Add(scoreObj);
+            scoreObj.AddField("name", pList[i].name);
+            scoreObj.AddField("score", pList[i].score);
+            scoreObj.AddField("datePlayed", pList[i].datePlayed);
+            jScores.Add(scoreObj);
         }
 
-        string loadPath = Application.persistentDataPath + "/Highscores";
-        if (!Directory.Exists(loadPath))
-        {
-            Directory.CreateDirectory(Application.persistentDataPath + "/Highscores");
-        }
-
-        string todayFileName = DateTime.Now.ToString("yyyy-MM-dd") + "-highscore.json";
-
-        if (!File.Exists(loadPath + "/" + todayFileName))
-        {
-            File.Create(loadPath + "/" + todayFileName).Dispose();
-        }
-
-        File.WriteAllText(loadPath + "/" + todayFileName,string.Empty);
-        File.WriteAllText(loadPath + "/" + todayFileName, jFileToday.ToString());
-
-        // #### saving all total score ####
-        JSONObject jFileOverall = new JSONObject(JSONObject.Type.OBJECT);
-        JSONObject jScoresOverall = new JSONObject(JSONObject.Type.ARRAY);
-        jFileOverall.AddField("scores", jScoresOverall);
-        for (int i = 0; i < allAroundScores.Count; i++)
-        {
-            JSONObject scoreObj = new JSONObject(JSONObject.Type.OBJECT);
-            scoreObj.AddField("name", allAroundScores[i].name);
-            scoreObj.AddField("score", allAroundScores[i].score);
-            scoreObj.AddField("datePlayed", allAroundScores[i].datePlayed);
-            jScoresOverall.Add(scoreObj);
-        }
-
-        string overallFileName = "all-around-highscore.json";
-
-        if (!File.Exists(loadPath + "/" + overallFileName))
-        {
-            File.Create(loadPath + "/" + overallFileName).Dispose();
-        }
-
-        File.WriteAllText(loadPath + "/" + overallFileName, string.Empty);
-        File.WriteAllText(loadPath + "/" + overallFileName, jFileOverall.ToString());
+        File.WriteAllText(pFilePath, String.Empty);
+        File.WriteAllText(pFilePath, jFile.ToString());
     }
 
-    public static void NewScore(string pName, int pScore,string pDate)
+    private static void RemoveListExcess(List<PlayerScore> pList,int listLimit)
     {
-        // Checks if name is avaliable
-        //if (!IsNameAvailable(pName))
-        //    return;
-
-        if (scoreIsLoading == false)
-            LoadHighscores();
-
-        PlayerScore newScore = new PlayerScore(pName, pDate, pScore);
-
-        // Check for the current day
-        int newTodayScoreIndex = NewScoreIndexCurrentDay(pScore);
-        if (newTodayScoreIndex != -1)
-        {
-            currentDayScores.Insert(newTodayScoreIndex, newScore);
-        }
-
-        int newAllTimeScoreIndex = NewScoreIndexAllTime(pScore);
-        // Check for the all time
-        if (newAllTimeScoreIndex != -1)
-        {
-            allAroundScores.Insert(newAllTimeScoreIndex, newScore);
-        }
-        RemoveListExcess();
-
-        SaveHighscores();
+        while (pList.Count > listLimit)
+            pList.RemoveAt(pList.Count - 1);
     }
 
-    // These functions return where the new score is should be in the list
-    public static int NewScoreIndexCurrentDay(int pScore)
+    public static ScoreType getHighscoreType(int pScore,Difficulty pDifficulty)
     {
-        if (scoreIsLoading == false)
-            LoadHighscores();
+        if (NewScoreIndex(pScore, allTimeScoreLists[pDifficulty], allAroundScoreLimit) != -1)
+            return ScoreType.ALLTIME;
+        else if (NewScoreIndex(pScore, dailyScoreLists[pDifficulty], currentDayScoreLimit) != -1)
+            return ScoreType.DAILY;
 
-        // For when its the first score
-        if (currentDayScores.Count == 0)
-            return 0;
-        
-        int loopCount = 0;
-        if (currentDayScores.Count >= currentDayScoreLimit)
-            loopCount = currentDayScoreLimit;
-        else
-            loopCount = currentDayScores.Count;
-
-        for (int i = 0; i < loopCount; i++)
-        {
-            if (pScore >= currentDayScores[i].score)
-                return i;
-        }
-
-        return -1;
+        return ScoreType.NONE;
     }
-    
-    public static int NewScoreIndexAllTime(int pScore)
-    {
-        if (scoreIsLoading == false)
-            LoadHighscores();
-
-        // For when its the first score
-        if (allAroundScores.Count == 0)
-            return 0;
-
-        int loopCount = 0;
-        if (allAroundScores.Count >= allAroundScoreLimit)
-            loopCount = allAroundScoreLimit;
-        else
-            loopCount = allAroundScores.Count;
-
-        for (int i = 0; i < loopCount; i++)
-        {
-            if (pScore >= allAroundScores[i].score)
-                return i;
-        }
-
-        return -1;
-    }
-
-    private static void RemoveListExcess()
-    {
-        if (currentDayScores.Count > currentDayScoreLimit)
-        {
-            currentDayScores.RemoveRange(currentDayScoreLimit - 1, currentDayScores.Count - (currentDayScoreLimit - 1));
-        }
-
-        if (allAroundScores.Count > allAroundScoreLimit)
-        {
-            allAroundScores.RemoveRange(allAroundScoreLimit - 1, allAroundScores.Count - (allAroundScoreLimit - 1));
-        }
-    }
-
-    public static bool IsNameAvailable(string pName)
-    {
-        if (scoreIsLoading == false)
-            LoadHighscores();
-
-        for (int i = 0; i < currentDayScores.Count; i++)
-        {
-            // NAME IS NOT AVAIALBE
-            if (currentDayScores[i].name == pName)
-                return false;
-        }
-
-        for (int i = 0; i < allAroundScores.Count; i++)
-        {
-            if (allAroundScores[i].name == pName)
-                return false;
-        }
-
-        return true;
-    }
-
-    public static HighscoreType checkHighscoreType(int pScore)
-    {
-        if (scoreIsLoading == false)
-            LoadHighscores();
-
-        if (NewScoreIndexAllTime(pScore) != -1)
-            return HighscoreType.ALLTIME;
-        else if (NewScoreIndexCurrentDay(pScore) != -1)
-            return HighscoreType.DAILY;
-        else
-            return HighscoreType.NONE;
-    }
-
 }

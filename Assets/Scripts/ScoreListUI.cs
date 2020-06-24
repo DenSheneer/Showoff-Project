@@ -22,8 +22,10 @@ public class ScoreListUI : MonoBehaviour
 
     public void LoadAndShowScore()
     {
-        LoadList(Highscore.currentDayScores, scrollWindowCurrentDay, showDateCurrentDay);
-        LoadList(Highscore.allAroundScores, scrollWindowAllAround, showDateAllAround);
+        LoadList(Highscore.dailyScoreLists[PlayerInfo.Difficulty], scrollWindowCurrentDay, showDateCurrentDay);
+        LoadList(Highscore.allTimeScoreLists[PlayerInfo.Difficulty], scrollWindowAllAround, showDateAllAround);
+
+
         scrollWindowAllAround.gameObject.SetActive(false);
     }
 
