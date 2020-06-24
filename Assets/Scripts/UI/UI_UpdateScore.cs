@@ -12,6 +12,7 @@ public class UI_UpdateScore : MonoBehaviour
     private Animator scoreChangeAnimator;
     GameObject scoreChangeEffect;
 
+
     private void Awake()
     {
         scoreChangeAnimator = GetComponent<Animator>();
@@ -22,21 +23,23 @@ public class UI_UpdateScore : MonoBehaviour
     {
         int difference = newScore - currentScore;
 
+
         if (difference < 0)
         {
             scoreChangeEffect = Instantiate(Resources.Load<GameObject>("Prefabs/ScoreDown"));
             scoreChangeAnimator.SetTrigger("Damage");
-        }
-        else
-        {
-            //scoreChangeEffect = Instantiate(Resources.Load<GameObject>("Prefabs/ScoreDown"));
-            //scoreChangeAnimator.SetTrigger("");
-        }
-
-        if (scoreChangeEffect != null)
-        {
             TextMeshProUGUI tmp = scoreChangeEffect.GetComponent<TextMeshProUGUI>();
             tmp.text = difference.ToString();
+        }
+        else if (difference > 0)
+        {
+            scoreChangeEffect = Instantiate(Resources.Load<GameObject>("Prefabs/ScoreUp"));
+            scoreChangeAnimator.SetTrigger("Points");
+            TextMeshProUGUI tmp = scoreChangeEffect.GetComponent<TextMeshProUGUI>();
+            tmp.text = "+" + difference.ToString();
+        }
+        if (scoreChangeEffect != null)
+        {
 
             scoreChangeEffect.transform.SetParent(transform);
             scoreChangeEffect.transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, 0);
@@ -49,3 +52,4 @@ public class UI_UpdateScore : MonoBehaviour
         currentScore = newScore;
     }
 }
+
