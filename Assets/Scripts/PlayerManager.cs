@@ -54,6 +54,17 @@ public class PlayerManager : MonoBehaviour
             return isGettingHurt;
     }
 
+    private void Start()
+    {
+        Invoke("showFirstTutorialIcon", 3.0f);
+        
+    }
+
+    private void showFirstTutorialIcon()
+    {
+        tutorialIcon = new TutorialIcon(InputType.SWIPE_TO_MOVE);
+    }
+
     private void OnEnable()
     {
         animator = GetComponentInChildren<Animator>();
@@ -77,7 +88,6 @@ public class PlayerManager : MonoBehaviour
         tutorials.Add(InputType.TAP_LANTERN, false);
         tutorials.Add(InputType.TAP_DRAGABLE, false);
 
-        tutorialIcon = new TutorialIcon(InputType.SWIPE_TO_MOVE);
     }
     private void Update()
     {
@@ -323,4 +333,11 @@ public class PlayerManager : MonoBehaviour
     {
         movementComponent.SetDestination(destination);
     }
+
+    //IEnumerator waitForTutorial(float yieldTime)
+    //{
+    //    yield return new WaitForSeconds(yieldTime);
+
+    //    tutorialIcon = new TutorialIcon(InputType.SWIPE_TO_MOVE);
+    //}
 }
