@@ -267,8 +267,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   button: {fileID: 801852419}
   sceneName: EndScreen
-  inputScore: 888
-  inputLanguage: 1
+  inputScore: 678
+  inputLanguage: 2
   inputDifficulty: 1
 --- !u!114 &801852419
 MonoBehaviour:

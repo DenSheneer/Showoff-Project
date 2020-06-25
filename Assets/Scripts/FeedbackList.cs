@@ -132,7 +132,7 @@ public class FeedbackList : MonoBehaviour
 
     private void SaveToFile(Dictionary<string, FeedbackContainer> pQuestionsAndAwnsers,string pFilePath)
     {
-        RemoveDeletedQuestions(pQuestionsAndAwnsers);
+        //RemoveDeletedQuestions(pQuestionsAndAwnsers);
 
         JSONObject jFile = new JSONObject(JSONObject.Type.OBJECT);
         foreach (KeyValuePair<string, FeedbackContainer> pair in pQuestionsAndAwnsers)

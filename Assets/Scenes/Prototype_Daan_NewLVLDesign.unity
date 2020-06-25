@@ -19353,7 +19353,7 @@ PrefabInstance:
     - target: {fileID: 7595718145931471861, guid: 311f99c7ef859974a810f160209ab313,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -166.99997
+      value: -167
       objectReference: {fileID: 0}
     - target: {fileID: 7729304110459642021, guid: 311f99c7ef859974a810f160209ab313,
         type: 3}
@@ -19368,6 +19368,72 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 3076228619737929522}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &3076228619737929524 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3076228621589660866, guid: 311f99c7ef859974a810f160209ab313,
+    type: 3}
+  m_PrefabInstance: {fileID: 3076228619737929522}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3076228619737929525
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3076228619737929524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ff7fa9796e5e154f84e4cc0d222b710, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Text_ENG_DUTCH_GER:
+  - Are you sure that you want to return to start
+  - Weet je zeker dat je terug wil naar start
+  - "Bist du sicher, dass du zur\xFCck zum Start m\xF6chtest?"
+--- !u!1 &3076228619737929526 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3076228619483736459, guid: 311f99c7ef859974a810f160209ab313,
+    type: 3}
+  m_PrefabInstance: {fileID: 3076228619737929522}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3076228619737929527 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3076228619913317908, guid: 311f99c7ef859974a810f160209ab313,
+    type: 3}
+  m_PrefabInstance: {fileID: 3076228619737929522}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3076228619737929528
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3076228619737929526}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ff7fa9796e5e154f84e4cc0d222b710, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Text_ENG_DUTCH_GER:
+  - YES
+  - JA
+  - JA
+--- !u!114 &3076228619737929529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3076228619737929527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ff7fa9796e5e154f84e4cc0d222b710, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Text_ENG_DUTCH_GER:
+  - NO
+  - NEE
+  - NEIN
 --- !u!1001 &3904765309621625303
 PrefabInstance:
   m_ObjectHideFlags: 0

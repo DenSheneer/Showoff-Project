@@ -9799,6 +9799,28 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1055178909}
   m_CullTransparentMesh: 0
+--- !u!1 &1083674547 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2052594926587381137, guid: 35947ffd23cc7ac42bed4b05fa2c8857,
+    type: 3}
+  m_PrefabInstance: {fileID: 2020716680}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1083674548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1083674547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ff7fa9796e5e154f84e4cc0d222b710, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Text_ENG_DUTCH_GER:
+  - How much did you enjoy the game
+  - Hoe leuk vond jij het spel
+  - "Wie viel Spa\xDF hat das Spiel dir gemacht"
 --- !u!1 &1090975837
 GameObject:
   m_ObjectHideFlags: 0
@@ -13904,6 +13926,28 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1494404646}
   m_CullTransparentMesh: 0
+--- !u!1 &1498526164 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4981200930156008373, guid: 873f3d4baf937f24890eb40fd1dfcfcd,
+    type: 3}
+  m_PrefabInstance: {fileID: 1940536738}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1498526165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1498526164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ff7fa9796e5e154f84e4cc0d222b710, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Text_ENG_DUTCH_GER:
+  - How do you feel about littering
+  - Hoe voel jij je bij vervuilen
+  - "Wie findest du die Verm\xFCllung"
 --- !u!1 &1504585453
 GameObject:
   m_ObjectHideFlags: 0
@@ -14078,7 +14122,7 @@ MonoBehaviour:
   Text_ENG_DUTCH_GER:
   - 'New all time highscore:'
   - 'Nieuwe highscore van alle tijde:'
-  - 'Neuer Highscore aller Zeiten:'
+  - 'Allgemeiner Highscore:'
 --- !u!1 &1526167297
 GameObject:
   m_ObjectHideFlags: 0
