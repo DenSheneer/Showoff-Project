@@ -20,6 +20,13 @@ public class StartMessage : MonoBehaviour
         FadeOut();
     }
 
+
+    private void Update()
+    {
+
+    }
+
+
     public void FadeOut()
     {
         iTween.ValueTo(gameObject, iTween.Hash(
@@ -34,5 +41,8 @@ public class StartMessage : MonoBehaviour
     {
         background.color = new Color(0,0,0,newAlpha);
         startText.color = new Color(225, 225, 225, newAlpha);
+
+        if (background.color.a <= 0)
+            gameObject.SetActive(false);
     }
 }

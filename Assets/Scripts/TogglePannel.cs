@@ -27,11 +27,10 @@ public class TogglePannel : MonoBehaviour
         toggleBtn.onClick.AddListener(TogglePanel);
 
         originalAnchorPos = new Vector2(panelContainer.anchoredPosition.x, panelContainer.anchoredPosition.y - offSet);
-        TogglePanel();
     }
 
 
-    private void TogglePanel()
+    public void TogglePanel()
     {
         iTween.ValueTo(panelContainer.gameObject, iTween.Hash(
             "from", panelContainer.anchoredPosition,
