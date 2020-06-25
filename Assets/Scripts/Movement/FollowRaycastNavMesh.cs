@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 using Lean.Touch;
 using UnityEngine;
 using UnityEngine.AI;

@@ -1,9 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.AI;
-
-public class Beetle : CollectableByTongue
+﻿public class Beetle : CollectableByTongue
 {
     private void Start()
     {

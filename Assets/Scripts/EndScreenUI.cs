@@ -1,9 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using TMPro;
-using Lean.Touch;
-using UnityEngine.Rendering;
+﻿using UnityEngine;
 
 public class EndScreenUI : MonoBehaviour
 {

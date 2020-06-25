@@ -1,7 +1,4 @@
-﻿using Lean.Touch;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Autopilot : MonoBehaviour
 {

@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using SplineMesh;
-using System;
 
 [RequireComponent(typeof(Spline), typeof(LinearMeshAlongSpline))]
 public class TongueController : MonoBehaviour

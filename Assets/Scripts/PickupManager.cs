@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using Lean.Touch;
-using UnityEditor;
-using System.Reflection;
 
 public class PickupManager : MonoBehaviour
 {
