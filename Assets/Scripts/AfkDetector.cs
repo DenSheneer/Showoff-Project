@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using Lean.Touch;
 using System;
+using UnityEngine.UI;
 
 public class AfkDetector : MonoBehaviour
 {
@@ -24,11 +25,15 @@ public class AfkDetector : MonoBehaviour
 
     private float timeInAfkPannel;
 
+    [SerializeField]
+    private Button continueButton = null;
 
     private void Start()
     {
         afkPannel.SetActive(false);
         isAfkPannelActive = false;
+
+        continueButton.onClick.AddListener(() => { isAfkPannelActive = false; timeInAfkPannel = 0; });
     }
 
 
@@ -37,7 +42,11 @@ public class AfkDetector : MonoBehaviour
         if (LeanTouch.Fingers.Count == 0)
             timeWithoutInput += Time.deltaTime;
         else
+        {
             timeWithoutInput = 0;
+            
+        }
+            
 
         if (timeWithoutInput >= secondsToAFKWarning)
         {

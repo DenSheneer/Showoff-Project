@@ -133,8 +133,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeoutCounterText: {fileID: 543054003574870563}
   secondsToAFKWarning: 30
-  secondsToGameReset: 15
+  secondsToGameReset: 10
   afkPannel: {fileID: 543054003240916306}
+  continueButton: {fileID: 543054003267551634}
 --- !u!1 &543054002972143162
 GameObject:
   m_ObjectHideFlags: 0

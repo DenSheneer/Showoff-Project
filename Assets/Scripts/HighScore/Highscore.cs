@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net.Sockets;
-using UnityEditor;
-using UnityEditorInternal;
 using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
 
 public static class Highscore
 {
