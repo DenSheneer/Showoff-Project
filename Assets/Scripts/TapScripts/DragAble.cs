@@ -6,6 +6,9 @@ public class DragAble : TapAble
 {
     private NavMeshAgent navAgent = null;
 
+    [SerializeField]
+    float speed = 1.0f;
+
     private void Start()
     {
         tapAbleType = InputType.TAP_DRAGABLE;
@@ -21,7 +24,8 @@ public class DragAble : TapAble
             Vector3 dir = pTarget - this.transform.position;
             dir.Normalize();
             dir *= 0.01f;
-            dir *= sqrDist;
+            dir *= sqrDist * Time.deltaTime * 80.0f;
+
             navAgent.Move(dir);
         }
     }
