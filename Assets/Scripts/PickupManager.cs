@@ -48,7 +48,7 @@ public class PickupManager : MonoBehaviour
             if (tapAble is Lantern)
             {
                 tempLanternList.Add(tapAble as Lantern);
-                (tapAble as Lantern).SubscribeToBeetleSpawnEvent(updateLevelItems);
+                (tapAble as Lantern).onBeetleSpawn += updateLevelItems;
                 (tapAble as Lantern).onLitEvent += updateLevelItems;
             }
         }
@@ -135,7 +135,7 @@ public class PickupManager : MonoBehaviour
     {
         foreach (Lantern lantern in lanterns)
             if (lantern.IsLit)
-                if (lantern.InRadiusCheck(playerManager.Position, playerMask))
+                if (lantern.RayFromThisTo(lantern.transform.position, playerManager.Position, lantern.LightRadius, playerMask).collider != null)
                     return true;
 
         return false;
